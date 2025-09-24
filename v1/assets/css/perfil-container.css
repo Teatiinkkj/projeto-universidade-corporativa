@@ -1,0 +1,98 @@
+.perfil-container {
+    position: relative;
+    display: flex;
+    height: 8%;
+    align-items: center;
+    background-color: #f5f5f5;
+    border-radius: 10px;
+    padding: 8px 12px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    gap: 10px;
+    font-family: Arial, sans-serif;
+    transition: transform 0.3s, color 0.3s;
+}
+
+.perfil-container:hover {
+    transform: scale(1.1);
+}
+
+.perfil-container img {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.perfil-info {
+    display: flex;
+    flex-direction: column;
+    font-size: 14px;
+    margin-left: 50px;
+}
+
+.perfil-info strong {
+    font-size: 14px;
+    color: #333;
+}
+
+.perfil-info span {
+    font-size: 12px;
+    color: #666;
+}
+
+.editar-foto {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    color: rgb(6, 93, 199);
+}
+
+.editar-foto:hover {
+    color: rgb(4, 70, 150);
+}
+
+.admin-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    color: rgb(6, 93, 199);
+    margin-left: 5px;
+}
+
+.admin-btn:hover {
+    color: rgb(4, 70, 150);
+}
+
+dialog {
+    border: none;
+    border-radius: 10px;
+    padding: 20px;
+    font-family: 'Inter', sans-serif;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+}
+
+dialog::backdrop {
+    background: rgba(0, 0, 0, 0.4);
+}
+
+dialog button {
+    margin: 8px;
+    padding: 10px 16px;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    align-items: center;
+}
+
+dialog button.cancelar {
+    background-color: #e0e0e0;
+    color: #333;
+}
+
+dialog button.confirmar {
+    background-color: rgb(6, 93, 199);
+    color: white;
+}

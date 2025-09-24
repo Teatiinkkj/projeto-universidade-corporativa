@@ -1,0 +1,96 @@
+/* Reset básico */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Open Sans', sans-serif;
+  color: #333;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Container principal */
+.main-container {
+  flex: 1;
+  padding: 30px 20px;
+  max-width: 900px;
+  margin: auto;
+}
+
+.main-container h1 {
+  font-size: 2.8rem;
+  margin-bottom: 10px;
+  margin-top: 25%;
+  color: #1e3a8a;
+}
+
+.fs-5 {
+  font-size: 1.1rem;
+  margin-bottom: 30px;
+  color: #555;
+}
+
+/* Tabela de usuários */
+.tabela-usuarios {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+}
+
+.tabela-usuarios th,
+.tabela-usuarios td {
+  text-align: left;
+  padding: 14px 18px;
+  border-bottom: 1px solid #e6e6e6;
+}
+
+.tabela-usuarios th {
+  background-color: #e0edff;
+  color: #1e3a8a;
+  font-weight: 600;
+}
+
+.tabela-usuarios tr:last-child td {
+  border-bottom: none;
+}
+
+.tabela-usuarios tr:hover {
+  background-color: #f1f8ff;
+}
+
+/* Rodapé */
+footer {
+  text-align: center;
+  padding: 15px 10px;
+  margin-top: auto;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+/* Responsividade */
+@media (max-width: 600px) {
+  .main-container {
+    padding: 20px 10px;
+  }
+
+  .tabela-usuarios th,
+  .tabela-usuarios td {
+    padding: 10px 12px;
+    font-size: 0.9rem;
+  }
+
+  .main-container h1 {
+    font-size: 1.5rem;
+  }
+
+  .fs-5 {
+    font-size: 1rem;
+  }
+}

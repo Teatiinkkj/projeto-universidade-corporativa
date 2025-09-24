@@ -1,0 +1,333 @@
+.btn-adicionar {
+  width: 100%;
+  background-color: #e6e6e6;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 120px;
+  border-radius: 8px;
+  position: relative;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  transition: transform 0.3s, color 0.3s;
+}
+
+.btn-adicionar:hover {
+  transform: scale(1.01);
+}
+
+.plus {
+  background-color: rgb(243, 243, 243);
+  color: #444444;
+  font-size: 100px;
+  line-height: 60px;
+  width: 100px;
+  height: 100px;
+  padding-bottom: 20px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.15);
+  user-select: none;
+}
+
+/* Indicadores */
+.indicadores {
+  margin: 60px 0;
+  color: #0056b3;
+}
+
+.indicador h3 {
+  font-size: 2.5rem;
+  margin-bottom: 0.3rem;
+  font-weight: 700;
+}
+
+.indicador p {
+  font-size: 1.2rem;
+}
+
+/* Carrossel */
+.carrossel {
+  position: relative;
+  margin: 100px 0;
+  overflow: hidden;
+  outline: none;
+}
+
+.slides {
+  display: flex;
+  transition: transform 0.5s ease;
+}
+
+.slide {
+  min-width: 100%;
+  display: none;
+  flex-shrink: 0;
+  text-align: center;
+}
+
+.slide.active {
+  display: block;
+}
+
+.slide img {
+  max-width: 800px;
+  height: auto;
+  border-radius: 10px;
+}
+
+.carrossel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: #0056b3;
+  border: none;
+  color: white;
+  font-size: 2rem;
+  padding: 0 15px;
+  padding-bottom: 7px;
+  cursor: pointer;
+  border-radius: 5px;
+  opacity: 0.8;
+  transition: opacity 0.3s ease;
+}
+
+.carrossel-btn:hover,
+.carrossel-btn:focus {
+  opacity: 1;
+  outline: none;
+}
+
+#prev-slide {
+  left: 10px;
+}
+
+#next-slide {
+  right: 10px;
+}
+
+/* Depoimentos */
+.depoimentos {
+  margin: 150px 0;
+  color: #003366;
+}
+
+.depoimentos h2 {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.depoimento {
+  background: #e6f0ff;
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+}
+
+.depoimento blockquote {
+  margin: 0;
+  font-style: italic;
+  font-size: 1.1rem;
+}
+
+.depoimento footer {
+  text-align: right;
+  font-weight: 600;
+  margin-top: 10px;
+  font-size: 1rem;
+}
+
+/* Parceiros */
+.parceiros {
+  margin: 150px 0;
+}
+
+.parceiros h2 {
+  text-align: center;
+  margin-bottom: 0px;
+  color: #003366;
+}
+
+.parceiro img {
+  max-width: 150px;
+  margin: 0 auto;
+  display: block;
+  filter: grayscale(70%);
+  transition: filter 0.3s ease;
+}
+
+.parceiro img:hover {
+  filter: grayscale(0%);
+}
+
+/* Botão voltar ao topo */
+#btn-voltar-topo {
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  background-color: #0056b3;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 10px;
+  font-size: 2rem;
+  cursor: pointer;
+  display: none;
+  z-index: 10;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.3);
+}
+
+#btn-voltar-topo:focus {
+  outline: 3px solid #80bdff;
+}
+
+/* Responsivo */
+@media (max-width: 767px) {
+  .indicadores .indicador {
+    margin-bottom: 20px;
+  }
+
+  .depoimento {
+    font-size: 1rem;
+  }
+
+  .carrossel-btn {
+    font-size: 1.5rem;
+    padding: 0 8px;
+  }
+
+  .parceiro img {
+    max-width: 100px;
+  }
+
+  .cta h2 {
+    font-size: 1.5rem;
+  }
+}
+
+.notificacao-item {
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+}
+
+.notificacao-item:last-child {
+  border-bottom: none;
+}
+
+.texto-notificacao {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.senha-notificacao {
+  font-size: 12px;
+  color: #666;
+}
+
+.marcar-lido {
+  background-color: #4CAF50;
+  color: #fff;
+  border: none;
+  padding: 5px 10px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.marcar-lido::before {
+  content: "\2713";
+  font-size: 14px;
+  margin-right: 5px;
+}
+
+.marcar-lido:hover {
+  background-color: #3e8e41;
+}
+
+.excluir-notificacao {
+  background-color: #f44336;
+  color: #fff;
+  border: none;
+  padding: 5px 10px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.excluir-notificacao::before {
+  content: "\2715";
+  font-size: 14px;
+  margin-right: 5px;
+}
+
+.excluir-notificacao:hover {
+  background-color: #b43026;
+}
+
+.texto-curso .btn-primary {
+  background-color: #337ab7;
+  border-color: #337ab7;
+  color: #fff;
+  font-size: 16px;
+  margin-top: 10px;
+  padding: 5px 20px;
+  border-radius: 5px;
+  text-decoration: none;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.texto-curso .btn-primary:hover {
+  background-color: #23527c;
+  border-color: #23527c;
+  color: #fff;
+}
+
+.submenu-curso {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.submenu-curso button {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  background: #fff;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+  color: #333;
+  border-bottom: 1px solid #ddd;
+}
+
+.submenu-curso button:hover {
+  background: #f0f0f0;
+}
+
+.submenu-curso button:last-child {
+  border-bottom: none;
+}
+
+.editar-foto {
+  position: absolute;
+  bottom: 0;
+  right: -100px;
+  background: white;
+  border-radius: 50%;
+  padding: 4px;
+  font-size: 14px;
+  color: #333;
+  cursor: pointer;
+}
+
+#foto-perfil-container {
+  position: relative;
+  width: 60px;
+  height: 60px;
+}

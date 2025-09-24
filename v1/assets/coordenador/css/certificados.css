@@ -1,0 +1,73 @@
+.certificados-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.certificado {
+  margin: 20px;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.certificado h2 {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.certificado p {
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+
+.btn-visualizar, .btn-baixar {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn-visualizar {
+  background-color: #4CAF50;
+  color: #fff;
+}
+
+.btn-baixar {
+  background-color: #03A9F4;
+  color: #fff;
+}
+
+.curso {
+    margin: 20px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    transition: all 0.3s ease-in-out;
+}
+
+.curso:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.curso .btn-primary {
+    transition: all 0.2s ease-in-out;
+}
+
+.curso .btn-primary:hover {
+    background-color: #337ab7;
+    transform: scale(1.1);
+}
+
+.curso .btn-success {
+    transition: all 0.2s ease-in-out;
+}
+
+.curso .btn-success:hover {
+    background-color: #2ecc71;
+    transform: scale(1.1);
+}

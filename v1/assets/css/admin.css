@@ -1,0 +1,366 @@
+/* ---------- RESET ---------- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Open Sans', sans-serif;
+    background: #f0f4ff;
+    color: #333;
+    padding: 20px;
+}
+
+/* ---------- TÍTULO ---------- */
+h1 {
+    font-size: 2.8rem;
+    color: #065dc7;
+    text-align: center;
+    margin: 50px 0 30px 0;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+/* ---------- CONTROLES SUPERIORES ---------- */
+.top-controls {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 25px;
+}
+
+.top-controls input[type="search"] {
+    flex: 1;
+    min-width: 250px;
+    padding: 12px 15px;
+    border: 2px solid #d0d7e6;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border-color 0.3s;
+}
+
+.top-controls input[type="search"]:focus {
+    border-color: #065dc7;
+    outline: none;
+}
+
+.top-controls button {
+    background: #065dc7;
+    color: #fff;
+    border: none;
+    padding: 12px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: 0.3s;
+}
+
+.top-controls button:hover {
+    background: #044696;
+}
+
+/* ---------- TABELA ---------- */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+}
+
+thead {
+    background: #065dc7;
+    color: #fff;
+    text-transform: uppercase;
+    font-size: 0.95rem;
+}
+
+th, td {
+    padding: 14px 16px;
+    text-align: left;
+}
+
+tbody tr {
+    transition: 0.3s;
+}
+
+tbody tr:hover {
+    background: #e6f0ff;
+}
+
+td:last-child {
+    white-space: nowrap;
+}
+
+/* ---------- BOTÕES DE AÇÃO ---------- */
+button.salvar {
+    background: #28a745;
+    color: #fff;
+    padding: 6px 12px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button.salvar:hover {
+    background: #218838;
+}
+
+button.excluir {
+    background: #dc3545;
+    color: #fff;
+    padding: 6px 12px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button.excluir:hover {
+    background: #c82333;
+}
+
+/* ---------- FORMULÁRIO DE EDIÇÃO ---------- */
+.form-edicao {
+    max-width: 500px;
+    margin: 40px auto 100px auto;
+    background: #fff;
+    padding: 25px 30px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+    animation: fadeInUp 0.3s ease forwards;
+}
+
+.form-edicao h2 {
+    color: #065dc7;
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+    text-align: center;
+}
+
+.form-edicao label {
+    display: block;
+    margin-top: 15px;
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+.form-edicao input,
+.form-edicao select {
+    width: 100%;
+    padding: 10px 12px;
+    margin-top: 6px;
+    border-radius: 8px;
+    border: 1px solid #d0d7e6;
+    font-size: 0.95rem;
+    transition: 0.3s;
+}
+
+.form-edicao input:focus,
+.form-edicao select:focus {
+    border-color: #065dc7;
+    outline: none;
+}
+
+.form-edicao .salvar,
+.form-edicao .cancelar {
+    padding: 12px 18px;
+    font-size: 0.95rem;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: 0.3s;
+}
+
+.form-edicao .salvar {
+    background: #065dc7;
+    color: #fff;
+    margin-right: 10px;
+}
+
+.form-edicao .salvar:hover {
+    background: #044696;
+}
+
+.form-edicao .cancelar {
+    background: #ccc;
+    color: #333;
+}
+
+.form-edicao .cancelar:hover {
+    background: #999;
+}
+
+/* ---------- MODAIS ---------- */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.6);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-conteudo {
+    background: #fff;
+    padding: 30px 35px;
+    border-radius: 12px;
+    max-width: 400px;
+    width: 90%;
+    text-align: center;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    animation: fadeIn 0.25s ease forwards;
+}
+
+.modal-conteudo p,
+.modal-conteudo h2 {
+    margin-bottom: 20px;
+    font-size: 1rem;
+}
+
+.modal-botoes {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.modal-botoes button {
+    padding: 10px 18px;
+    border-radius: 8px;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    min-width: 100px;
+    transition: 0.3s;
+}
+
+.modal-botoes .confirmar {
+    background: #065dc7;
+    color: #fff;
+}
+
+.modal-botoes .confirmar:hover {
+    background: #044696;
+}
+
+.modal-botoes .cancelar {
+    background: #ccc;
+    color: #333;
+}
+
+.modal-botoes .cancelar:hover {
+    background: #999;
+}
+
+/* --------- ESTILO DO MODAL DE CADASTRO --------- */
+#modalCadastro .modal-conteudo {
+  max-width: 500px;
+  width: 90%;
+  padding: 20px 25px;
+  border-radius: 10px;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+}
+
+#modalCadastro h2 {
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  color: #333;
+}
+
+/* Campos de formulário */
+#modalCadastro .campo-form {
+  position: relative;
+  margin-bottom: 18px;
+}
+
+#modalCadastro .campo-form input,
+#modalCadastro .campo-form select {
+  width: 100%;
+  padding: 12px;
+  font-size: 0.95rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background: #f9f9f9;
+}
+
+/* Labels discretos */
+#modalCadastro .campo-form label {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  font-size: 0.85rem;
+  color: #777;
+  pointer-events: none;
+  transition: 0.2s ease all;
+}
+
+/* Input ou select em foco ou preenchido */
+#modalCadastro .campo-form input:focus + label,
+#modalCadastro .campo-form input:not(:placeholder-shown) + label,
+#modalCadastro .campo-form select.filled + label {
+  top: -8px;
+  left: 10px;
+  font-size: 0.75rem;
+  color: #5b2c6f;
+  background: #fff;
+  padding: 0 4px;
+}
+
+
+/* Sobe o label ao focar ou ter valor */
+#modalCadastro .campo-form input:focus + label,
+#modalCadastro .campo-form input:not(:placeholder-shown) + label,
+#modalCadastro .campo-form select:focus + label,
+#modalCadastro .campo-form select[value]:not([value=""]) + label {
+  top: -8px;
+  left: 10px;
+  font-size: 0.75rem;
+  color: #5b2c6f; /* tom roxo discreto */
+  background: #fff;
+  padding: 0 4px;
+}
+
+/* Input de senha com botão */
+#modalCadastro .input-senha {
+  position: relative;
+}
+
+#modalCadastro .input-senha button {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #555;
+  font-size: 1rem;
+}
+
+
+/* ---------- ANIMAÇÕES ---------- */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-15px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}

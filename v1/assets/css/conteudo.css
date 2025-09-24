@@ -1,0 +1,158 @@
+body {
+    background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+    font-family: 'Segoe UI', sans-serif;
+    padding-top: 70px;
+}
+h1 {
+    font-weight: 700;
+    color: #2c3e50;
+}
+.table-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 25px;
+}
+.table-wrapper {
+    width: 100%;
+    max-width: 950px;
+    background: #fff;
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+}
+table {
+    border-radius: 12px;
+    overflow: hidden;
+}
+thead {
+    background: #34495e;
+    color: #ecf0f1;
+    font-weight: 600;
+}
+tbody tr:hover {
+    background-color: #f1f1f1;
+}
+.btn-dark {
+    background: #6c5ce7;
+    border: none;
+    transition: 0.3s;
+}
+.btn-dark:hover {
+    background: #5a4bd8;
+}
+.modal-content {
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+.img-preview {
+    width: 80px;
+    height: auto;
+    object-fit: cover;
+    border-radius: 8px;
+}
+.video-preview {
+    width: 140px;
+    height: 90px;
+    border-radius: 8px;
+}
+.embed-preview {
+    width: 140px;
+    height: 90px;
+    border-radius: 8px;
+}
+.alert {
+    margin-top: 15px;
+    border-radius: 10px;
+}
+a body {
+    background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+    font-family: 'Segoe UI', sans-serif;
+    padding-top: 70px;
+    margin: 0; /* remove qualquer espaço extra */
+}
+
+/* Título */
+h1 {
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 20px; /* espaçamento controlado */
+}
+
+/* Centralizar tabela */
+.table-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 25px;
+    margin-bottom: 0; /* tira espaço abaixo */
+}
+
+/* Wrapper da tabela */
+.table-wrapper {
+    width: 100%;
+    max-width: 950px;
+    background: #fff;
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+    margin-bottom: 0; /* remove espaço branco extra */
+}
+
+/* Tabela */
+table {
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 0; /* importante: sem espaço embaixo */
+}
+
+/* Cabeçalho */
+thead {
+    background: #34495e;
+    color: #ecf0f1;
+    font-weight: 600;
+}
+
+/* Hover nas linhas */
+tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Botão principal */
+.btn-dark {
+    background: #6c5ce7;
+    border: none;
+    transition: 0.3s;
+}
+.btn-dark:hover {
+    background: #5a4bd8;
+}
+
+/* Modal */
+.modal-content {
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+
+/* Pré-visualização de arquivos */
+.img-preview {
+    width: 80px;
+    height: auto;
+    object-fit: cover;
+    border-radius: 8px;
+}
+.video-preview {
+    width: 140px;
+    height: 90px;
+    border-radius: 8px;
+}
+.embed-preview {
+    width: 140px;
+    height: 90px;
+    border-radius: 8px;
+}
+
+/* Mensagens */
+.alert {
+    margin-top: 15px;
+    margin-bottom: 0; /* sem espaço extra */
+    border-radius: 10px;
+}

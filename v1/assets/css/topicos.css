@@ -1,0 +1,37 @@
+body {
+    background: linear-gradient(to right, #eef2f3, #dfe9f3);
+    font-family: 'Segoe UI', sans-serif;
+    padding-top: 56px;
+  }
+  h1 {
+    font-weight: bold;
+    color: #343a40;
+  }
+  table {
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  thead {
+    background: #343a40;
+    color: #fff;
+  }
+  tbody tr:hover {
+    background-color: #f9f9f9;
+  }
+  .badge-status {
+    padding: 0.4em 0.7em;
+    border-radius: 8px;
+    font-size: 0.85em;
+  }
+  .modal-content {
+    border-radius: 12px;
+  }
+  .alert {
+    margin-top: 15px;
+    border-radius: 8px;
+  }
+  @media(max-width: 768px) {
+    .table-responsive {
+      margin-top: 15px;
+    }
+  }
