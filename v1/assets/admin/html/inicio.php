@@ -418,7 +418,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         `;
 
         card.innerHTML = `
-          <div style="height:180px; background-image:url('${curso.imagem ? '../../images/' + curso.imagem : '../../images/imgsemfundo2.png'}'); 
+          <div style="height:180px; background-image:url('${curso.imagem ? curso.imagem : '../../images/imgsemfundo2.png'}'); 
                       background-size: cover; background-position: center;"></div>
           <div style="padding: 20px; flex: 1; display: flex; flex-direction: column; justify-content: space-between;">
             <div>

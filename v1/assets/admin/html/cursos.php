@@ -68,8 +68,8 @@
           <div class="mb-3">
             <label for="status" class="form-label">Status</label>
             <select id="status" class="form-select">
-              <option value="ativo">Ativo</option>
-              <option value="inativo">Inativo</option>
+              <option value="1">Ativo</option>
+              <option value="0">Inativo</option>
             </select>
           </div>
           <button type="submit" class="btn btn-dark w-100">
@@ -93,9 +93,9 @@
       const tbody = $('#tabelaCursos tbody');
       tbody.empty();
       lista.forEach(curso => {
-        const badge = curso.status === "ativo" 
-          ? '<span class="badge bg-success badge-status">Ativo</span>' 
-          : '<span class="badge bg-secondary badge-status">Inativo</span>';
+        const badge = curso.status == 1
+  ? '<span class="badge bg-success badge-status">Ativo</span>'
+  : '<span class="badge bg-secondary badge-status">Inativo</span>';
         
         tbody.append(`
           <tr>
