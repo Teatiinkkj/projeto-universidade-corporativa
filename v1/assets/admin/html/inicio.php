@@ -50,12 +50,7 @@
                       <strong style="margin-left: 30px; margin-right: 30px;" id="nome-usuario">Administrador</strong>
                     </div>
 
-                    <button style="color: gray;" class="admin-btn" onclick="window.location.href='admin.php'"
-                      title="Administrar usuários" aria-label="Administrar usuários">
-                      <i class="fa fa-cogs"></i>
-                    </button>
-
-                    <a href="../login.php" style="font-size: 20px; color: gray; margin-left: -10px;"
+                    <a href="../../html/login.php" style="font-size: 20px; color: gray; margin-left: -10px;"
                       title="Sair da Conta">
                       <i class="fa-solid fa-right-from-bracket"></i>
                     </a>
@@ -66,12 +61,8 @@
                   <link rel="stylesheet"
                     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
 
-                  <a href="inicio.php"><i class="fa-solid fa-house"></i> Início</a>
-                  <a href="meus-cursos.php" id="meus-cursos"><i class="fa-solid fa-book"></i> Meus Cursos</a>
-                  <a href="certificados.php"><i class="fa-solid fa-certificate"></i> Certificados</a>
-                  <a href="../../html/sobre.html"><i class="fa-solid fa-circle-info"></i> Sobre</a>
-                  <a href="admin.php"><i class="fa-solid fa-circle-info"></i> Gestão de Usuários</a>
-                  <a href="cursos.php"><i class="fa-solid fa-circle-info"></i> Gestão de Cursos</a>
+                  <a href="admin.php"><i class="fa fa-cogs"></i> Gestão de Usuários</a>
+                  <a href="cursos.php"><i class="fa fa-cogs"></i> Gestão de Cursos</a>
                 </div>
               </li>
             </ul>
@@ -137,9 +128,8 @@
   <br>
 
 <section class="container cursos-section" style="margin-top: 50px;">
-  <h3 class="text-center mb-4">Cursos Disponíveis</h3>
-  <div id="lista-cursos" class="row g-4" style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: center;">
-  </div>
+  <h3 class="text-center mb-4" style="font-size:28px; color:#4B0082;">Cursos Disponíveis</h3>
+  <div id="lista-cursos" class="row g-4" style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: center;"></div>
 </section>
 
   <section style="margin-top: 300px;" id="indicadores" class="indicadores container" tabindex="0"
@@ -223,55 +213,6 @@
       <p class="pull-left">&copy; 2025 - Todos os direitos reservados</p>
     </div>
   </footer>
-
-  <dialog id="dialogRemover" role="dialog" aria-modal="true" aria-labelledby="titulo-modal-remover"
-    aria-describedby="descricao-modal-remover">
-    <form method="dialog">
-      <h3 id="titulo-modal-remover">Confirmar remoção</h3>
-      <p id="descricao-modal-remover">Deseja realmente remover esta despesa?</p>
-      <div style="display: flex; justify-content: center; gap: 20px;">
-        <button type="button" class="cancelar" onclick="document.getElementById('dialogRemover').close()"
-          aria-label="Cancelar remoção">Cancelar</button>
-        <button type="button" class="confirmar" onclick="confirmarRemover()"
-          aria-label="Confirmar remoção">Confirmar</button>
-      </div>
-    </form>
-  </dialog>
-
-  <div id="modal-cadastro" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.6); 
-  justify-content:center; align-items:center; z-index:9999;">
-    <div style="background:white; padding:20px; border-radius:8px; max-width:300px; text-align:center;">
-      <p style="font-size: 20px;">Deseja se cadastrar ao curso?</p>
-      <p style="font-size: 15px; color: rgb(137, 137, 137); margin-top: -10px;">Após clicar você estará concordando com
-        os termos de condição</p>
-      <button id="btn-sim" class="btn btn-primary" style="margin-right:10px; width: 100px;">Sim</button>
-      <button id="btn-nao" class="btn btn-secondary" style="width: 100px;">Não</button>
-    </div>
-  </div>
-  <div id="modal-editar-curso" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.6); 
-justify-content:center; align-items:center; z-index:9999;">
-    <div style="background:white; padding:20px; border-radius:8px; max-width:300px; text-align:center;">
-      <p style="font-size: 20px;">Editar Curso</p>
-      <img id="imagem-curso" src="" style="width: 100px; height: 100px; border-radius: 50%; cursor: pointer;">
-      <input type="file" id="input-file-imagem" style="display: none;">
-      <input id="input-nome-curso" type="text" placeholder="Nome do curso"
-        style="width: 100%; padding: 10px; margin-bottom: 10px;">
-      <textarea id="input-descricao-curso" placeholder="Descrição do curso"
-        style="width: 100%; padding: 10px; margin-bottom: 10px; height: 100px;"></textarea>
-      <button id="btn-salvar-edicao" class="btn btn-primary" style="margin-right:10px; width: 100px;">Salvar</button>
-      <button id="btn-cancelar-edicao" class="btn btn-secondary" style="width: 100px;">Cancelar</button>
-    </div>
-  </div>
-  <div id="modal-trocar-conta" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.6); 
-  justify-content:center; align-items:center; z-index:9999;">
-    <div style="background:white; padding:20px; border-radius:8px; max-width:300px; text-align:center;">
-      <p style="font-size: 20px;">Deseja realmente trocar de conta?</p>
-      <button id="btn-sim-trocar-conta" class="btn btn-primary" style="margin-right:10px; width: 100px;">Sim</button>
-      <button id="btn-nao-trocar-conta" class="btn btn-secondary" style="width: 100px;">Não</button>
-    </div>
-  </div>
-
-  <button id="btn-voltar-topo" aria-label="Voltar ao topo" title="Voltar ao topo" tabindex="0">&#8679;</button>
 
   <script>
 document.addEventListener('DOMContentLoaded', () => {
@@ -462,8 +403,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     if (result.success && result.data.length > 0) {
       result.data.forEach(curso => {
-        // se quiser só os ativos, descomenta a linha abaixo
-        // if (curso.status != 1) return;
 
         const card = document.createElement('div');
         card.classList.add('curso-card');

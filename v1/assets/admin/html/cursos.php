@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin - Cursos</title>
+  <title>Admin - Gestão de Cursos</title>
   <link rel="stylesheet" href="../../css/cursos.css">
   <link rel="stylesheet" href="../../css/back-button.css">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -12,9 +12,11 @@
 </head>
 <body>
 
+<header>
 <a href="inicio.php" class="back-button">
     <i class="fa fa-arrow-left"></i> Início
 </a>
+</header>
 
 <div class="container-fluid">
   <main class="col-lg-10 offset-lg-1 px-md-4">

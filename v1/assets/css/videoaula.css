@@ -1,0 +1,165 @@
+/* ================== BASE ================== */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: 'Open Sans', sans-serif;
+    background-color: #e8f0fe;
+    color: #1a1a1a;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+}
+
+/* ================== CONTEÚDO PRINCIPAL ================== */
+body > .container, body > section {
+    flex: 1 0 auto; /* Faz o conteúdo ocupar o espaço restante */
+}
+
+/* ================== CABEÇALHO ================== */
+.header-inicio {
+    background: linear-gradient(90deg, #1e3c72 0%, #2a5298 100%);
+    color: #fff;
+    text-align: center;
+    padding: 25px 0;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+}
+
+.header-inicio h2 {
+    font-size: 40px;
+    font-weight: 700;
+    margin: 0;
+}
+
+/* ================== SEÇÃO DE VÍDEO ================== */
+.video .col-md-8 {
+    margin-bottom: 30px;
+}
+
+#conteudoArea {
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+}
+
+#playerVideo {
+    border-radius: 15px;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+}
+
+#conteudoExtra iframe {
+    border-radius: 15px;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+    margin-top: 15px;
+}
+
+/* ================== BOTÃO ================== */
+#btnConcluido {
+    background: #1e3c72;
+    border: none;
+    color: #fff;
+    font-weight: bold;
+    padding: 12px 25px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#btnConcluido:hover {
+    background: #2a5298;
+    transform: translateY(-2px);
+}
+
+/* ================== LISTA DE AULAS ================== */
+.col-md-4 h4 {
+    color: #1e3c72;
+    font-weight: bold;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #2a5298;
+    padding-bottom: 5px;
+}
+
+.topico {
+    background: #ffffff;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 15px;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.08);
+    transition: all 0.3s ease;
+}
+
+.topico strong {
+    display:block;
+    margin-bottom: 12px;
+    font-size: 18px;
+    color: #1e3c72;
+}
+
+.conteudo-item {
+    cursor: pointer;
+    margin-bottom: 10px;
+    padding: 12px 15px;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    background: #f0f4ff;
+    display: flex;
+    align-items: center;
+    font-weight: 500;
+    font-size: 15px;
+}
+
+.conteudo-item:hover {
+    background: #d0e0ff;
+    transform: translateX(3px);
+}
+
+.conteudo-item.assistido {
+    color: #0d3c91;
+    font-weight: bold;
+    background: #c6dafc;
+}
+
+/* Ícones por tipo de conteúdo */
+.conteudo-item::before {
+    content: "🎬";
+    margin-right: 10px;
+}
+.conteudo-item[data-tipo="pdf"]::before { content: "📄"; }
+
+/* ================== CONTADOR ================== */
+#contadorAulas {
+    margin-top: 15px;
+    font-weight: bold;
+    color: #1e3c72;
+}
+
+/* ================== FOOTER ================== */
+footer {
+    background: #1e3c72;
+    color: #dfe6ff;
+    text-align: center;
+    padding: 20px 0;
+    flex-shrink: 0; /* garante que o footer não encolha */
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+}
+
+/* ================== RESPONSIVIDADE ================== */
+@media(max-width:768px){
+    #conteudoArea { margin-bottom: 20px; }
+    .topico { padding: 12px; }
+    .conteudo-item { font-size: 14px; }
+    #tituloAula { font-size: 20px; }
+}
+
+.back-button {
+    transition: none;
+}
+
+.back-button:hover {
+    transform: none;
+}

@@ -39,6 +39,33 @@ if (!isset($input['email']) || !isset($input['senha'])) {
 $email = trim($input['email']);
 $senha = $input['senha'];
 
+// ----------------------
+// LOGIN FIXO ADMIN
+// ----------------------
+if ($email === "admin" && $senha === "admin") {
+    session_start();
+    $_SESSION['usuario_id'] = 0; // ID fictício
+    $_SESSION['usuario_nome'] = "Administrador";
+    $_SESSION['usuario_email'] = "admin@unicorp.com";
+    $_SESSION['usuario_cargo'] = "admin";
+
+    echo json_encode([
+        "success" => true,
+        "message" => "Login de administrador realizado com sucesso!",
+        "usuario" => [
+            "id" => 0,
+            "nome" => "Administrador",
+            "email" => "admin@unicorp.com",
+            "cargo" => "admin"
+        ],
+        "redirecionamento" => "../../assets/admin/html/inicio.php"
+    ]);
+    exit();
+}
+
+// ----------------------
+// LOGIN COM BANCO
+// ----------------------
 $stmt = $conn->prepare("SELECT id, nome, email, senha, cargo FROM usuarios WHERE email = ?");
 $stmt->bind_param("s", $email);
 $stmt->execute();
@@ -71,27 +98,37 @@ if (!$senhaCorreta) {
     exit();
 }
 
+// ----------------------
+// REDIRECIONAMENTO
+// ----------------------
 $cargo = strtolower(trim($usuario['cargo']));
 $paginaRedirecionamento = "";
 
 switch ($cargo) {
     case 'aluno':
-        $paginaRedirecionamento = "../../assets/aluno/html/inicio.html";
+        $paginaRedirecionamento = "../../assets/aluno/html/inicio.php";
         break;
     case 'professor':
-        $paginaRedirecionamento = "../../assets/professor/inicio.html";
+        $paginaRedirecionamento = "../../assets/professor/html/inicio.php";
         break;
     case 'coordenador':
-        $paginaRedirecionamento = "../../assets/coordenador/inicio.html";
+        $paginaRedirecionamento = "../../assets/coordenador/html/inicio.php";
         break;
     case 'admin':
     case 'administrador':
-        $paginaRedirecionamento = "../../assets/admin/inicio.html";
+        $paginaRedirecionamento = "../../assets/admin/html/inicio.php";
         break;
     default:
-        $paginaRedirecionamento = "../../assets/aluno/inicio.html";
+        $paginaRedirecionamento = "../../assets/aluno/html/inicio.php";
         break;
 }
+
+// Criar sessão normal
+session_start();
+$_SESSION['usuario_id'] = $usuario['id'];
+$_SESSION['usuario_nome'] = $usuario['nome'];
+$_SESSION['usuario_email'] = $usuario['email'];
+$_SESSION['usuario_cargo'] = $usuario['cargo'];
 
 http_response_code(200);
 echo json_encode([

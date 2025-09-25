@@ -815,28 +815,6 @@ select {
   background-color: rgb(6, 76, 161);
 }
 
-.back-button {
-  position: relative;
-  top: 20px;
-  left: 20px;
-  background-color: transparent;
-  border: none;
-  font-size: 20px;
-  color: rgb(6, 93, 199);
-  cursor: pointer;
-  align-items: center;
-  text-decoration: none;
-  transition: transform 0.3s, color 0.3s;
-}
-
-.back-button:hover {
-  transform: scale(1.1);
-}
-
-.back-button i {
-  margin-right: 5px;
-}
-
 .btn-view-alunos a {
   margin-top: 10px;
   margin-left: 100px;
