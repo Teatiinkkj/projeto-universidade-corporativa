@@ -1,0 +1,40 @@
+git init
+git config --global user.name "Teatiinkkj"
+git config --global user.email "muriloteatin@gmail.com"
+git add .
+git commit -m "v1"
+git branch -M main
+git remote add origin https://Teatiinkkj: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@github.com/Teatiinkkj/ProjetoUniCorp.git
+git push -u origin main
+
+https://Teatiinkkj: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@github.com/Teatiinkkj/ProjetoUniCorp.git
+
+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
+
+git remote add origin https://github.com/Teatiinkkj/projeto-universidade-corporativa.git
+
+
+################
+
+Copiar Repositorio em Outro Maquina:
+git clone https://github.com/Teatiinkkj/projeto-universidade-corporativa.git
+
+
+
+################
+
+Atualizar Repositorio Local para Repositorio Online:
+git add .
+git commit -m "v1"
+git push -u origin main
+
+
+##################
+
+
+Trazer Código Atualizado GitHub para Local
+git pull
+
+###################
+
+
