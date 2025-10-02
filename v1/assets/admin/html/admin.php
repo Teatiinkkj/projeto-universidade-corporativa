@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -9,6 +10,7 @@
   <link rel="stylesheet" href="../../css/admin.css" />
   <link rel="stylesheet" href="../../css/back-button.css" />
 </head>
+
 <body>
   <a href="inicio.php" class="back-button">
     <i class="fa fa-arrow-left"></i> Início
@@ -68,7 +70,9 @@
     <label for="editSenha">Senha:</label>
     <div style="position: relative; display: inline-block; width: 100%">
       <input type="password" id="editSenha" style="padding-right: 30px; width: 100%" />
-      <button type="button" id="toggleSenha" style="position: absolute; right: 5px; top: 55%; transform: translateY(-50%); background: none; border: none; cursor: pointer; font-size: 16px; color: #333;" title="Mostrar/Esconder senha">
+      <button type="button" id="toggleSenha"
+        style="position: absolute; right: 5px; top: 55%; transform: translateY(-50%); background: none; border: none; cursor: pointer; font-size: 16px; color: #333;"
+        title="Mostrar/Esconder senha">
         <i class="fas fa-eye"></i>
       </button>
     </div>
@@ -163,43 +167,43 @@
   </div>
 
   <script>
-document.addEventListener("DOMContentLoaded", () => {
-  const tabelaBody = document.querySelector("#tabelaUsuarios tbody");
-  const filtroInput = document.getElementById("filtroUsuarios");
+    document.addEventListener("DOMContentLoaded", () => {
+      const tabelaBody = document.querySelector("#tabelaUsuarios tbody");
+      const filtroInput = document.getElementById("filtroUsuarios");
 
-  function abrirModal(id) { document.getElementById(id).style.display = "flex"; }
-  function fecharModal(id) { document.getElementById(id).style.display = "none"; }
+      function abrirModal(id) { document.getElementById(id).style.display = "flex"; }
+      function fecharModal(id) { document.getElementById(id).style.display = "none"; }
 
-  window.addEventListener("click", (event) => {
-    ["modalSucesso", "modalErro", "modalCadastro"].forEach(id => {
-      const modal = document.getElementById(id);
-      if (event.target === modal) fecharModal(id);
-    });
-  });
+      window.addEventListener("click", (event) => {
+        ["modalSucesso", "modalErro", "modalCadastro"].forEach(id => {
+          const modal = document.getElementById(id);
+          if (event.target === modal) fecharModal(id);
+        });
+      });
 
-  async function carregarUsuarios(filtro = "") {
-    try {
-      const response = await fetch("../../api/admin/usuarios.php");
-      const result = await response.json();
-      if (!result.success) return abrirModalErro("Erro ao carregar usuários do banco de dados.");
+      async function carregarUsuarios(filtro = "") {
+        try {
+          const response = await fetch("../../api/admin/usuarios.php");
+          const result = await response.json();
+          if (!result.success) return abrirModalErro("Erro ao carregar usuários do banco de dados.");
 
-      const usuarios = result.data.filter(u => (u.nome + u.email).toLowerCase().includes(filtro.toLowerCase()));
-      renderizarTabela(usuarios);
-    } catch (error) {
-      abrirModalErro("Erro ao buscar dados do servidor: " + error.message);
-    }
-  }
+          const usuarios = result.data.filter(u => (u.nome + u.email).toLowerCase().includes(filtro.toLowerCase()));
+          renderizarTabela(usuarios);
+        } catch (error) {
+          abrirModalErro("Erro ao buscar dados do servidor: " + error.message);
+        }
+      }
 
-  function renderizarTabela(usuarios) {
-    tabelaBody.innerHTML = "";
-    if (usuarios.length === 0) {
-      tabelaBody.innerHTML = '<tr><td colspan="7" style="text-align:center;">Nenhum usuário encontrado.</td></tr>';
-      return;
-    }
+      function renderizarTabela(usuarios) {
+        tabelaBody.innerHTML = "";
+        if (usuarios.length === 0) {
+          tabelaBody.innerHTML = '<tr><td colspan="7" style="text-align:center;">Nenhum usuário encontrado.</td></tr>';
+          return;
+        }
 
-    usuarios.forEach(u => {
-      const tr = document.createElement("tr");
-      tr.innerHTML = `
+        usuarios.forEach(u => {
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
         <td>${u.nome}</td>
         <td>${u.cargo || ""}</td>
         <td>${u.sexo || ""}</td>
@@ -211,148 +215,149 @@ document.addEventListener("DOMContentLoaded", () => {
           <button class="excluir" data-id="${u.id}">Excluir</button>
         </td>
       `;
-      tabelaBody.appendChild(tr);
+          tabelaBody.appendChild(tr);
+        });
+
+        document.querySelectorAll(".salvar").forEach(btn => btn.addEventListener("click", e => editarUsuario(e.target.dataset.id)));
+        document.querySelectorAll(".excluir").forEach(btn => btn.addEventListener("click", e => confirmarExclusao(e.target.dataset.id)));
+      }
+
+      async function editarUsuario(id) {
+        try {
+          const response = await fetch(`../../api/admin/usuario.php?id=${id}`);
+          const result = await response.json();
+          if (!response.ok || !result.success) throw new Error(result.message || "Erro ao buscar usuário.");
+
+          const u = result.data;
+          document.getElementById("editNome").value = u.nome;
+          document.getElementById("editEmail").value = u.email;
+          document.getElementById("editCargo").value = u.cargo;
+          document.getElementById("editSexo").value = u.sexo;
+          document.getElementById("editCpf").value = u.cpf;
+          document.getElementById("editSenha").value = "";
+
+          document.getElementById("formEdicao").style.display = "block";
+          document.getElementById("btnSalvar").dataset.id = id;
+        } catch (error) {
+          abrirModalErro("Erro ao carregar usuário para edição: " + error.message);
+        }
+      }
+
+      document.getElementById("btnSalvar").addEventListener("click", async () => {
+        const id = document.getElementById("btnSalvar").dataset.id;
+        const nome = document.getElementById("editNome").value.trim();
+        const email = document.getElementById("editEmail").value.trim();
+        const cargo = document.getElementById("editCargo").value.trim();
+        const sexo = document.getElementById("editSexo").value.trim();
+        const cpf = document.getElementById("editCpf").value.trim();
+        const senha = document.getElementById("editSenha").value.trim();
+
+        if (!nome || !email || !cargo || !sexo || !cpf) return abrirModalErro("Preencha todos os campos obrigatórios.");
+
+        try {
+          const response = await fetch("../../api/admin/editar_usuario.php", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ id, nome, email, cargo, sexo, cpf, senha })
+          });
+          const result = await response.json();
+          if (!response.ok || !result.success) throw new Error(result.message || "Erro ao editar usuário.");
+
+          document.getElementById("formEdicao").style.display = "none";
+          abrirModalSucesso("Usuário atualizado com sucesso!");
+          carregarUsuarios();
+        } catch (error) {
+          abrirModalErro("Erro ao salvar alterações: " + error.message);
+        }
+      });
+
+      document.getElementById("btnCancelar").addEventListener("click", () => {
+        document.getElementById("formEdicao").style.display = "none";
+      });
+
+      filtroInput.addEventListener("input", () => carregarUsuarios(filtroInput.value));
+
+      function abrirModalSucesso(msg) { document.querySelector("#modalSucesso p").textContent = msg; abrirModal("modalSucesso"); }
+      function abrirModalErro(msg) { document.querySelector("#mensagemErro").textContent = msg; abrirModal("modalErro"); }
+      document.getElementById("fecharModalSucesso").addEventListener("click", () => fecharModal("modalSucesso"));
+      document.getElementById("fecharModalErro").addEventListener("click", () => fecharModal("modalErro"));
+
+      document.getElementById("btnNovoUsuario").addEventListener("click", () => abrirModal("modalCadastro"));
+      document.getElementById("btnCancelarCadastro").addEventListener("click", () => fecharModal("modalCadastro"));
+
+      document.getElementById("btnConfirmarCadastro").addEventListener("click", async () => {
+        const nome = document.getElementById("cadNome").value.trim();
+        const cargo = document.getElementById("cadCargo").value.trim();
+        const sexo = document.getElementById("cadSexo").value.trim();
+        const cpf = document.getElementById("cadCpf").value.trim();
+        const email = document.getElementById("cadEmail").value.trim();
+        const senha = document.getElementById("cadSenha").value.trim();
+
+        if (!nome || !cargo || !sexo || !cpf || !email || !senha) return abrirModalErro("Preencha todos os campos.");
+
+        try {
+          const response = await fetch("../../api/admin/cadastrar_usuario.php", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ nome, email, senha, cargo, sexo, cpf })
+          });
+
+          const result = await response.json();
+          if (!response.ok || !result.success) throw new Error(result?.message || "Erro ao cadastrar usuário.");
+
+          fecharModal("modalCadastro");
+          abrirModalSucesso("Usuário cadastrado com sucesso!");
+          carregarUsuarios();
+        } catch (error) {
+          abrirModalErro("Erro ao cadastrar usuário: " + error.message);
+        }
+      });
+
+      document.getElementById("toggleSenha").addEventListener("click", () => {
+        const senhaInput = document.getElementById("editSenha");
+        senhaInput.type = senhaInput.type === "password" ? "text" : "password";
+      });
+
+      document.getElementById("toggleSenhaCadastro").addEventListener("click", () => {
+        const senhaInput = document.getElementById("cadSenha");
+        senhaInput.type = senhaInput.type === "password" ? "text" : "password";
+      });
+
+      function confirmarExclusao(id) {
+        abrirModal("modalConfirmacao");
+        const btnConfirmar = document.getElementById("btnConfirmarExclusao");
+        const btnCancelar = document.getElementById("btnCancelarExclusao");
+
+        const btnConfirmarClone = btnConfirmar.cloneNode(true);
+        const btnCancelarClone = btnCancelar.cloneNode(true);
+        btnConfirmar.parentNode.replaceChild(btnConfirmarClone, btnConfirmar);
+        btnCancelar.parentNode.replaceChild(btnCancelarClone, btnCancelar);
+
+        btnConfirmarClone.addEventListener("click", () => { excluirUsuario(id); fecharModal("modalConfirmacao"); });
+        btnCancelarClone.addEventListener("click", () => fecharModal("modalConfirmacao"));
+      }
+
+      async function excluirUsuario(id) {
+        try {
+          const response = await fetch("../../api/admin/excluir_usuario.php", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ id })
+          });
+          const result = await response.json();
+          if (!response.ok || !result.success) throw new Error(result.message || "Erro ao excluir usuário.");
+
+          abrirModalSucesso("Usuário excluído com sucesso!");
+          carregarUsuarios();
+        } catch (error) {
+          abrirModalErro("Erro ao excluir usuário: " + error.message);
+        }
+      }
+
+      carregarUsuarios();
     });
-
-    document.querySelectorAll(".salvar").forEach(btn => btn.addEventListener("click", e => editarUsuario(e.target.dataset.id)));
-    document.querySelectorAll(".excluir").forEach(btn => btn.addEventListener("click", e => confirmarExclusao(e.target.dataset.id)));
-  }
-
-  async function editarUsuario(id) {
-    try {
-      const response = await fetch(`../../api/admin/usuario.php?id=${id}`);
-      const result = await response.json();
-      if (!response.ok || !result.success) throw new Error(result.message || "Erro ao buscar usuário.");
-
-      const u = result.data;
-      document.getElementById("editNome").value = u.nome;
-      document.getElementById("editEmail").value = u.email;
-      document.getElementById("editCargo").value = u.cargo;
-      document.getElementById("editSexo").value = u.sexo;
-      document.getElementById("editCpf").value = u.cpf;
-      document.getElementById("editSenha").value = "";
-
-      document.getElementById("formEdicao").style.display = "block";
-      document.getElementById("btnSalvar").dataset.id = id;
-    } catch (error) {
-      abrirModalErro("Erro ao carregar usuário para edição: " + error.message);
-    }
-  }
-
-  document.getElementById("btnSalvar").addEventListener("click", async () => {
-    const id = document.getElementById("btnSalvar").dataset.id;
-    const nome = document.getElementById("editNome").value.trim();
-    const email = document.getElementById("editEmail").value.trim();
-    const cargo = document.getElementById("editCargo").value.trim();
-    const sexo = document.getElementById("editSexo").value.trim();
-    const cpf = document.getElementById("editCpf").value.trim();
-    const senha = document.getElementById("editSenha").value.trim();
-
-    if (!nome || !email || !cargo || !sexo || !cpf) return abrirModalErro("Preencha todos os campos obrigatórios.");
-
-    try {
-      const response = await fetch("../../api/admin/editar_usuario.php", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ id, nome, email, cargo, sexo, cpf, senha })
-      });
-      const result = await response.json();
-      if (!response.ok || !result.success) throw new Error(result.message || "Erro ao editar usuário.");
-
-      document.getElementById("formEdicao").style.display = "none";
-      abrirModalSucesso("Usuário atualizado com sucesso!");
-      carregarUsuarios();
-    } catch (error) {
-      abrirModalErro("Erro ao salvar alterações: " + error.message);
-    }
-  });
-
-  document.getElementById("btnCancelar").addEventListener("click", () => {
-    document.getElementById("formEdicao").style.display = "none";
-  });
-
-  filtroInput.addEventListener("input", () => carregarUsuarios(filtroInput.value));
-
-  function abrirModalSucesso(msg) { document.querySelector("#modalSucesso p").textContent = msg; abrirModal("modalSucesso"); }
-  function abrirModalErro(msg) { document.querySelector("#mensagemErro").textContent = msg; abrirModal("modalErro"); }
-  document.getElementById("fecharModalSucesso").addEventListener("click", () => fecharModal("modalSucesso"));
-  document.getElementById("fecharModalErro").addEventListener("click", () => fecharModal("modalErro"));
-
-  document.getElementById("btnNovoUsuario").addEventListener("click", () => abrirModal("modalCadastro"));
-  document.getElementById("btnCancelarCadastro").addEventListener("click", () => fecharModal("modalCadastro"));
-
-  document.getElementById("btnConfirmarCadastro").addEventListener("click", async () => {
-    const nome = document.getElementById("cadNome").value.trim();
-    const cargo = document.getElementById("cadCargo").value.trim();
-    const sexo = document.getElementById("cadSexo").value.trim();
-    const cpf = document.getElementById("cadCpf").value.trim();
-    const email = document.getElementById("cadEmail").value.trim();
-    const senha = document.getElementById("cadSenha").value.trim();
-
-    if (!nome || !cargo || !sexo || !cpf || !email || !senha) return abrirModalErro("Preencha todos os campos.");
-
-    try {
-      const response = await fetch("../../api/admin/cadastrar_usuario.php", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ nome, email, senha, cargo, sexo, cpf })
-      });
-
-      const result = await response.json();
-      if (!response.ok || !result.success) throw new Error(result?.message || "Erro ao cadastrar usuário.");
-
-      fecharModal("modalCadastro");
-      abrirModalSucesso("Usuário cadastrado com sucesso!");
-      carregarUsuarios();
-    } catch (error) {
-      abrirModalErro("Erro ao cadastrar usuário: " + error.message);
-    }
-  });
-
-  document.getElementById("toggleSenha").addEventListener("click", () => {
-    const senhaInput = document.getElementById("editSenha");
-    senhaInput.type = senhaInput.type === "password" ? "text" : "password";
-  });
-
-  document.getElementById("toggleSenhaCadastro").addEventListener("click", () => {
-    const senhaInput = document.getElementById("cadSenha");
-    senhaInput.type = senhaInput.type === "password" ? "text" : "password";
-  });
-
-  function confirmarExclusao(id) {
-    abrirModal("modalConfirmacao");
-    const btnConfirmar = document.getElementById("btnConfirmarExclusao");
-    const btnCancelar = document.getElementById("btnCancelarExclusao");
-
-    const btnConfirmarClone = btnConfirmar.cloneNode(true);
-    const btnCancelarClone = btnCancelar.cloneNode(true);
-    btnConfirmar.parentNode.replaceChild(btnConfirmarClone, btnConfirmar);
-    btnCancelar.parentNode.replaceChild(btnCancelarClone, btnCancelar);
-
-    btnConfirmarClone.addEventListener("click", () => { excluirUsuario(id); fecharModal("modalConfirmacao"); });
-    btnCancelarClone.addEventListener("click", () => fecharModal("modalConfirmacao"));
-  }
-
-  async function excluirUsuario(id) {
-    try {
-      const response = await fetch("../../api/admin/excluir_usuario.php", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ id })
-      });
-      const result = await response.json();
-      if (!response.ok || !result.success) throw new Error(result.message || "Erro ao excluir usuário.");
-
-      abrirModalSucesso("Usuário excluído com sucesso!");
-      carregarUsuarios();
-    } catch (error) {
-      abrirModalErro("Erro ao excluir usuário: " + error.message);
-    }
-  }
-
-  carregarUsuarios();
-});
   </script>
-  
+
 </body>
+
 </html>

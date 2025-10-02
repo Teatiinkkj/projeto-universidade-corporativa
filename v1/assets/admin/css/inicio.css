@@ -108,8 +108,13 @@
   outline: none;
 }
 
-#prev-slide { left: 10px; }
-#next-slide { right: 10px; }
+#prev-slide {
+  left: 10px;
+}
+
+#next-slide {
+  right: 10px;
+}
 
 /* ==========================
    Depoimentos
@@ -249,7 +254,7 @@
 .curso-card {
   background: #fff;
   border-radius: 12px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
   overflow: hidden;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   display: flex;
@@ -258,7 +263,7 @@
 
 .curso-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 12px 25px rgba(0,0,0,0.15);
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
 }
 
 .curso-img img {
@@ -325,13 +330,37 @@
    Responsividade
 ========================== */
 @media (max-width: 768px) {
-  .curso-info h3 { font-size: 20px; }
-  .curso-info p { font-size: 14px; }
-  .curso-buttons { flex-direction: column; }
-  .curso-buttons a { width: 100%; text-align: center; }
+  .curso-info h3 {
+    font-size: 20px;
+  }
 
-  .depoimento { font-size: 1rem; }
-  .parceiro img { max-width: 100px; }
-  .carrossel-btn { font-size: 1.5rem; padding: 0 8px; }
-  .indicadores .indicador { margin-bottom: 20px; }
+  .curso-info p {
+    font-size: 14px;
+  }
+
+  .curso-buttons {
+    flex-direction: column;
+  }
+
+  .curso-buttons a {
+    width: 100%;
+    text-align: center;
+  }
+
+  .depoimento {
+    font-size: 1rem;
+  }
+
+  .parceiro img {
+    max-width: 100px;
+  }
+
+  .carrossel-btn {
+    font-size: 1.5rem;
+    padding: 0 8px;
+  }
+
+  .indicadores .indicador {
+    margin-bottom: 20px;
+  }
 }

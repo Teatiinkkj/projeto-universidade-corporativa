@@ -104,12 +104,8 @@
         <h3 style="width: 750px; margin-left: 400px;" class="h3-inc-introducao text-center">Desbloqueie seu potencial e
           alcance novos patamares de sucesso com a nossa
           <strong>Universidade Corporativa.</strong></h2>
-          <a 
-            style="margin-left: 260px; text-decoration: none;" 
-            href="../../html/sobre.html"
-            onmouseover="this.style.textDecoration='underline';"
-            onmouseout="this.style.textDecoration='none';"
-          >
+          <a style="margin-left: 260px; text-decoration: none;" href="../../html/sobre.html"
+            onmouseover="this.style.textDecoration='underline';" onmouseout="this.style.textDecoration='none';">
             Clique aqui e aproveite mais informações sobre a <strong>UNICORP</strong>
           </a>
       </div>
@@ -127,10 +123,11 @@
 
   <br>
 
-<section class="container cursos-section" style="margin-top: 50px;">
-  <h3 class="text-center mb-4" style="font-size:28px; color:#4B0082;">Cursos Disponíveis</h3>
-  <div id="lista-cursos" class="row g-4" style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: center;"></div>
-</section>
+  <section class="container cursos-section" style="margin-top: 50px;">
+    <h3 class="text-center mb-4" style="font-size:28px; color: rgb(6, 93, 199);">Cursos Disponíveis</h3>
+    <div id="lista-cursos" class="row g-4" style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: center;">
+    </div>
+  </section>
 
   <section style="margin-top: 300px;" id="indicadores" class="indicadores container" tabindex="0"
     aria-label="Indicadores da Universidade Corporativa">
@@ -215,59 +212,59 @@
   </footer>
 
   <script>
-document.addEventListener('DOMContentLoaded', () => {
-  const menuLink = document.querySelector('.menu-item .menu-link');
-  const submenuFull = document.querySelector('.submenu-full');
-  const closeSubmenu = document.querySelector('.close-submenu');
+    document.addEventListener('DOMContentLoaded', () => {
+      const menuLink = document.querySelector('.menu-item .menu-link');
+      const submenuFull = document.querySelector('.submenu-full');
+      const closeSubmenu = document.querySelector('.close-submenu');
 
-  if (menuLink && submenuFull && closeSubmenu) {
-    menuLink.addEventListener('click', (e) => {
-      e.preventDefault();
-      submenuFull.classList.toggle('show');
-    });
+      if (menuLink && submenuFull && closeSubmenu) {
+        menuLink.addEventListener('click', (e) => {
+          e.preventDefault();
+          submenuFull.classList.toggle('show');
+        });
 
-    closeSubmenu.addEventListener('click', (e) => {
-      e.preventDefault();
-      submenuFull.classList.remove('show');
-    });
-  }
-
-  const ntfItem = document.querySelector('.ntf-item');
-  const notificacaoBarra = document.querySelector('.notificacao-barra');
-  if (ntfItem && notificacaoBarra) {
-    const closeBtn = notificacaoBarra.querySelector('.close-submenu');
-    const notificacoesLista = notificacaoBarra.querySelector('ul');
-
-    ntfItem.addEventListener('click', (e) => {
-      e.preventDefault();
-      notificacaoBarra.classList.toggle('show');
-      carregarNotificacoes();
-    });
-
-    if (closeBtn) {
-      closeBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        notificacaoBarra.classList.remove('show');
-      });
-    }
-
-    function carregarNotificacoes() {
-      const notificacoes = JSON.parse(localStorage.getItem('notificacoes')) || [];
-      const notificacoesFiltradas = notificacoes.filter(n => n.tipo === 'recuperacaoSenha');
-      notificacoesLista.innerHTML = '';
-
-      if (notificacoesFiltradas.length === 0) {
-        const li = document.createElement('li');
-        li.textContent = 'Nenhuma notificação.';
-        notificacoesLista.appendChild(li);
-        const badge = document.getElementById('badge-count');
-        if (badge) badge.style.display = 'none';
-        return;
+        closeSubmenu.addEventListener('click', (e) => {
+          e.preventDefault();
+          submenuFull.classList.remove('show');
+        });
       }
 
-      notificacoesFiltradas.reverse().forEach(({ id, mensagem, data, lido, destino }) => {
-        const li = document.createElement('li');
-        li.innerHTML = `
+      const ntfItem = document.querySelector('.ntf-item');
+      const notificacaoBarra = document.querySelector('.notificacao-barra');
+      if (ntfItem && notificacaoBarra) {
+        const closeBtn = notificacaoBarra.querySelector('.close-submenu');
+        const notificacoesLista = notificacaoBarra.querySelector('ul');
+
+        ntfItem.addEventListener('click', (e) => {
+          e.preventDefault();
+          notificacaoBarra.classList.toggle('show');
+          carregarNotificacoes();
+        });
+
+        if (closeBtn) {
+          closeBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            notificacaoBarra.classList.remove('show');
+          });
+        }
+
+        function carregarNotificacoes() {
+          const notificacoes = JSON.parse(localStorage.getItem('notificacoes')) || [];
+          const notificacoesFiltradas = notificacoes.filter(n => n.tipo === 'recuperacaoSenha');
+          notificacoesLista.innerHTML = '';
+
+          if (notificacoesFiltradas.length === 0) {
+            const li = document.createElement('li');
+            li.textContent = 'Nenhuma notificação.';
+            notificacoesLista.appendChild(li);
+            const badge = document.getElementById('badge-count');
+            if (badge) badge.style.display = 'none';
+            return;
+          }
+
+          notificacoesFiltradas.reverse().forEach(({ id, mensagem, data, lido, destino }) => {
+            const li = document.createElement('li');
+            li.innerHTML = `
           <a href="${destino || '#'}" class="link-notificacao" style="text-decoration: none; color: inherit;">
             <div class="texto-notificacao">${mensagem}</div>
             <small><em>${formatarData(data)}</em></small>
@@ -275,138 +272,138 @@ document.addEventListener('DOMContentLoaded', () => {
           <button class="marcar-lido" data-id="${id}">${lido ? 'Marcar como não lido' : 'Marcar como lido'}</button>
           <button class="excluir-notificacao" data-id="${id}">Excluir</button>
         `;
-        if (lido) li.style.opacity = '0.5';
-        notificacoesLista.appendChild(li);
+            if (lido) li.style.opacity = '0.5';
+            notificacoesLista.appendChild(li);
 
-        li.querySelector('.marcar-lido').addEventListener('click', () => {
-          marcarComoLido(id);
-          carregarNotificacoes();
-        });
+            li.querySelector('.marcar-lido').addEventListener('click', () => {
+              marcarComoLido(id);
+              carregarNotificacoes();
+            });
 
-        li.querySelector('.excluir-notificacao').addEventListener('click', () => {
-          excluirNotificacao(id);
-          carregarNotificacoes();
-        });
-      });
+            li.querySelector('.excluir-notificacao').addEventListener('click', () => {
+              excluirNotificacao(id);
+              carregarNotificacoes();
+            });
+          });
 
-      const badge = document.getElementById('badge-count');
-      if (badge) {
-        const unreadCount = notificacoesFiltradas.filter(n => !n.lido).length;
-        badge.textContent = unreadCount > 0 ? unreadCount : '';
-        badge.style.display = unreadCount > 0 ? 'inline-block' : 'none';
-      }
-    }
-
-    function formatarData(isoString) {
-      const data = new Date(isoString);
-      return data.toLocaleString('pt-BR', {
-        day: '2-digit', month: '2-digit', year: 'numeric',
-        hour: '2-digit', minute: '2-digit', second: '2-digit',
-      });
-    }
-
-    function marcarComoLido(id) {
-      const notificacoes = JSON.parse(localStorage.getItem('notificacoes')) || [];
-      const n = notificacoes.find(n => n.id === id);
-      if (n) {
-        n.lido = !n.lido;
-        localStorage.setItem('notificacoes', JSON.stringify(notificacoes));
-      }
-    }
-
-    function excluirNotificacao(id) {
-      const notificacoes = JSON.parse(localStorage.getItem('notificacoes')) || [];
-      const index = notificacoes.findIndex(n => n.id === id);
-      if (index !== -1) {
-        notificacoes.splice(index, 1);
-        localStorage.setItem('notificacoes', JSON.stringify(notificacoes));
-      }
-    }
-
-    carregarNotificacoes();
-  }
-
-  const inputSearch = document.getElementById('input-search');
-  const buttonSearch = document.querySelector('.input-group-btn button');
-
-  if (buttonSearch && inputSearch) {
-    buttonSearch.addEventListener('click', () => {
-      const searchText = inputSearch.value.trim().toLowerCase();
-      const cursos = document.querySelectorAll('.curso');
-      let encontrado = false;
-
-      cursos.forEach(curso => {
-        const nome = curso.querySelector('h3').textContent.toLowerCase();
-        if (nome.includes(searchText)) {
-          curso.scrollIntoView({ behavior: 'smooth' });
-          encontrado = true;
+          const badge = document.getElementById('badge-count');
+          if (badge) {
+            const unreadCount = notificacoesFiltradas.filter(n => !n.lido).length;
+            badge.textContent = unreadCount > 0 ? unreadCount : '';
+            badge.style.display = unreadCount > 0 ? 'inline-block' : 'none';
+          }
         }
+
+        function formatarData(isoString) {
+          const data = new Date(isoString);
+          return data.toLocaleString('pt-BR', {
+            day: '2-digit', month: '2-digit', year: 'numeric',
+            hour: '2-digit', minute: '2-digit', second: '2-digit',
+          });
+        }
+
+        function marcarComoLido(id) {
+          const notificacoes = JSON.parse(localStorage.getItem('notificacoes')) || [];
+          const n = notificacoes.find(n => n.id === id);
+          if (n) {
+            n.lido = !n.lido;
+            localStorage.setItem('notificacoes', JSON.stringify(notificacoes));
+          }
+        }
+
+        function excluirNotificacao(id) {
+          const notificacoes = JSON.parse(localStorage.getItem('notificacoes')) || [];
+          const index = notificacoes.findIndex(n => n.id === id);
+          if (index !== -1) {
+            notificacoes.splice(index, 1);
+            localStorage.setItem('notificacoes', JSON.stringify(notificacoes));
+          }
+        }
+
+        carregarNotificacoes();
+      }
+
+      const inputSearch = document.getElementById('input-search');
+      const buttonSearch = document.querySelector('.input-group-btn button');
+
+      if (buttonSearch && inputSearch) {
+        buttonSearch.addEventListener('click', () => {
+          const searchText = inputSearch.value.trim().toLowerCase();
+          const cursos = document.querySelectorAll('.curso');
+          let encontrado = false;
+
+          cursos.forEach(curso => {
+            const nome = curso.querySelector('h3').textContent.toLowerCase();
+            if (nome.includes(searchText)) {
+              curso.scrollIntoView({ behavior: 'smooth' });
+              encontrado = true;
+            }
+          });
+
+          if (!encontrado) alert('Curso não encontrado!');
+        });
+      }
+
+      const botoesAcessarCurso = document.querySelectorAll('.curso .btn-primary');
+      botoesAcessarCurso.forEach(botao => {
+        const nomeCurso = botao.getAttribute('data-nome');
+        const cursoElement = botao.closest('.curso');
+        const cursosDisponiveis = JSON.parse(localStorage.getItem('cursosDisponiveis')) || {};
+
+        if (cursosDisponiveis[nomeCurso]) cursoElement.style.display = 'none';
+
+        botao.addEventListener('click', e => {
+          e.preventDefault();
+          const modalCadastro = document.getElementById('modal-cadastro');
+          modalCadastro.style.display = 'flex';
+
+          const btnSim = document.getElementById('btn-sim');
+          const btnNao = document.getElementById('btn-nao');
+
+          btnSim.onclick = () => {
+            cadastrarCurso(nomeCurso, cursoElement);
+            modalCadastro.style.display = 'none';
+            window.location.href = 'meus-cursos.html';
+          };
+
+          btnNao.onclick = () => {
+            modalCadastro.style.display = 'none';
+          };
+        });
       });
 
-      if (!encontrado) alert('Curso não encontrado!');
+      function cadastrarCurso(nomeCurso, cursoElement) {
+        const cursosCadastrados = JSON.parse(localStorage.getItem('cursosCadastrados')) || [];
+        if (!cursosCadastrados.some(c => c.nome === nomeCurso)) {
+          cursosCadastrados.push({ nome: nomeCurso });
+          localStorage.setItem('cursosCadastrados', JSON.stringify(cursosCadastrados));
+
+          const cursosDisponiveis = JSON.parse(localStorage.getItem('cursosDisponiveis')) || {};
+          cursosDisponiveis[nomeCurso] = true;
+          localStorage.setItem('cursosDisponiveis', JSON.stringify(cursosDisponiveis));
+
+          cursoElement.style.display = 'none';
+        }
+      }
     });
-  }
+  </script>
 
-  const botoesAcessarCurso = document.querySelectorAll('.curso .btn-primary');
-  botoesAcessarCurso.forEach(botao => {
-    const nomeCurso = botao.getAttribute('data-nome');
-    const cursoElement = botao.closest('.curso');
-    const cursosDisponiveis = JSON.parse(localStorage.getItem('cursosDisponiveis')) || {};
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      const listaCursos = document.getElementById('lista-cursos');
 
-    if (cursosDisponiveis[nomeCurso]) cursoElement.style.display = 'none';
+      try {
+        const response = await fetch('../../api/admin/get_cursos.php');
+        if (!response.ok) throw new Error('Erro na requisição: ' + response.status);
 
-    botao.addEventListener('click', e => {
-      e.preventDefault();
-      const modalCadastro = document.getElementById('modal-cadastro');
-      modalCadastro.style.display = 'flex';
+        const result = await response.json();
 
-      const btnSim = document.getElementById('btn-sim');
-      const btnNao = document.getElementById('btn-nao');
+        if (result.success && result.data.length > 0) {
+          result.data.forEach(curso => {
 
-      btnSim.onclick = () => {
-        cadastrarCurso(nomeCurso, cursoElement);
-        modalCadastro.style.display = 'none';
-        window.location.href = 'meus-cursos.html';
-      };
-
-      btnNao.onclick = () => {
-        modalCadastro.style.display = 'none';
-      };
-    });
-  });
-
-  function cadastrarCurso(nomeCurso, cursoElement) {
-    const cursosCadastrados = JSON.parse(localStorage.getItem('cursosCadastrados')) || [];
-    if (!cursosCadastrados.some(c => c.nome === nomeCurso)) {
-      cursosCadastrados.push({ nome: nomeCurso });
-      localStorage.setItem('cursosCadastrados', JSON.stringify(cursosCadastrados));
-
-      const cursosDisponiveis = JSON.parse(localStorage.getItem('cursosDisponiveis')) || {};
-      cursosDisponiveis[nomeCurso] = true;
-      localStorage.setItem('cursosDisponiveis', JSON.stringify(cursosDisponiveis));
-
-      cursoElement.style.display = 'none';
-    }
-  }
-});
-</script>
-
-<script>
-document.addEventListener('DOMContentLoaded', async () => {
-  const listaCursos = document.getElementById('lista-cursos');
-
-  try {
-    const response = await fetch('../../api/admin/get_cursos.php');
-    if (!response.ok) throw new Error('Erro na requisição: ' + response.status);
-
-    const result = await response.json();
-
-    if (result.success && result.data.length > 0) {
-      result.data.forEach(curso => {
-
-        const card = document.createElement('div');
-        card.classList.add('curso-card');
-        card.style.cssText = `
+            const card = document.createElement('div');
+            card.classList.add('curso-card');
+            card.style.cssText = `
           background: linear-gradient(145deg, #ffffff, #f0f0f5);
           border-radius: 15px;
           box-shadow: 0 10px 20px rgba(0,0,0,0.08);
@@ -417,7 +414,7 @@ document.addEventListener('DOMContentLoaded', async () => {
           flex-direction: column;
         `;
 
-        card.innerHTML = `
+            card.innerHTML = `
           <div style="height:180px; background-image:url('${curso.imagem ? curso.imagem : '../../images/imgsemfundo2.png'}'); 
                       background-size: cover; background-position: center;"></div>
           <div style="padding: 20px; flex: 1; display: flex; flex-direction: column; justify-content: space-between;">
@@ -440,59 +437,59 @@ document.addEventListener('DOMContentLoaded', async () => {
           </div>
         `;
 
-        // Hover efeito
-        card.addEventListener('mouseenter', () => {
-          card.style.transform = 'translateY(-5px)';
-          card.style.boxShadow = '0 15px 25px rgba(0,0,0,0.15)';
-        });
-        card.addEventListener('mouseleave', () => {
-          card.style.transform = 'translateY(0)';
-          card.style.boxShadow = '0 10px 20px rgba(0,0,0,0.08)';
-        });
+            // Hover efeito
+            card.addEventListener('mouseenter', () => {
+              card.style.transform = 'translateY(-5px)';
+              card.style.boxShadow = '0 15px 25px rgba(0,0,0,0.15)';
+            });
+            card.addEventListener('mouseleave', () => {
+              card.style.transform = 'translateY(0)';
+              card.style.boxShadow = '0 10px 20px rgba(0,0,0,0.08)';
+            });
 
-        listaCursos.appendChild(card);
-      });
+            listaCursos.appendChild(card);
+          });
 
-      // Menu toggle (apenas um listener global)
-      document.addEventListener('click', (e) => {
-        document.querySelectorAll('.menu-list').forEach(menu => menu.style.display = 'none');
-        if (e.target.classList.contains('menu-btn')) {
-          const menu = e.target.nextElementSibling;
-          menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
-          e.stopPropagation();
+          // Menu toggle (apenas um listener global)
+          document.addEventListener('click', (e) => {
+            document.querySelectorAll('.menu-list').forEach(menu => menu.style.display = 'none');
+            if (e.target.classList.contains('menu-btn')) {
+              const menu = e.target.nextElementSibling;
+              menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+              e.stopPropagation();
+            }
+          });
+
+        } else {
+          listaCursos.innerHTML = `<p class="text-center">Nenhum curso disponível no momento.</p>`;
         }
-      });
-
-    } else {
-      listaCursos.innerHTML = `<p class="text-center">Nenhum curso disponível no momento.</p>`;
-    }
-  } catch (error) {
-    console.error('Erro ao carregar cursos:', error);
-    listaCursos.innerHTML = `<p class="text-center text-danger">Erro ao carregar os cursos.</p>`;
-  }
-});
-
-// Função de excluir
-function excluirCurso(id) {
-  if(confirm('Deseja realmente excluir este curso?')) {
-    fetch(`../../api/admin/excluir_curso.php`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: 'id=' + encodeURIComponent(id)
-    })
-    .then(res => res.json())
-    .then(data => {
-      if(data.success){
-        alert('Curso excluído com sucesso!');
-        location.reload();
-      } else {
-        alert('Erro ao excluir curso.');
+      } catch (error) {
+        console.error('Erro ao carregar cursos:', error);
+        listaCursos.innerHTML = `<p class="text-center text-danger">Erro ao carregar os cursos.</p>`;
       }
-    })
-    .catch(err => console.error('Erro:', err));
-  }
-}
-</script>
+    });
+
+    // Função de excluir
+    function excluirCurso(id) {
+      if (confirm('Deseja realmente excluir este curso?')) {
+        fetch(`../../api/admin/excluir_curso.php`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: 'id=' + encodeURIComponent(id)
+        })
+          .then(res => res.json())
+          .then(data => {
+            if (data.success) {
+              alert('Curso excluído com sucesso!');
+              location.reload();
+            } else {
+              alert('Erro ao excluir curso.');
+            }
+          })
+          .catch(err => console.error('Erro:', err));
+      }
+    }
+  </script>
 
 </body>
 

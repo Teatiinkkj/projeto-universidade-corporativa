@@ -29,7 +29,7 @@ $resultTopicos = $stmtTopicos->get_result();
 $topicos = $resultTopicos->fetch_all(MYSQLI_ASSOC);
 
 foreach ($topicos as &$topico) {
-    $sqlConteudo = "SELECT * FROM conteudo WHERE topico_id = ? ORDER BY ordem ASC";
+    $sqlConteudo = "SELECT * FROM conteudo WHERE topico_id = ? AND tipo IN ('video', 'pdf') ORDER BY ordem ASC";
     $stmtConteudo = $conn->prepare($sqlConteudo);
     $stmtConteudo->bind_param("i", $topico['id']);
     $stmtConteudo->execute();

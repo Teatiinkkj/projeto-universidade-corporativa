@@ -23,8 +23,7 @@ body > .container, body > section {
     text-align: center;
     padding: 25px 0;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    border-bottom-left-radius: 15px;
-    border-bottom-right-radius: 15px;
+    position: relative;
 }
 
 .header-inicio h2 {
@@ -139,13 +138,10 @@ body > .container, body > section {
 
 /* ================== FOOTER ================== */
 footer {
-    background: #1e3c72;
-    color: #dfe6ff;
+    color: #1b1b1b;
     text-align: center;
-    padding: 20px 0;
-    flex-shrink: 0; /* garante que o footer não encolha */
-    border-top-left-radius: 15px;
-    border-top-right-radius: 15px;
+    padding: 0px 0;
+    flex-shrink: 0;
 }
 
 /* ================== RESPONSIVIDADE ================== */
@@ -157,9 +153,13 @@ footer {
 }
 
 .back-button {
-    transition: none;
+    text-decoration: none;
+    transition: background 0.3s ease;
+    position: absolute;
+    top: 100%;
+    display: inline-block;
 }
 
-.back-button:hover {
-    transform: none;
+.back-button i {
+    margin-right: 8px;
 }
