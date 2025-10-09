@@ -1,11 +1,33 @@
 <?php
-// Conexão com o banco
+session_start();
+
+if (!isset($_SESSION['usuario_id'])) {
+    // Redireciona para login se não estiver logado
+    header("Location: ../../html/login.php");
+    exit;
+}
+
 include __DIR__ . '/../../db/conexao.php';
 
 // Pegar o ID do curso via GET
 $curso_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 if ($curso_id <= 0) {
     header("Location: ../../admin/html/inicio.php");
+    exit;
+}
+
+$usuario_id = $_SESSION['usuario_id'];
+
+// 🔒 Verificar se o usuário está matriculado neste curso
+$sqlVerificaMatricula = "SELECT id FROM matriculas WHERE usuario_id = ? AND curso_id = ?";
+$stmtVerifica = $conn->prepare($sqlVerificaMatricula);
+$stmtVerifica->bind_param("ii", $usuario_id, $curso_id);
+$stmtVerifica->execute();
+$resultVerifica = $stmtVerifica->get_result();
+
+if ($resultVerifica->num_rows === 0) {
+    // ❌ Não matriculado → redireciona com mensagem
+    header("Location: ../../admin/html/inicio.php?erro=sem_matricula");
     exit;
 }
 

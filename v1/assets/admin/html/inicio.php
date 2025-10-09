@@ -211,8 +211,47 @@
     </div>
   </footer>
 
+  <!-- Modal de Mensagem -->
+  <div id="modalMensagem" class="modal fade" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content" style="border-radius: 15px;">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalTitulo"></h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+        </div>
+        <div class="modal-body" id="modalCorpo"></div>
+        <div class="modal-footer" id="modalBotoes"></div>
+      </div>
+    </div>
+  </div>
+
   <script>
+    // ---------------- MODAL PERSONALIZADO ----------------
+    function mostrarModal(titulo, mensagem, botoes = []) {
+      document.getElementById('modalTitulo').innerText = titulo;
+      document.getElementById('modalCorpo').innerHTML = mensagem;
+
+      const botoesContainer = document.getElementById('modalBotoes');
+      botoesContainer.innerHTML = '';
+
+      botoes.forEach(botao => {
+        const btn = document.createElement('button');
+        btn.className = botao.class || 'btn btn-secondary';
+        btn.innerText = botao.texto;
+        btn.onclick = () => {
+          if (botao.onClick) botao.onClick();
+          const modalEl = bootstrap.Modal.getInstance(document.getElementById('modalMensagem'));
+          modalEl.hide();
+        };
+        botoesContainer.appendChild(btn);
+      });
+
+      const modal = new bootstrap.Modal(document.getElementById('modalMensagem'));
+      modal.show();
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
+      // ---------------- MENU ----------------
       const menuLink = document.querySelector('.menu-item .menu-link');
       const submenuFull = document.querySelector('.submenu-full');
       const closeSubmenu = document.querySelector('.close-submenu');
@@ -229,8 +268,10 @@
         });
       }
 
+      // ---------------- NOTIFICAÇÕES ----------------
       const ntfItem = document.querySelector('.ntf-item');
       const notificacaoBarra = document.querySelector('.notificacao-barra');
+
       if (ntfItem && notificacaoBarra) {
         const closeBtn = notificacaoBarra.querySelector('.close-submenu');
         const notificacoesLista = notificacaoBarra.querySelector('ul');
@@ -257,21 +298,20 @@
             const li = document.createElement('li');
             li.textContent = 'Nenhuma notificação.';
             notificacoesLista.appendChild(li);
-            const badge = document.getElementById('badge-count');
-            if (badge) badge.style.display = 'none';
+            document.getElementById('badge-count').style.display = 'none';
             return;
           }
 
           notificacoesFiltradas.reverse().forEach(({ id, mensagem, data, lido, destino }) => {
             const li = document.createElement('li');
             li.innerHTML = `
-          <a href="${destino || '#'}" class="link-notificacao" style="text-decoration: none; color: inherit;">
-            <div class="texto-notificacao">${mensagem}</div>
-            <small><em>${formatarData(data)}</em></small>
-          </a>
-          <button class="marcar-lido" data-id="${id}">${lido ? 'Marcar como não lido' : 'Marcar como lido'}</button>
-          <button class="excluir-notificacao" data-id="${id}">Excluir</button>
-        `;
+            <a href="${destino || '#'}" class="link-notificacao" style="text-decoration: none; color: inherit;">
+              <div class="texto-notificacao">${mensagem}</div>
+              <small><em>${formatarData(data)}</em></small>
+            </a>
+            <button class="marcar-lido" data-id="${id}">${lido ? 'Marcar como não lido' : 'Marcar como lido'}</button>
+            <button class="excluir-notificacao" data-id="${id}">Excluir</button>
+          `;
             if (lido) li.style.opacity = '0.5';
             notificacoesLista.appendChild(li);
 
@@ -287,11 +327,9 @@
           });
 
           const badge = document.getElementById('badge-count');
-          if (badge) {
-            const unreadCount = notificacoesFiltradas.filter(n => !n.lido).length;
-            badge.textContent = unreadCount > 0 ? unreadCount : '';
-            badge.style.display = unreadCount > 0 ? 'inline-block' : 'none';
-          }
+          const unreadCount = notificacoesFiltradas.filter(n => !n.lido).length;
+          badge.textContent = unreadCount > 0 ? unreadCount : '';
+          badge.style.display = unreadCount > 0 ? 'inline-block' : 'none';
         }
 
         function formatarData(isoString) {
@@ -323,6 +361,7 @@
         carregarNotificacoes();
       }
 
+      // ---------------- BUSCA ----------------
       const inputSearch = document.getElementById('input-search');
       const buttonSearch = document.querySelector('.input-group-btn button');
 
@@ -333,62 +372,23 @@
           let encontrado = false;
 
           cursos.forEach(curso => {
-            const nome = curso.querySelector('h3').textContent.toLowerCase();
-            if (nome.includes(searchText)) {
+            const nome = curso.querySelector('h3')?.textContent.toLowerCase();
+            if (nome && nome.includes(searchText)) {
               curso.scrollIntoView({ behavior: 'smooth' });
               encontrado = true;
             }
           });
 
-          if (!encontrado) alert('Curso não encontrado!');
+          if (!encontrado) {
+            mostrarModal('Aviso', 'Curso não encontrado!', [
+              { texto: 'OK', class: 'btn btn-secondary' }
+            ]);
+          }
         });
-      }
-
-      const botoesAcessarCurso = document.querySelectorAll('.curso .btn-primary');
-      botoesAcessarCurso.forEach(botao => {
-        const nomeCurso = botao.getAttribute('data-nome');
-        const cursoElement = botao.closest('.curso');
-        const cursosDisponiveis = JSON.parse(localStorage.getItem('cursosDisponiveis')) || {};
-
-        if (cursosDisponiveis[nomeCurso]) cursoElement.style.display = 'none';
-
-        botao.addEventListener('click', e => {
-          e.preventDefault();
-          const modalCadastro = document.getElementById('modal-cadastro');
-          modalCadastro.style.display = 'flex';
-
-          const btnSim = document.getElementById('btn-sim');
-          const btnNao = document.getElementById('btn-nao');
-
-          btnSim.onclick = () => {
-            cadastrarCurso(nomeCurso, cursoElement);
-            modalCadastro.style.display = 'none';
-            window.location.href = 'meus-cursos.html';
-          };
-
-          btnNao.onclick = () => {
-            modalCadastro.style.display = 'none';
-          };
-        });
-      });
-
-      function cadastrarCurso(nomeCurso, cursoElement) {
-        const cursosCadastrados = JSON.parse(localStorage.getItem('cursosCadastrados')) || [];
-        if (!cursosCadastrados.some(c => c.nome === nomeCurso)) {
-          cursosCadastrados.push({ nome: nomeCurso });
-          localStorage.setItem('cursosCadastrados', JSON.stringify(cursosCadastrados));
-
-          const cursosDisponiveis = JSON.parse(localStorage.getItem('cursosDisponiveis')) || {};
-          cursosDisponiveis[nomeCurso] = true;
-          localStorage.setItem('cursosDisponiveis', JSON.stringify(cursosDisponiveis));
-
-          cursoElement.style.display = 'none';
-        }
       }
     });
-  </script>
 
-  <script>
+    // ---------------- CARREGAR CURSOS ----------------
     document.addEventListener('DOMContentLoaded', async () => {
       const listaCursos = document.getElementById('lista-cursos');
 
@@ -400,44 +400,44 @@
 
         if (result.success && result.data.length > 0) {
           result.data.forEach(curso => {
-
             const card = document.createElement('div');
             card.classList.add('curso-card');
             card.style.cssText = `
-          background: linear-gradient(145deg, #ffffff, #f0f0f5);
-          border-radius: 15px;
-          box-shadow: 0 10px 20px rgba(0,0,0,0.08);
-          overflow: hidden;
-          width: 280px;
-          transition: transform 0.3s, box-shadow 0.3s;
-          display: flex;
-          flex-direction: column;
-        `;
+            background: linear-gradient(145deg, #ffffff, #f0f0f5);
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+            overflow: hidden;
+            width: 280px;
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: flex;
+            flex-direction: column;
+          `;
+
+            // Verifica se o usuário já está matriculado
+            const matriculado = curso.matriculado; // API deve retornar true/false
 
             card.innerHTML = `
-          <div style="height:180px; background-image:url('${curso.imagem ? curso.imagem : '../../images/imgsemfundo2.png'}'); 
-                      background-size: cover; background-position: center;"></div>
-          <div style="padding: 20px; flex: 1; display: flex; flex-direction: column; justify-content: space-between;">
-            <div>
-              <h4 style="margin-bottom: 10px;">${curso.titulo}</h4>
-              <p style="font-size: 14px; color: #555;">${curso.descricao}</p>
-            </div>
-            <div style="margin-top: 15px; display: flex; justify-content: space-between; align-items: center;">
-                <a href="../../api/admin/videoaula.php?id=${curso.id}" style="padding:8px 15px; background:#28a745; color:white; border-radius:8px; text-decoration:none; font-size:14px; font-weight:600;">
+            <div style="height:180px; background-image:url('${curso.imagem || '../../images/imgsemfundo2.png'}'); 
+                              background-size: cover; background-position: center;"></div>
+            <div style="padding: 20px; flex: 1; display: flex; flex-direction: column; justify-content: space-between;">
+              <div>
+                <h4 style="margin-bottom: 10px;">${curso.titulo}</h4>
+                <p style="font-size: 14px; color: #555;">${curso.descricao}</p>
+              </div>
+              <div style="margin-top: 15px; display: flex; justify-content: space-between; align-items: center;">
+                <a href="#" class="btn-acessar" data-id="${curso.id}"
+                  style="padding:8px 15px; background:#28a745; color:white; border-radius:8px; text-decoration:none; font-size:14px; font-weight:600;">
                   Acessar
                 </a>
-              <div style="position: relative;">
-                <button class="menu-btn" style="border:none; background:none; font-size:20px; cursor:pointer;">⋮</button>
-                <ul class="menu-list" style="display:none; position:absolute; top:25px; right:0; background:white; border-radius:8px; box-shadow:0 5px 15px rgba(0,0,0,0.2); list-style:none; padding:10px 0; min-width:120px;">
-                  <li style="padding:8px 15px; cursor:pointer;" onclick="window.location.href='editar_curso.php?id=${curso.id}'">Editar</li>
-                  <li style="padding:8px 15px; cursor:pointer;" onclick="excluirCurso(${curso.id})">Excluir</li>
-                </ul>
+                <button class="btn-matricular" data-id="${curso.id}"
+                  style="padding:8px 15px; background:#007bff; color:white; border:none; border-radius:8px; font-size:14px; font-weight:600;"
+                  ${matriculado ? 'disabled style="background:#ccc; cursor:not-allowed;"' : ''}>
+                  Matricular
+                </button>
               </div>
             </div>
-          </div>
-        `;
+          `;
 
-            // Hover efeito
             card.addEventListener('mouseenter', () => {
               card.style.transform = 'translateY(-5px)';
               card.style.boxShadow = '0 15px 25px rgba(0,0,0,0.15)';
@@ -450,13 +450,104 @@
             listaCursos.appendChild(card);
           });
 
-          // Menu toggle (apenas um listener global)
-          document.addEventListener('click', (e) => {
-            document.querySelectorAll('.menu-list').forEach(menu => menu.style.display = 'none');
-            if (e.target.classList.contains('menu-btn')) {
-              const menu = e.target.nextElementSibling;
-              menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
-              e.stopPropagation();
+          // ---------------- BOTÕES DE CURSO ----------------
+          listaCursos.addEventListener('click', async (e) => {
+            const target = e.target;
+
+            // ---------- MATRÍCULA ----------
+            if (target.classList.contains('btn-matricular') && !target.disabled) {
+              const cursoId = target.dataset.id;
+
+              try {
+                const resposta = await fetch('../../api/admin/verificar_matricula.php', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                  body: `curso_id=${cursoId}`,
+                  credentials: 'include'
+                });
+                const data = await resposta.json();
+
+                if (data.status === 'nao_logado') {
+                  mostrarModal('Acesso negado', 'Você precisa estar logado para acessar este curso.', [
+                    { texto: 'Fazer login', class: 'btn btn-primary', onClick: () => window.location.href = '../../html/login.php' }
+                  ]);
+                } else if (data.status === 'matriculado') {
+                  mostrarModal('Aviso', 'Você já está matriculado neste curso!', [
+                    { texto: 'OK', class: 'btn btn-secondary' }
+                  ]);
+                } else if (data.status === 'nao_matriculado') {
+                  mostrarModal('Confirmar matrícula', 'Você ainda não está matriculado neste curso. Deseja se matricular agora?', [
+                    {
+                      texto: 'Sim', class: 'btn btn-success', onClick: async () => {
+                        const matriculaRes = await fetch('../../api/admin/matricular.php', {
+                          method: 'POST',
+                          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                          body: `curso_id=${cursoId}`,
+                          credentials: 'include'
+                        });
+                        const matriculaData = await matriculaRes.json();
+
+                        if (matriculaData.status === 'sucesso') {
+                          mostrarModal('Sucesso', 'Matrícula realizada com sucesso! Agora você pode acessar o curso.', [
+                            {
+                              texto: 'Acessar curso', class: 'btn btn-success', onClick: () => window.location.href =
+                                `../../api/admin/videoaula.php?id=${cursoId}`
+                            }
+                          ]);
+                          target.disabled = true;
+                          target.style.background = '#ccc';
+                          target.style.cursor = 'not-allowed';
+                        } else {
+                          mostrarModal('Erro', 'Erro ao matricular: ' + (matriculaData.mensagem || 'Tente novamente.'), [
+                            { texto: 'OK', class: 'btn btn-danger' }
+                          ]);
+                        }
+                      }
+                    },
+                    { texto: 'Cancelar', class: 'btn btn-secondary' }
+                  ]);
+                }
+              } catch (err) {
+                console.error('Erro:', err);
+                mostrarModal('Erro', 'Erro ao verificar matrícula. Tente novamente.', [
+                  { texto: 'OK', class: 'btn btn-danger' }
+                ]);
+              }
+            }
+
+            // ---------- ACESSAR CURSO ----------
+            if (target.classList.contains('btn-acessar')) {
+              e.preventDefault();
+              const cursoId = target.dataset.id;
+
+              try {
+                const resposta = await fetch('../../api/admin/verificar_matricula.php', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                  body: `curso_id=${cursoId}`,
+                  credentials: 'include'
+                });
+
+                const data = await resposta.json();
+
+                if (data.status === 'nao_logado') {
+                  mostrarModal('Acesso negado', 'Você precisa estar logado para acessar este curso.', [
+                    { texto: 'Fazer login', class: 'btn btn-primary', onClick: () => window.location.href = '../../html/login.php' }
+                  ]);
+                } else if (data.status === 'nao_matriculado') {
+                  mostrarModal('Acesso restrito', 'Você precisa se matricular neste curso antes de acessá-lo.', [
+                    { texto: 'Matricular-se', class: 'btn btn-success' },
+                    { texto: 'Fechar', class: 'btn btn-secondary' }
+                  ]);
+                } else if (data.status === 'matriculado') {
+                  window.location.href = `../../api/admin/videoaula.php?id=${cursoId}`;
+                }
+              } catch (err) {
+                console.error('Erro:', err);
+                mostrarModal('Erro', 'Erro ao verificar matrícula. Tente novamente.', [
+                  { texto: 'OK', class: 'btn btn-danger' }
+                ]);
+              }
             }
           });
 
@@ -468,28 +559,9 @@
         listaCursos.innerHTML = `<p class="text-center text-danger">Erro ao carregar os cursos.</p>`;
       }
     });
-
-    // Função de excluir
-    function excluirCurso(id) {
-      if (confirm('Deseja realmente excluir este curso?')) {
-        fetch(`../../api/admin/excluir_curso.php`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-          body: 'id=' + encodeURIComponent(id)
-        })
-          .then(res => res.json())
-          .then(data => {
-            if (data.success) {
-              alert('Curso excluído com sucesso!');
-              location.reload();
-            } else {
-              alert('Erro ao excluir curso.');
-            }
-          })
-          .catch(err => console.error('Erro:', err));
-      }
-    }
   </script>
+
+  <script src="../../lib/bootstrap/js/bootstrap.bundle.min.js"></script>
 
 </body>
 

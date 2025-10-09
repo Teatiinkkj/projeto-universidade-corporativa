@@ -1,5 +1,6 @@
 <?php
 session_start();
+
 include __DIR__ . '/../../db/conexao.php';
 
 $usuario_id = $_SESSION['usuario_id'] ?? null;

@@ -6,34 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo htmlspecialchars($curso['titulo']); ?> | Video Aula</title>
     <link rel="stylesheet" href="../../css/videoaula.css">
-    <link rel="stylesheet" href="../../css/back-button.css">
     <link rel="stylesheet" href="../../lib/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 
-    <style>
-        /* Animação para botão concluir */
-        #btnConcluido {
-            transition: transform 0.2s, background-color 0.3s;
-        }
-
-        #btnConcluido:hover {
-            transform: scale(1.05);
-            background-color: #6c63ff;
-            color: #fff;
-        }
-
-        /* Animação para botão de certificado */
-        #btnCertificado {
-            opacity: 0;
-            transform: translateY(-10px);
-            transition: opacity 0.5s ease, transform 0.5s ease;
-        }
-
-        #btnCertificado.show {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    </style>
 </head>
 
 <body>
@@ -60,7 +35,8 @@
                 <div id="contadorAulas">
                     Aulas assistidas: 0 /
                     <?php $total = 0;
-                    foreach ($topicos as $t) $total += count($t['conteudos']);
+                    foreach ($topicos as $t)
+                        $total += count($t['conteudos']);
                     echo $total; ?>
                 </div>
             </div>
@@ -158,22 +134,22 @@
                 body: 'conteudo_id=' + encodeURIComponent(conteudoId) + '&desmarcar=' + desmarcar,
                 credentials: 'include'
             })
-            .then(res => res.json())
-            .then(data => {
-                if (data.sucesso) {
-                    if (desmarcar) {
-                        aulaAtual.classList.remove('assistido');
-                        aulasAssistidas--;
+                .then(res => res.json())
+                .then(data => {
+                    if (data.sucesso) {
+                        if (desmarcar) {
+                            aulaAtual.classList.remove('assistido');
+                            aulasAssistidas--;
+                        } else {
+                            aulaAtual.classList.add('assistido');
+                            aulasAssistidas++;
+                        }
+                        atualizarContador();
                     } else {
-                        aulaAtual.classList.add('assistido');
-                        aulasAssistidas++;
+                        alert('Erro ao atualizar aula: ' + (data.erro || ''));
                     }
-                    atualizarContador();
-                } else {
-                    alert('Erro ao atualizar aula: ' + (data.erro || ''));
-                }
-            })
-            .catch(err => console.error(err));
+                })
+                .catch(err => console.error(err));
         });
 
         // Seleção de aulas
@@ -210,4 +186,5 @@
     </script>
 
 </body>
+
 </html>

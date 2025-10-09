@@ -1,19 +1,16 @@
 <?php
-
 $servername = "localhost";
 $username = "root";
 $password = "";
 $dbname = "universidade_corporativa";
 
+// Desativa warnings que podem quebrar o JSON
+error_reporting(E_ALL & ~E_NOTICE & ~E_WARNING & ~E_DEPRECATED);
+ini_set('display_errors', 0);
+
 $conn = new mysqli($servername, $username, $password, $dbname);
 
 if ($conn->connect_error) {
-    http_response_code(500);
-    echo json_encode([
-        "success" => false,
-        "message" => "Erro na conexão com o banco de dados: " . $conn->connect_error
-    ]);
-    exit();
+    // Apenas encerra silenciosamente
+    die("Erro na conexão com o banco de dados.");
 }
-
-?>
