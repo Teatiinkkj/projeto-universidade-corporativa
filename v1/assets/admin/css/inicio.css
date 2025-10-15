@@ -364,3 +364,133 @@
     margin-bottom: 20px;
   }
 }
+
+/* ---------------------- ÁREA DE CURSOS ---------------------- */
+.cursos-section {
+  background: linear-gradient(135deg, rgba(230, 242, 255, 0.95), rgba(215, 233, 255, 0.95));
+  border-radius: 25px;
+  padding: 60px 40px;
+  box-shadow: 0 15px 45px rgba(0, 60, 150, 0.15);
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(6px);
+  border: 0px solid;
+}
+
+.cursos-section::before {
+  content: "";
+  position: absolute;
+  top: -40px;
+  left: -40px;
+  width: 220px;
+  height: 220px;
+  background: radial-gradient(circle, rgba(0, 123, 255, 0.25) 0%, transparent 70%);
+  z-index: 0;
+}
+
+.cursos-section::after {
+  content: "";
+  position: absolute;
+  bottom: -50px;
+  right: -50px;
+  width: 250px;
+  height: 250px;
+  background: radial-gradient(circle, rgba(0, 90, 255, 0.15) 0%, transparent 70%);
+  z-index: 0;
+}
+
+.cursos-wrapper {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+}
+
+.titulo-cursos {
+  font-size: 32px;
+  font-weight: 700;
+  color: #004aad; /* Azul principal */
+  margin-bottom: 10px;
+  letter-spacing: 0.5px;
+}
+
+.subtitulo-cursos {
+  color: #444;
+  font-size: 16px;
+  margin-bottom: 40px;
+}
+
+/* Grade de cursos */
+.cursos-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  justify-content: center;
+}
+
+/* Cartão do curso */
+.curso-card {
+  background: #ffffff;
+  border-radius: 18px;
+  box-shadow: 0 8px 25px rgba(0, 60, 150, 0.1);
+  width: 280px;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid rgba(0, 90, 255, 0.12);
+}
+
+.curso-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 15px 35px rgba(0, 80, 200, 0.2);
+}
+
+/* Título e descrição dentro do card */
+.curso-card h4 {
+  font-weight: 600;
+  color: #004aad;
+}
+
+.curso-card p {
+  font-size: 14px;
+  color: #555;
+}
+
+/* Botões dentro do card */
+.curso-card .btn-acessar,
+.curso-card .btn-matricular {
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.curso-card .btn-acessar:hover {
+  background: #218838 !important;
+  transform: scale(1.05);
+}
+
+.curso-card .btn-matricular {
+  background: #006bff !important;
+  border: none;
+}
+
+.curso-card .btn-matricular:hover {
+  background: #0056d6 !important;
+  transform: scale(1.05);
+}
+
+/* ---------------------- RESPONSIVIDADE ---------------------- */
+@media (max-width: 768px) {
+  .cursos-section {
+    padding: 40px 20px;
+  }
+
+  .titulo-cursos {
+    font-size: 26px;
+  }
+
+  .subtitulo-cursos {
+    font-size: 14px;
+  }
+
+  .curso-card {
+    width: 100%;
+    max-width: 320px;
+  }
+}

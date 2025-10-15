@@ -6,8 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Confirmação Enviada | UNICORP</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="../assets/css/confirmar-recuperacao.css" />
-    <link rel="stylesheet" href="../assets/css/back-button.css">
+    <link rel="stylesheet" href="../css/confirmar-recuperacao.css" />
+    <link rel="stylesheet" href="../css/back-button.css">
 </head>
 
 <body>
@@ -22,7 +22,7 @@
             <p style="color: white;">Sua solicitação foi enviada a um superior. Aguarde o email com a <strong>nova
                     senha</strong>.</p>
 
-            <button class="botao-enviar" onclick="window.location.href='../assets/login.html'">Retornar ao
+            <button class="botao-enviar" onclick="window.location.href='../login.html'">Retornar ao
                 Login</button>
             <button id="reenviar-notificacao" class="botao-enviar">Reenviar notificação</button>
 

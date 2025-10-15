@@ -1,3 +1,24 @@
+<?php
+session_start();
+require_once '../../db/conexao.php'; // seu arquivo de conexão com o banco
+
+// Verifica se o usuário está logado
+if (!isset($_SESSION['usuario_id'])) {
+  header("Location: ../../html/login.php");
+  exit;
+}
+
+$usuarioId = $_SESSION['usuario_id'];
+
+// Consulta para pegar nome e email
+$stmt = $conn->prepare("SELECT nome, email FROM usuarios WHERE id = ?");
+$stmt->bind_param("i", $usuarioId);
+$stmt->execute();
+$result = $stmt->get_result();
+$usuario = $result->fetch_assoc();
+$stmt->close();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -43,27 +64,24 @@
                       style="background:none; border:none; font-size:24px; cursor:pointer;">&times;</button>
                   </div>
                   <hr>
-                  <section id="foto-perfil-container" class="perfil-container" aria-label="Informações do usuário"
-                    style="width: 100%; height: 80px; position: relative; display: flex; align-items: center; gap: 15px;">
-                    <div style="position: relative; width: 60px; height: 60px;">
-                      <img src="../images/default-avatar.png" alt="Foto de perfil do usuário" id="foto-perfil"
-                        style="width: 60px; height: 60px; border-radius: 50%;" />
-                      <i class="fa fa-pencil"
-                        style="position: relative; bottom: -40px; margin-right: -40px; background: white; border-radius: 50%; padding: 4px; font-size: 14px; color: #333;"></i>
+                  <section id="foto-perfil-container" class="perfil-container" aria-label="Informações do usuário">
+                    <div
+                      style="display: flex; align-items: center; padding: 15px; background: #f8f9fa; border-radius: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                      <img src="<?= htmlspecialchars($usuario['foto'] ?? '../../images/crown.png') ?>"
+                        alt="Foto de perfil do usuário" id="foto-perfil"
+                        style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 3px solid #6f42c1; box-shadow: 0 4px 10px rgba(0,0,0,0.2);" />
+                      <div style="margin-left: 20px; display: flex; flex-direction: column;">
+                        <strong id="nome-usuario"
+                          style="font-size: 18px; color: #333;"><?= htmlspecialchars($usuario['nome']) ?></strong>
+                        <p id="email-usuario" style="font-size: 14px; color: #555; margin-top: 4px;">
+                          <?= htmlspecialchars($usuario['email']) ?></p>
+                        <a href="../../html/login.php" title="Sair da Conta"
+                          style="margin-top: 8px; font-size: 16px; color: #6f42c1; text-decoration: none;">
+                          <i class="fa-solid fa-right-from-bracket"></i> Sair
+                        </a>
+                      </div>
                     </div>
-
-                    <div class="perfil-info" style="display: flex; flex-direction: column;">
-                      <strong id="nome-usuario">Usuário</strong>
-                      <span id="email-usuario">email@gmail.com</span>
-                    </div>
-
-                    <button style="margin-left: -10px; color: gray;" class="admin-btn"
-                      onclick="window.location.href='admin.php'" title="Administrar usuários"
-                      aria-label="Administrar usuários">
-                      <i class="fa fa-cogs"></i>
-                    </button>
-
-                    <a href="../login.html" style="font-size: 20px; color: gray; margin-left: -20px;"
+                    <a href="../../html/login.php" style="font-size: 20px; color: gray; margin-left: -10px;"
                       title="Sair da Conta">
                       <i class="fa-solid fa-right-from-bracket"></i>
                     </a>
@@ -73,11 +91,8 @@
                   <link rel="stylesheet"
                     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
 
-                  <a href="inicio.html"><i class="fa-solid fa-house"></i> Início</a>
-                  <a href="meus-cursos.html" id="meus-cursos"><i class="fa-solid fa-book"></i> Meus Cursos</a>
-                  <a href="certificados.html"><i class="fa-solid fa-certificate"></i> Certificados</a>
-                  <a href="../sobre.html"><i class="fa-solid fa-circle-info"></i> Sobre</a>
-
+                  <a href="admin.php"><i class="fa fa-cogs"></i> Gestão de Usuários</a>
+                  <a href="cursos.php"><i class="fa fa-cogs"></i> Gestão de Cursos</a>
                 </div>
               </li>
             </ul>
@@ -113,14 +128,16 @@
   <section style="margin-top: 100px;" class="container section-inc-1">
     <div class="row introducao">
       <div class="col-md-12">
-        <img class="logo-inicio pull-left" src="../images/logo.png" alt="logo">
+        <img class="logo-inicio pull-left" src="../../images/logo.png" alt="logo">
         <h2 class="h2-inicio text-center">Universidade Corporativa</h2>
         <h2 class="h2-inc-introducao text-center">Transforme seu futuro. Evolua sua carreira.</h2>
         <h3 style="width: 750px; margin-left: 400px;" class="h3-inc-introducao text-center">Desbloqueie seu potencial e
           alcance novos patamares de sucesso com a nossa
           <strong>Universidade Corporativa.</strong></h2>
-          <a style="margin-left: 260px;" href="../sobre.html">Clique aqui e aproveite mais informações sobre a <strong
-              style="text-decoration: underline;">UNICORP</strong>...</a>
+          <a style="margin-left: 260px; text-decoration: none;" href="../../html/sobre.html"
+            onmouseover="this.style.textDecoration='underline';" onmouseout="this.style.textDecoration='none';">
+            Clique aqui e aproveite mais informações sobre a <strong>UNICORP</strong>
+          </a>
       </div>
     </div>
   </section>
@@ -129,59 +146,22 @@
 
   <section class="container section-inc-2">
     <div class="texto-curso">
-      <h3 class="h3-inicio">Escolha seu curso:</h3>
-      <a href="meus-cursos.html" class="btn btn-primary" style="margin-left: 0px;">Meus Cursos</a>
+      <h3 class="h3-inicio">Gerenciar Cursos:</h3>
+      <a href="cursos.php" class="btn btn-primary" style="margin-left: 0px;">Cursos</a>
     </div>
   </section>
 
   <br>
 
-  <section class="container section-inc-video">
-    <div class="row">
-      <div class="video-inicio col-md-12">
-        <h2 class="h2-curso" style="margin-top: 20px;">Cursos Disponíveis</h2>
-        <div class="cursos" style="margin-top: 40px;">
-          <div class="curso">
-            <img src="../images/imgsemfundo2.png" alt="Curso 1">
-            <h3>Gestão Escolar Eficiente</h3>
-            <p>Capacitação voltada para coordenadores e diretores escolares, com foco em liderança educacional, gestão
-              de equipe, planejamento estratégico e uso de indicadores de desempenho.</p>
-            <a href="meus-cursos.html" class="btn btn-primary" data-nome="Gestão Escolar Eficiente">Cadastrar-se</a>
-            <div class="btn-view-alunos">
-              <a href="listar_usuarios.html" class="btn" style="width: 170px;">Alunos cadastrados</a>
-            </div>
-          </div>
-          <div class="curso">
-            <img src="../images/imgsemfundo2.png" alt="Curso 2">
-            <h3>Metodologias Ativas em Sala de Aula</h3>
-            <p>Explore práticas inovadoras como sala de aula invertida, ensino híbrido e aprendizagem baseada em
-              projetos, promovendo o protagonismo do aluno no processo de aprendizagem.</p>
-            <a href="videoaula.html" class="btn btn-primary"
-              data-nome="Metodologias Ativas em Sala de Aula">Cadastrar-se</a>
-            <div class="btn-view-alunos">
-              <a href="listar_usuarios.html" class="btn" style="width: 170px;">Alunos cadastrados</a>
-            </div>
-          </div>
-          <div class="curso">
-            <img src="../images/imgsemfundo2.png" alt="Curso 3">
-            <h3>Comunicação e Relacionamento com Famílias</h3>
-            <p>Desenvolva habilidades de comunicação empática e estratégias para construir parcerias positivas entre
-              escola e família, fortalecendo o vínculo com a comunidade escolar.</p>
-            <a href="videoaula.html" class="btn btn-primary"
-              data-nome="Comunicação e Relacionamento com Famílias">Cadastrar-se</a>
-            <div class="btn-view-alunos">
-              <a href="listar_usuarios.html" class="btn" style="width: 170px;">Alunos cadastrados</a>
-            </div>
-          </div>
-        </div>
-        <button class="btn-adicionar">
-          <span class="plus">+</span>
-        </button>
-      </div>
+  <section class="container cursos-section" style="margin-top: 80px; position: relative;">
+    <div class="cursos-wrapper">
+      <h3 class="titulo-cursos">Cursos Disponíveis</h3>
+      <p class="subtitulo-cursos">Escolha um curso e comece a transformar seu futuro.</p>
+      <div id="lista-cursos" class="row g-4 cursos-grid"></div>
     </div>
   </section>
 
-  <section id="indicadores" class="indicadores container" tabindex="0"
+  <section style="margin-top: 300px;" id="indicadores" class="indicadores container" tabindex="0"
     aria-label="Indicadores da Universidade Corporativa">
     <div class="row text-center">
       <article class="col-md-3 indicador" aria-live="polite">
@@ -203,22 +183,6 @@
     </div>
   </section>
 
-  <section id="carrossel-destaques" class="carrossel container" aria-label="Carrossel de Destaques" tabindex="0">
-    <button id="prev-slide" aria-label="Slide anterior" class="carrossel-btn">&#8592;</button>
-    <button id="next-slide" aria-label="Próximo slide" class="carrossel-btn">&#8594;</button>
-    <div class="slides">
-      <article class="slide active" tabindex="-1">
-        <img src="../images/professores-unicorp.png" alt="Destaque 1">
-      </article>
-      <article class="slide" tabindex="-1">
-        <img src="../images/metodologias-inovadoras.png" alt="Destaque 2">
-      </article>
-      <article class="slide" tabindex="-1">
-        <img src="../images/profissao.png" alt="Destaque 3">
-      </article>
-    </div>
-  </section>
-
   <section id="depoimentos" class="depoimentos container" aria-label="Depoimentos de alunos">
     <h2>Depoimentos</h2>
     <article class="depoimento" tabindex="0">
@@ -236,7 +200,7 @@
   </section>
 
   <section id="parceiros" class="parceiros container" aria-label="Parceiros da Universidade Corporativa">
-    <h2 style="margin-bottom: 50px;">Parceiros</h2>
+    <h2 style="margin-bottom: 50px;">Desenvolvedores</h2>
     <div class="row text-center">
       <div class="col-md-3 parceiro">
         <i class="fas fa-users text-center"></i>
@@ -279,572 +243,357 @@
     </div>
   </footer>
 
-  <dialog id="dialogRemover" role="dialog" aria-modal="true" aria-labelledby="titulo-modal-remover"
-    aria-describedby="descricao-modal-remover">
-    <form method="dialog">
-      <h3 id="titulo-modal-remover">Confirmar remoção</h3>
-      <p id="descricao-modal-remover">Deseja realmente remover esta despesa?</p>
-      <div style="display: flex; justify-content: center; gap: 20px;">
-        <button type="button" class="cancelar" onclick="document.getElementById('dialogRemover').close()"
-          aria-label="Cancelar remoção">Cancelar</button>
-        <button type="button" class="confirmar" onclick="confirmarRemover()"
-          aria-label="Confirmar remoção">Confirmar</button>
+  <!-- Modal de Mensagem -->
+  <div id="modalMensagem" class="modal fade" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content" style="border-radius: 15px;">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalTitulo"></h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+        </div>
+        <div class="modal-body" id="modalCorpo"></div>
+        <div class="modal-footer" id="modalBotoes"></div>
       </div>
-    </form>
-  </dialog>
-
-  <div id="modal-confirmacao" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.6); 
-    justify-content:center; align-items:center; z-index:9999;">
-    <div style="background:white; padding:20px; border-radius:8px; max-width:300px; text-align:center;">
-      <p style="font-size: 20px;">Deseja realmente alterar a foto de perfil?</p>
-      <button id="btn-confirmar" class="btn btn-primary" style="margin-right:10px; width: 100px;">Sim</button>
-      <button id="btn-cancelar" class="btn btn-secondary" style="width: 100px;">Cancelar</button>
     </div>
   </div>
-  <div id="modal-cadastro" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.6); 
-  justify-content:center; align-items:center; z-index:9999;">
-    <div style="background:white; padding:20px; border-radius:8px; max-width:300px; text-align:center;">
-      <p style="font-size: 20px;">Deseja se cadastrar ao curso?</p>
-      <p style="font-size: 15px; color: rgb(137, 137, 137); margin-top: -10px;">Após clicar você estará concordando com
-        os termos de condição</p>
-      <button id="btn-sim" class="btn btn-primary" style="margin-right:10px; width: 100px;">Sim</button>
-      <button id="btn-nao" class="btn btn-secondary" style="width: 100px;">Não</button>
-    </div>
-  </div>
-  <div id="modal-editar-curso" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.6); 
-justify-content:center; align-items:center; z-index:9999;">
-    <div style="background:white; padding:20px; border-radius:8px; max-width:300px; text-align:center;">
-      <p style="font-size: 20px;">Editar Curso</p>
-      <img id="imagem-curso" src="" style="width: 100px; height: 100px; border-radius: 50%; cursor: pointer;">
-      <input type="file" id="input-file-imagem" style="display: none;">
-      <input id="input-nome-curso" type="text" placeholder="Nome do curso"
-        style="width: 100%; padding: 10px; margin-bottom: 10px;">
-      <textarea id="input-descricao-curso" placeholder="Descrição do curso"
-        style="width: 100%; padding: 10px; margin-bottom: 10px; height: 100px;"></textarea>
-      <button id="btn-salvar-edicao" class="btn btn-primary" style="margin-right:10px; width: 100px;">Salvar</button>
-      <button id="btn-cancelar-edicao" class="btn btn-secondary" style="width: 100px;">Cancelar</button>
-    </div>
-  </div>
-  <div id="modal-trocar-conta" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.6); 
-  justify-content:center; align-items:center; z-index:9999;">
-    <div style="background:white; padding:20px; border-radius:8px; max-width:300px; text-align:center;">
-      <p style="font-size: 20px;">Deseja realmente trocar de conta?</p>
-      <button id="btn-sim-trocar-conta" class="btn btn-primary" style="margin-right:10px; width: 100px;">Sim</button>
-      <button id="btn-nao-trocar-conta" class="btn btn-secondary" style="width: 100px;">Não</button>
-    </div>
-  </div>
-
-  <button id="btn-voltar-topo" aria-label="Voltar ao topo" title="Voltar ao topo" tabindex="0">&#8679;</button>
 
   <script>
-    const menuLink = document.querySelector('.menu-item .menu-link');
-    const submenuFull = document.querySelector('.submenu-full');
-    const closeSubmenu = document.querySelector('.close-submenu');
+    // ---------------- MODAL PERSONALIZADO ----------------
+    function mostrarModal(titulo, mensagem, botoes = []) {
+      document.getElementById('modalTitulo').innerText = titulo;
+      document.getElementById('modalCorpo').innerHTML = mensagem;
 
-    if (menuLink && submenuFull && closeSubmenu) {
-      menuLink.addEventListener('click', (e) => {
-        e.preventDefault();
-        submenuFull.classList.toggle('show');
+      const botoesContainer = document.getElementById('modalBotoes');
+      botoesContainer.innerHTML = '';
+
+      botoes.forEach(botao => {
+        const btn = document.createElement('button');
+        btn.className = botao.class || 'btn btn-secondary';
+        btn.innerText = botao.texto;
+        btn.onclick = () => {
+          if (botao.onClick) botao.onClick();
+          const modalEl = bootstrap.Modal.getInstance(document.getElementById('modalMensagem'));
+          modalEl.hide();
+        };
+        botoesContainer.appendChild(btn);
       });
 
-      closeSubmenu.addEventListener('click', (e) => {
-        e.preventDefault();
-        submenuFull.classList.remove('show');
-      });
+      const modal = new bootstrap.Modal(document.getElementById('modalMensagem'));
+      modal.show();
     }
-    const ntfItem = document.querySelector('.ntf-item');
-    const notificacaoBarra = document.querySelector('.notificacao-barra');
-    const closeBtn = notificacaoBarra.querySelector('.close-submenu');
-    const notificacoesLista = notificacaoBarra.querySelector('ul');
 
-    if (ntfItem && notificacaoBarra && closeBtn && notificacoesLista) {
-      ntfItem.addEventListener('click', (e) => {
-        e.preventDefault();
-        notificacaoBarra.classList.toggle('show');
-        carregarNotificacoes();
-      });
+    document.addEventListener('DOMContentLoaded', () => {
+      // ---------------- MENU ----------------
+      const menuLink = document.querySelector('.menu-item .menu-link');
+      const submenuFull = document.querySelector('.submenu-full');
+      const closeSubmenu = document.querySelector('.close-submenu');
 
-      closeBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        notificacaoBarra.classList.remove('show');
-      });
+      if (menuLink && submenuFull && closeSubmenu) {
+        menuLink.addEventListener('click', (e) => {
+          e.preventDefault();
+          submenuFull.classList.toggle('show');
+        });
 
-      function carregarNotificacoes() {
-        const notificacoes = JSON.parse(localStorage.getItem('notificacoes')) || [];
-        const notificacoesFiltradas = notificacoes.filter(n => n.tipo === 'recuperacaoSenha' || n.tipo === 'alteracaoSenha');
-        notificacoesLista.innerHTML = '';
+        closeSubmenu.addEventListener('click', (e) => {
+          e.preventDefault();
+          submenuFull.classList.remove('show');
+        });
+      }
 
-        if (notificacoesFiltradas.length === 0) {
-          const li = document.createElement('li');
-          li.textContent = 'Nenhuma notificação.';
-          notificacoesLista.appendChild(li);
+      // ---------------- NOTIFICAÇÕES ----------------
+      const ntfItem = document.querySelector('.ntf-item');
+      const notificacaoBarra = document.querySelector('.notificacao-barra');
+
+      if (ntfItem && notificacaoBarra) {
+        const closeBtn = notificacaoBarra.querySelector('.close-submenu');
+        const notificacoesLista = notificacaoBarra.querySelector('ul');
+
+        ntfItem.addEventListener('click', (e) => {
+          e.preventDefault();
+          notificacaoBarra.classList.toggle('show');
+          carregarNotificacoes();
+        });
+
+        if (closeBtn) {
+          closeBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            notificacaoBarra.classList.remove('show');
+          });
+        }
+
+        function carregarNotificacoes() {
+          const notificacoes = JSON.parse(localStorage.getItem('notificacoes')) || [];
+          const notificacoesFiltradas = notificacoes.filter(n => n.tipo === 'recuperacaoSenha');
+          notificacoesLista.innerHTML = '';
+
+          if (notificacoesFiltradas.length === 0) {
+            const li = document.createElement('li');
+            li.textContent = 'Nenhuma notificação.';
+            notificacoesLista.appendChild(li);
+            document.getElementById('badge-count').style.display = 'none';
+            return;
+          }
+
+          notificacoesFiltradas.reverse().forEach(({ id, mensagem, data, lido, destino }) => {
+            const li = document.createElement('li');
+            li.innerHTML = `
+            <a href="${destino || '#'}" class="link-notificacao" style="text-decoration: none; color: inherit;">
+              <div class="texto-notificacao">${mensagem}</div>
+              <small><em>${formatarData(data)}</em></small>
+            </a>
+            <button class="marcar-lido" data-id="${id}">${lido ? 'Marcar como não lido' : 'Marcar como lido'}</button>
+            <button class="excluir-notificacao" data-id="${id}">Excluir</button>
+          `;
+            if (lido) li.style.opacity = '0.5';
+            notificacoesLista.appendChild(li);
+
+            li.querySelector('.marcar-lido').addEventListener('click', () => {
+              marcarComoLido(id);
+              carregarNotificacoes();
+            });
+
+            li.querySelector('.excluir-notificacao').addEventListener('click', () => {
+              excluirNotificacao(id);
+              carregarNotificacoes();
+            });
+          });
+
           const badge = document.getElementById('badge-count');
-          if (badge) badge.style.display = 'none';
-          return;
-        }
-
-        notificacoesFiltradas.reverse().forEach(({ id, mensagem, data, lido, destino, tipo }) => {
-          const li = document.createElement('li');
-          li.innerHTML = `
-      <a href="${destino || '#'}" class="link-notificacao" style="text-decoration: none; color: inherit;">
-        <div class="texto-notificacao">${mensagem}</div>
-        <small><em>${formatarData(data)}</em></small>
-      </a>
-      <button class="marcar-lido" data-id="${id}">Marcar como ${lido ? 'não lido' : 'lido'}</button>
-      <button class="excluir-notificacao" data-id="${id}">Excluir</button>
-    `;
-          if (lido) {
-            li.style.opacity = '0.5';
-          }
-          notificacoesLista.appendChild(li);
-
-          li.querySelector('.marcar-lido').addEventListener('click', () => {
-            marcarComoLido(id);
-            carregarNotificacoes();
-          });
-
-          li.querySelector('.excluir-notificacao').addEventListener('click', () => {
-            excluirNotificacao(id);
-            carregarNotificacoes();
-          });
-        });
-
-        const badge = document.getElementById('badge-count');
-        if (badge) {
           const unreadCount = notificacoesFiltradas.filter(n => !n.lido).length;
-          if (unreadCount > 0) {
-            badge.textContent = unreadCount;
-            badge.style.display = 'inline-block';
-          } else {
-            badge.style.display = 'none';
+          badge.textContent = unreadCount > 0 ? unreadCount : '';
+          badge.style.display = unreadCount > 0 ? 'inline-block' : 'none';
+        }
+
+        function formatarData(isoString) {
+          const data = new Date(isoString);
+          return data.toLocaleString('pt-BR', {
+            day: '2-digit', month: '2-digit', year: 'numeric',
+            hour: '2-digit', minute: '2-digit', second: '2-digit',
+          });
+        }
+
+        function marcarComoLido(id) {
+          const notificacoes = JSON.parse(localStorage.getItem('notificacoes')) || [];
+          const n = notificacoes.find(n => n.id === id);
+          if (n) {
+            n.lido = !n.lido;
+            localStorage.setItem('notificacoes', JSON.stringify(notificacoes));
           }
         }
-      }
 
-      function formatarData(isoString) {
-        const data = new Date(isoString);
-        return data.toLocaleString('pt-BR', {
-          day: '2-digit',
-          month: '2-digit',
-          year: 'numeric',
-          hour: '2-digit',
-          minute: '2-digit',
-          second: '2-digit',
-        });
-      }
-
-      function marcarComoLido(id) {
-        const notificacoes = JSON.parse(localStorage.getItem('notificacoes')) || [];
-        const notificacao = notificacoes.find(n => n.id === id);
-        if (notificacao) {
-          notificacao.lido = !notificacao.lido;
-          localStorage.setItem('notificacoes', JSON.stringify(notificacoes));
-        }
-      }
-
-      function excluirNotificacao(id) {
-        const notificacoes = JSON.parse(localStorage.getItem('notificacoes')) || [];
-        const index = notificacoes.findIndex(n => n.id === id);
-        if (index !== -1) {
-          notificacoes.splice(index, 1);
-          localStorage.setItem('notificacoes', JSON.stringify(notificacoes));
-        }
-      }
-
-      carregarNotificacoes();
-    }
-
-    document.addEventListener('DOMContentLoaded', () => {
-      const lapis = document.querySelector('.fa-pencil');
-      const modalConfirmacao = document.getElementById("modal-confirmacao");
-      const btnConfirmar = document.getElementById("btn-confirmar");
-      const btnCancelar = document.getElementById("btn-cancelar");
-
-      const inputFotoPerfil = document.createElement("input");
-      inputFotoPerfil.type = "file";
-      inputFotoPerfil.accept = "image/*";
-      inputFotoPerfil.style.display = "none";
-      document.body.appendChild(inputFotoPerfil);
-
-      lapis.addEventListener("click", () => {
-        modalConfirmacao.style.display = "flex";
-      });
-
-      btnCancelar.addEventListener("click", () => {
-        modalConfirmacao.style.display = "none";
-      });
-
-      btnConfirmar.addEventListener("click", () => {
-        modalConfirmacao.style.display = "none";
-        inputFotoPerfil.click();
-      });
-
-      inputFotoPerfil.addEventListener("change", (e) => {
-        const file = e.target.files[0];
-        if (file && file.type.startsWith("image/")) {
-          const reader = new FileReader();
-          reader.onload = () => {
-            fotoPerfil.src = reader.result;
-            const dadosUsuario = JSON.parse(localStorage.getItem("usuarioLogado")) || {};
-            dadosUsuario.foto = reader.result;
-            localStorage.setItem("usuarioLogado", JSON.stringify(dadosUsuario));
-          };
-          reader.readAsDataURL(file);
-        }
-      });
-    });
-
-    document.addEventListener('DOMContentLoaded', () => {
-      const dadosUsuario = JSON.parse(localStorage.getItem("usuarioLogado"));
-
-      if (dadosUsuario) {
-        document.getElementById('nome-usuario').textContent = dadosUsuario.nome;
-        document.getElementById('email-usuario').textContent = dadosUsuario.email;
-
-        const fotoPerfil = document.getElementById("foto-perfil");
-        if (dadosUsuario.foto) {
-          fotoPerfil.src = dadosUsuario.foto;
-        }
-      }
-    });
-    const inputSearch = document.getElementById('input-search');
-    const buttonSearch = document.querySelector('.input-group-btn button');
-
-    buttonSearch.addEventListener('click', () => {
-      const searchText = inputSearch.value.trim().toLowerCase();
-      const cursos = [
-        { nome: 'Gestão Escolar Eficiente', url: 'videoaula.html' },
-        { nome: 'Metodologias Ativas em Sala de Aula', url: 'videoaula.html' },
-        { nome: 'Comunicação e Relacionamento com Famílias', url: 'videoaula.html' },
-      ];
-
-      const cursoEncontrado = cursos.find((curso) => curso.nome.toLowerCase().includes(searchText));
-
-      if (cursoEncontrado) {
-        window.location.href = cursoEncontrado.url;
-      } else {
-        alert('Curso não encontrado!');
-      }
-    });
-
-    const imagens = document.querySelectorAll('.curso img');
-
-    imagens.forEach((imagem) => {
-      const editarImagem = document.createElement('i');
-      editarImagem.classList.add('fa', 'fa-ellipsis-v'); 
-      editarImagem.style.position = 'absolute';
-      editarImagem.style.top = '5px';
-      editarImagem.style.right = '5px';
-      editarImagem.style.textAlign = 'center';
-      editarImagem.style.padding = '4px';
-      editarImagem.style.fontSize = '20px';
-      editarImagem.style.color = '#333';
-      imagem.parentNode.style.position = 'relative';
-      imagem.parentNode.appendChild(editarImagem);
-
-      editarImagem.addEventListener('mouseover', () => {
-        editarImagem.style.transform = 'scale(1.5)';
-        editarImagem.style.transition = 'transform 0.2s';
-      });
-
-      editarImagem.addEventListener('mouseout', () => {
-        editarImagem.style.transform = 'scale(1)';
-      });
-
-      editarImagem.addEventListener('click', (e) => {
-        e.stopPropagation();
-        const curso = imagem.parentNode;
-        const nomeCurso = curso.querySelector('h3').textContent;
-        const submenu = document.createElement('div');
-        submenu.classList.add('submenu-curso');
-        submenu.style.position = 'absolute';
-        submenu.style.top = editarImagem.offsetTop + editarImagem.offsetHeight + 'px';
-        submenu.style.left = editarImagem.offsetLeft + 'px';
-        submenu.style.background = '#fff';
-        submenu.style.border = '1px solid #ddd';
-        submenu.style.padding = '10px';
-        submenu.style.zIndex = '9999';
-
-        const editar = document.createElement('button');
-        editar.textContent = 'Editar';
-        editar.addEventListener('click', () => {
-          const modalEditarCurso = document.getElementById('modal-editar-curso');
-          modalEditarCurso.style.display = 'flex';
-          document.getElementById('input-nome-curso').value = nomeCurso;
-          document.getElementById('input-descricao-curso').value = curso.querySelector('p').textContent;
-
-          const cursos = JSON.parse(localStorage.getItem('cursos')) || [];
-          const cursoEncontrado = cursos.find(c => c.nome === nomeCurso);
-          if (cursoEncontrado && cursoEncontrado.imagem) {
-            const imagemCurso = document.getElementById('imagem-curso');
-            imagemCurso.src = cursoEncontrado.imagem;
-          } else {
-            const imagemCurso = document.getElementById('imagem-curso');
-            imagemCurso.src = imagem.src;
+        function excluirNotificacao(id) {
+          const notificacoes = JSON.parse(localStorage.getItem('notificacoes')) || [];
+          const index = notificacoes.findIndex(n => n.id === id);
+          if (index !== -1) {
+            notificacoes.splice(index, 1);
+            localStorage.setItem('notificacoes', JSON.stringify(notificacoes));
           }
+        }
 
-          const imagemCurso = document.getElementById('imagem-curso');
-          imagemCurso.addEventListener('click', abrirPastaArquivos);
+        carregarNotificacoes();
+      }
 
-          function abrirPastaArquivos() {
-            const inputFile = document.getElementById('input-file-imagem');
-            inputFile.click();
-          }
+      // ---------------- BUSCA ----------------
+      const inputSearch = document.getElementById('input-search');
+      const buttonSearch = document.querySelector('.input-group-btn button');
 
-          const inputFile = document.getElementById('input-file-imagem');
-          inputFile.addEventListener('change', (e) => {
-            const file = e.target.files[0];
-            if (file && file.type.startsWith("image/")) {
-              const reader = new FileReader();
-              reader.onload = () => {
-                const imagemCurso = document.getElementById('imagem-curso');
-                imagemCurso.src = reader.result;
+      if (buttonSearch && inputSearch) {
+        buttonSearch.addEventListener('click', () => {
+          const searchText = inputSearch.value.trim().toLowerCase();
+          const cursos = document.querySelectorAll('.curso');
+          let encontrado = false;
 
-                const cursos = JSON.parse(localStorage.getItem('cursos')) || [];
-                const cursoEncontrado = cursos.find(c => c.nome === nomeCurso);
-                if (cursoEncontrado) {
-                  cursoEncontrado.imagem = reader.result;
-                  localStorage.setItem('cursos', JSON.stringify(cursos));
-                } else {
-                  const novoCurso = { nome: nomeCurso, imagem: reader.result };
-                  cursos.push(novoCurso);
-                  localStorage.setItem('cursos', JSON.stringify(cursos));
-                }
-              };
-              reader.readAsDataURL(file);
+          cursos.forEach(curso => {
+            const nome = curso.querySelector('h3')?.textContent.toLowerCase();
+            if (nome && nome.includes(searchText)) {
+              curso.scrollIntoView({ behavior: 'smooth' });
+              encontrado = true;
             }
           });
 
-          document.getElementById('btn-salvar-edicao').addEventListener('click', () => {
-            salvarEdicao(curso, imagem);
-          });
-
-          document.getElementById('btn-cancelar-edicao').addEventListener('click', () => {
-            cancelarEdicao();
-          });
-          submenu.remove();
-        });
-
-        const excluir = document.createElement('button');
-        excluir.textContent = 'Excluir';
-        excluir.addEventListener('click', () => {
-          curso.style.display = 'none';
-          submenu.remove();
-        });
-
-        submenu.appendChild(editar);
-        submenu.appendChild(excluir);
-        imagem.parentNode.appendChild(submenu);
-
-        document.addEventListener('click', (e) => {
-          if (e.target !== editarImagem && e.target !== submenu && e.target !== editar && e.target !== excluir) {
-            submenu.remove();
+          if (!encontrado) {
+            mostrarModal('Aviso', 'Curso não encontrado!', [
+              { texto: 'OK', class: 'btn btn-secondary' }
+            ]);
           }
         });
-      });
+      }
     });
 
-    function salvarEdicao(cursoAtual, imagemAtual) {
-      const novoNomeCurso = document.getElementById('input-nome-curso').value;
-      const novaDescricaoCurso = document.getElementById('input-descricao-curso').value;
-      cursoAtual.querySelector('h3').textContent = novoNomeCurso;
-      cursoAtual.querySelector('p').textContent = novaDescricaoCurso;
-      const modalEditarCurso = document.getElementById('modal-editar-curso');
-      modalEditarCurso.style.display = 'none';
-      const cursos = JSON.parse(localStorage.getItem('cursos')) || [];
-      const index = cursos.findIndex((c) => c.nome === cursoAtual.querySelector('h3').textContent);
-      if (index !== -1) {
-        cursos[index].nome = novoNomeCurso;
-        cursos[index].descricao = novaDescricaoCurso;
-        localStorage.setItem('cursos', JSON.stringify(cursos));
-      }
-      const imagemCurso = document.getElementById('imagem-curso');
-      imagemAtual.src = imagemCurso.src;
-    }
+    // ---------------- CARREGAR CURSOS ----------------
+    document.addEventListener('DOMContentLoaded', async () => {
+      const listaCursos = document.getElementById('lista-cursos');
 
-    function cancelarEdicao() {
-      const modalEditarCurso = document.getElementById('modal-editar-curso');
-      modalEditarCurso.style.display = 'none';
-    }
+      try {
+        const response = await fetch('../../api/admin/get_cursos.php');
+        if (!response.ok) throw new Error('Erro na requisição: ' + response.status);
 
-    document.addEventListener('DOMContentLoaded', () => {
+        const result = await response.json();
 
-      function animarNumero(id, final, duracao) {
-        const el = document.getElementById(id);
-        let start = 0;
-        const increment = final / (duracao / 20);
-        const timer = setInterval(() => {
-          start += increment;
-          if (start >= final) {
-            el.textContent = final.toLocaleString();
-            clearInterval(timer);
-          } else {
-            el.textContent = Math.floor(start).toLocaleString();
-          }
-        }, 20);
-      }
-      animarNumero('num-alunos', 12450, 1500);
-      animarNumero('num-cursos', 36, 1500);
-      animarNumero('num-horas', 10800, 1500);
-      animarNumero('num-certificados', 5000, 1500);
+        if (result.success && result.data.length > 0) {
+          result.data.forEach(curso => {
+            const card = document.createElement('div');
+            card.classList.add('curso-card');
+            card.style.cssText = `
+            background: linear-gradient(145deg, #ffffff, #f0f0f5);
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+            overflow: hidden;
+            width: 280px;
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: flex;
+            flex-direction: column;
+          `;
 
-      const slides = document.querySelectorAll('#carrossel-destaques .slide');
-      let indiceAtual = 0;
+            // Verifica se o usuário já está matriculado
+            const matriculado = curso.matriculado; // API deve retornar true/false
 
-      function mostrarSlide(i) {
-        slides.forEach((slide, idx) => {
-          slide.classList.toggle('active', idx === i);
-          if (idx === i) slide.setAttribute('tabindex', '0');
-          else slide.setAttribute('tabindex', '-1');
-        });
-      }
-      mostrarSlide(indiceAtual);
+            card.innerHTML = `
+            <div style="height:180px; background-image:url('${curso.imagem || '../../images/imgsemfundo2.png'}'); 
+                              background-size: cover; background-position: center;"></div>
+            <div style="padding: 20px; flex: 1; display: flex; flex-direction: column; justify-content: space-between;">
+              <div>
+                <h4 style="margin-bottom: 10px;">${curso.titulo}</h4>
+                <p style="font-size: 14px; color: #555;">${curso.descricao}</p>
+              </div>
+              <div style="margin-top: 15px; display: flex; justify-content: space-between; align-items: center;">
+                <a href="#" class="btn-acessar" data-id="${curso.id}"
+                  style="padding:8px 15px; background:#28a745; color:white; border-radius:8px; text-decoration:none; font-size:14px; font-weight:600;">
+                  Acessar
+                </a>
+                <button class="btn-matricular" data-id="${curso.id}"
+                  style="padding:8px 15px; background:#007bff; color:white; border:none; border-radius:8px; font-size:14px; font-weight:600;"
+                  ${matriculado ? 'disabled style="background:#ccc; cursor:not-allowed;"' : ''}>
+                  Matricular
+                </button>
+              </div>
+            </div>
+          `;
 
-      document.getElementById('prev-slide').addEventListener('click', () => {
-        indiceAtual = (indiceAtual - 1 + slides.length) % slides.length;
-        mostrarSlide(indiceAtual);
-      });
-      document.getElementById('next-slide').addEventListener('click', () => {
-        indiceAtual = (indiceAtual + 1) % slides.length;
-        mostrarSlide(indiceAtual);
-      });
+            card.addEventListener('mouseenter', () => {
+              card.style.transform = 'translateY(-5px)';
+              card.style.boxShadow = '0 15px 25px rgba(0,0,0,0.15)';
+            });
+            card.addEventListener('mouseleave', () => {
+              card.style.transform = 'translateY(0)';
+              card.style.boxShadow = '0 10px 20px rgba(0,0,0,0.08)';
+            });
 
-      const btnTopo = document.getElementById('btn-voltar-topo');
-      window.addEventListener('scroll', () => {
-        if (window.scrollY > 300) {
-          btnTopo.style.display = 'block';
+            listaCursos.appendChild(card);
+          });
+
+          // ---------------- BOTÕES DE CURSO ----------------
+          listaCursos.addEventListener('click', async (e) => {
+            const target = e.target;
+
+            // ---------- MATRÍCULA ----------
+            if (target.classList.contains('btn-matricular') && !target.disabled) {
+              const cursoId = target.dataset.id;
+
+              try {
+                const resposta = await fetch('../../api/admin/verificar_matricula.php', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                  body: `curso_id=${cursoId}`,
+                  credentials: 'include'
+                });
+                const data = await resposta.json();
+
+                if (data.status === 'nao_logado') {
+                  mostrarModal('Acesso negado', 'Você precisa estar logado para acessar este curso.', [
+                    { texto: 'Fazer login', class: 'btn btn-primary', onClick: () => window.location.href = '../../html/login.php' }
+                  ]);
+                } else if (data.status === 'matriculado') {
+                  mostrarModal('Aviso', 'Você já está matriculado neste curso!', [
+                    { texto: 'OK', class: 'btn btn-secondary' }
+                  ]);
+                } else if (data.status === 'nao_matriculado') {
+                  mostrarModal('Confirmar matrícula', 'Você ainda não está matriculado neste curso. Deseja se matricular agora?', [
+                    {
+                      texto: 'Sim', class: 'btn btn-success', onClick: async () => {
+                        const matriculaRes = await fetch('../../api/admin/matricular.php', {
+                          method: 'POST',
+                          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                          body: `curso_id=${cursoId}`,
+                          credentials: 'include'
+                        });
+                        const matriculaData = await matriculaRes.json();
+
+                        if (matriculaData.status === 'sucesso') {
+                          mostrarModal('Sucesso', 'Matrícula realizada com sucesso! Agora você pode acessar o curso.', [
+                            {
+                              texto: 'Acessar curso', class: 'btn btn-success', onClick: () => window.location.href =
+                                `../../api/admin/videoaula.php?id=${cursoId}`
+                            }
+                          ]);
+                          target.disabled = true;
+                          target.style.background = '#ccc';
+                          target.style.cursor = 'not-allowed';
+                        } else {
+                          mostrarModal('Erro', 'Erro ao matricular: ' + (matriculaData.mensagem || 'Tente novamente.'), [
+                            { texto: 'OK', class: 'btn btn-danger' }
+                          ]);
+                        }
+                      }
+                    },
+                    { texto: 'Cancelar', class: 'btn btn-secondary' }
+                  ]);
+                }
+              } catch (err) {
+                console.error('Erro:', err);
+                mostrarModal('Erro', 'Erro ao verificar matrícula. Tente novamente.', [
+                  { texto: 'OK', class: 'btn btn-danger' }
+                ]);
+              }
+            }
+
+            // ---------- ACESSAR CURSO ----------
+            if (target.classList.contains('btn-acessar')) {
+              e.preventDefault();
+              const cursoId = target.dataset.id;
+
+              try {
+                const resposta = await fetch('../../api/admin/verificar_matricula.php', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                  body: `curso_id=${cursoId}`,
+                  credentials: 'include'
+                });
+
+                const data = await resposta.json();
+
+                if (data.status === 'nao_logado') {
+                  mostrarModal('Acesso negado', 'Você precisa estar logado para acessar este curso.', [
+                    { texto: 'Fazer login', class: 'btn btn-primary', onClick: () => window.location.href = '../../html/login.php' }
+                  ]);
+                } else if (data.status === 'nao_matriculado') {
+                  mostrarModal('Acesso restrito', 'Você precisa se matricular neste curso antes de acessá-lo.', [
+                    { texto: 'Matricular-se', class: 'btn btn-success' },
+                    { texto: 'Fechar', class: 'btn btn-secondary' }
+                  ]);
+                } else if (data.status === 'matriculado') {
+                  window.location.href = `../../api/admin/videoaula.php?id=${cursoId}`;
+                }
+              } catch (err) {
+                console.error('Erro:', err);
+                mostrarModal('Erro', 'Erro ao verificar matrícula. Tente novamente.', [
+                  { texto: 'OK', class: 'btn btn-danger' }
+                ]);
+              }
+            }
+          });
+
         } else {
-          btnTopo.style.display = 'none';
+          listaCursos.innerHTML = `<p class="text-center">Nenhum curso disponível no momento.</p>`;
         }
-      });
-      btnTopo.addEventListener('click', () => {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      });
-
-      window.addEventListener('keydown', (e) => {
-        if (e.altKey && e.key === '1') {
-          e.preventDefault();
-          document.getElementById('indicadores').focus();
-        } else if (e.altKey && e.key === '2') {
-          e.preventDefault();
-          document.getElementById('carrossel-destaques').focus();
-        } else if (e.altKey && e.key === '3') {
-          e.preventDefault();
-          document.getElementById('depoimentos').focus();
-        } else if (e.altKey && e.key === '4') {
-          e.preventDefault();
-          document.getElementById('parceiros').focus();
-        } else if (e.altKey && e.key === '5') {
-          e.preventDefault();
-          document.getElementById('cta').focus();
-        }
-      });
-    });
-
-    document.addEventListener('DOMContentLoaded', () => {
-      const botoesAcessarCurso = document.querySelectorAll('.curso .btn-primary');
-
-      botoesAcessarCurso.forEach((botao) => {
-        const nomeCurso = botao.getAttribute('data-nome');
-        const cursoElement = botao.closest('.curso');
-        const cursosDisponiveis = JSON.parse(localStorage.getItem('cursosDisponiveis')) || {};
-
-        if (cursosDisponiveis[nomeCurso]) {
-          cursoElement.style.display = 'none';
-        }
-
-        botao.addEventListener('click', (e) => {
-          e.preventDefault();
-          const modalCadastro = document.getElementById('modal-cadastro');
-          modalCadastro.style.display = 'flex';
-          const btnSim = document.getElementById('btn-sim');
-          const btnNao = document.getElementById('btn-nao');
-
-          btnSim.addEventListener('click', () => {
-            cadastrarCurso(nomeCurso, cursoElement);
-            modalCadastro.style.display = 'none';
-            verificarCursos();
-            window.location.href = 'meus-cursos.html';
-          });
-
-          btnNao.addEventListener('click', () => {
-            modalCadastro.style.display = 'none';
-          });
-        });
-      });
-
-      const cursos = document.querySelectorAll('.curso');
-      const cursosCadastrados = JSON.parse(localStorage.getItem('cursosCadastrados')) || [];
-      const cursosDisponiveis = JSON.parse(localStorage.getItem('cursosDisponiveis')) || {};
-
-      cursos.forEach((curso) => {
-        const nomeCurso = curso.querySelector('h3').textContent;
-        if (cursosDisponiveis[nomeCurso]) {
-          curso.style.display = 'none';
-        }
-      });
-
-      verificarCursos();
-    });
-
-    function verificarCursos() {
-      const cursos = document.querySelectorAll('.curso');
-      const cursosCadastrados = JSON.parse(localStorage.getItem('cursosCadastrados')) || [];
-      const cursosDisponiveis = JSON.parse(localStorage.getItem('cursosDisponiveis')) || {};
-
-      let todosCadastrados = true;
-
-      cursos.forEach((curso) => {
-        const nomeCurso = curso.querySelector('h3').textContent;
-        if (!cursosDisponiveis[nomeCurso]) {
-          todosCadastrados = false;
-        }
-      });
-
-      if (todosCadastrados) {
-        const cursosContainer = document.querySelector('.cursos');
-        cursosContainer.innerHTML = '<p style="text-align: center; font-size: 18px;">Não há cursos disponíveis no momento. Aguarde novos cursos em breve!</p>';
+      } catch (error) {
+        console.error('Erro ao carregar cursos:', error);
+        listaCursos.innerHTML = `<p class="text-center text-danger">Erro ao carregar os cursos.</p>`;
       }
-    }
-
-    function cadastrarCurso(nomeCurso, cursoElement) {
-      const cursosCadastrados = JSON.parse(localStorage.getItem('cursosCadastrados')) || [];
-      const cursoExistente = cursosCadastrados.some(curso => curso.nome === nomeCurso);
-
-      if (!cursoExistente) {
-        const curso = { nome: nomeCurso };
-        cursosCadastrados.push(curso);
-        localStorage.setItem('cursosCadastrados', JSON.stringify(cursosCadastrados));
-
-        const cursosDisponiveis = JSON.parse(localStorage.getItem('cursosDisponiveis')) || {};
-        cursosDisponiveis[nomeCurso] = true;
-        localStorage.setItem('cursosDisponiveis', JSON.stringify(cursosDisponiveis));
-
-        cursoElement.style.display = 'none';
-      }
-    }
-
-    document.addEventListener('DOMContentLoaded', () => {
-      const iconeTrocarConta = document.querySelector('.fa-right-from-bracket');
-      const modalTrocarConta = document.getElementById('modal-trocar-conta');
-      const btnSimTrocarConta = document.getElementById('btn-sim-trocar-conta');
-      const btnNaoTrocarConta = document.getElementById('btn-nao-trocar-conta');
-
-      iconeTrocarConta.addEventListener('click', (e) => {
-        e.preventDefault();
-        modalTrocarConta.style.display = 'flex';
-      });
-
-      btnNaoTrocarConta.addEventListener('click', () => {
-        modalTrocarConta.style.display = 'none';
-      });
-
-      btnSimTrocarConta.addEventListener('click', () => {
-        window.location.href = '../login.html';
-      });
     });
-
   </script>
+
+  <script src="../../lib/bootstrap/js/bootstrap.bundle.min.js"></script>
 
 </body>
 

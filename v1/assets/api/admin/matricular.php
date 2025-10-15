@@ -7,6 +7,7 @@ ini_set('display_errors', 0);
 
 header('Content-Type: application/json; charset=utf-8');
 
+// Verifica se o usuário está logado
 if (!isset($_SESSION['usuario_id'])) {
     echo json_encode(['status' => 'nao_logado']);
     exit;
@@ -15,6 +16,7 @@ if (!isset($_SESSION['usuario_id'])) {
 $usuario_id = intval($_SESSION['usuario_id']);
 $curso_id = intval($_POST['curso_id'] ?? 0);
 
+// Valida curso
 if ($curso_id <= 0) {
     echo json_encode(['status' => 'erro', 'mensagem' => 'Curso inválido.']);
     exit;
@@ -26,10 +28,13 @@ $stmt->bind_param("ii", $usuario_id, $curso_id);
 $stmt->execute();
 $result = $stmt->get_result();
 
-if ($result->num_rows > 0) {
+if ($result && $result->num_rows > 0) {
     echo json_encode(['status' => 'ja_matriculado']);
+    $stmt->close();
+    $conn->close();
     exit;
 }
+$stmt->close();
 
 // Insere matrícula
 $stmt = $conn->prepare("INSERT INTO matriculas (usuario_id, curso_id, data_matricula) VALUES (?, ?, NOW())");
@@ -38,7 +43,13 @@ $stmt->bind_param("ii", $usuario_id, $curso_id);
 if ($stmt->execute()) {
     echo json_encode(['status' => 'sucesso']);
 } else {
-    echo json_encode(['status' => 'erro', 'mensagem' => 'Falha ao matricular.']);
+    echo json_encode([
+        'status' => 'erro',
+        'mensagem' => 'Falha ao matricular: ' . $stmt->error
+    ]);
 }
 
+$stmt->close();
+$conn->close();
 exit;
+?>

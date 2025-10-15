@@ -1,3 +1,18 @@
+<?php
+session_start();
+
+// Evita cache da página
+header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+header("Cache-Control: post-check=0, pre-check=0", false);
+header("Pragma: no-cache");
+
+// Verifica se o usuário está logado
+if (!isset($_SESSION['usuario_id'])) {
+    header("Location: ../../html/login.php");
+    exit();
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -50,7 +65,7 @@
                       <strong style="margin-left: 30px; margin-right: 30px;" id="nome-usuario">Administrador</strong>
                     </div>
 
-                    <a href="../../html/login.php" style="font-size: 20px; color: gray; margin-left: -10px;"
+                    <a href="../../api/auth/logout.php" style="font-size: 20px; color: gray; margin-left: -10px;"
                       title="Sair da Conta">
                       <i class="fa-solid fa-right-from-bracket"></i>
                     </a>
@@ -123,9 +138,11 @@
 
   <br>
 
-  <section class="container cursos-section" style="margin-top: 50px;">
-    <h3 class="text-center mb-4" style="font-size:28px; color: rgb(6, 93, 199);">Cursos Disponíveis</h3>
-    <div id="lista-cursos" class="row g-4" style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: center;">
+  <section class="container cursos-section" style="margin-top: 80px; position: relative;">
+    <div class="cursos-wrapper">
+      <h3 class="titulo-cursos">Cursos Disponíveis</h3>
+      <p class="subtitulo-cursos">Escolha um curso e comece a transformar seu futuro.</p>
+      <div id="lista-cursos" class="row g-4 cursos-grid"></div>
     </div>
   </section>
 

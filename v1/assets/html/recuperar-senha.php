@@ -7,8 +7,8 @@
   <title>Recuperar Senha | UNICORP</title>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="../assets/css/login.css" />
-  <link rel="stylesheet" href="../assets/css/back-button.css">
+  <link rel="stylesheet" href="../css/login.css" />
+  <link rel="stylesheet" href="../css/back-button.css">
 </head>
 
 <body>
@@ -33,8 +33,8 @@
       <p class="footer">© 2025 UNICORP. Todos os direitos reservados.</p>
     </div>
     <div class="imagem-wrapper">
-      <img class="imagem-fundo-bg" src="../assets/images/feixe-azul.png" alt="Imagem de fundo" />
-      <img class="imagem-fundo" src="../assets/images/logo.png" alt="Imagem da frente" />
+      <img class="imagem-fundo-bg" src="../images/feixe-azul.png" alt="Imagem de fundo" />
+      <img class="imagem-fundo" src="../images/logo.png" alt="Imagem da frente" />
     </div>
   </div>
 
@@ -48,7 +48,7 @@
 
       if (usuario) {
         localStorage.setItem('usuarioRecuperacao', JSON.stringify(usuario));
-        window.location.href = "../assets/confirmar-recuperacao.html";
+        window.location.href = "confirmar-recuperacao.html";
       } else {
         alert("E-mail não encontrado.");
       }
