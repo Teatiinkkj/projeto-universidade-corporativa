@@ -57,6 +57,7 @@ $emailUsuario = $result['email'] ?? "email@exemplo.com";
         </div>
         <ul class="submenu-links">
             <li><a href="perfil.php"><i class="fa fa-user"></i> Perfil</a></li>
+            <li><a href="../html/admin.php"><i class="fa fa-user"></i> usuarios	</a></li>
             <li><a href="cursos.php"><i class="fa fa-graduation-cap"></i> Cursos</a></li>
             <li><a href="configuracoes.php"><i class="fa fa-cogs"></i> Configurações</a></li>
             <li><a href="../../api/auth/logout.php"><i class="fa fa-sign-out"></i> Sair</a></li>

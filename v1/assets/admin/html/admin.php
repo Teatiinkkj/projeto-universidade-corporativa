@@ -217,7 +217,7 @@ if (!isset($_SESSION['usuario_id'])) {
           tr.innerHTML = `
         <td>${u.nome}</td>
         <td>${u.cargo || ""}</td>
-        <td>${u.sexo || ""}</td>
+        <td>${(u.sexo || "").toUpperCase()}</td>
         <td>${u.cpf || ""}</td>
         <td>${u.email}</td>
         <td>${u.senha ? "*****" : ""}</td>

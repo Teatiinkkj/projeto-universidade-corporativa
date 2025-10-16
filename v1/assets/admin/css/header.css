@@ -19,8 +19,8 @@
 #userMenuBtn {
     background: rgba(255, 255, 255, 0.068);
     border: none;
-    padding: 10px 12px;
-    border-radius: 12px;
+    padding: 10px 16px;
+    border-radius: 10px;
     cursor: pointer;
     font-size: 20px;
     color: white;
@@ -46,7 +46,7 @@
     display: flex;
     align-items: center;
     width: 100%;
-    max-width: 450px;
+    max-width: 750px;
     position: relative;
     transition: all 0.4s ease;
 }
@@ -257,7 +257,9 @@
 }
 
 .submenu-links li a:hover {
-    background: #f0e6ff;
+    background: #e6f3ff;
+    height: 30px;
+    width: 100%;
     transform: translateX(5px);
 }
 
