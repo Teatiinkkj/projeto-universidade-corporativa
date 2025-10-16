@@ -8,8 +8,8 @@ header("Pragma: no-cache");
 
 // Verifica se o usuário está logado
 if (!isset($_SESSION['usuario_id'])) {
-    header("Location: ../../html/login.php");
-    exit();
+  header("Location: ../../html/login.php");
+  exit();
 }
 ?>
 
@@ -20,95 +20,16 @@ if (!isset($_SESSION['usuario_id'])) {
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Início | U.C</title>
-  <link rel="stylesheet" href="../../css/website.css">
   <link rel="stylesheet" href="../../css/perfil-container.css">
   <link rel="stylesheet" href="../css/inicio.css">
+  <link rel="stylesheet" href="../css/header.css">
   <link rel="stylesheet" href="../../lib/bootstrap/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 </head>
 
 <body>
 
-  <header class="header-inicio">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-4">
-          <nav id="menu" class="menu">
-            <ul>
-              <div class="input-group search">
-                <input id="input-search" type="search" class="form-control" placeholder="Buscar...">
-                <span class="input-group-btn">
-                  <button class="" type="button"><i class="fa fa-search"></i></button>
-                </span>
-              </div>
-            </ul>
-          </nav>
-        </div>
-        <div class="col-md-4">
-          <nav class="submenu">
-            <ul>
-              <li class="menu-item">
-                <a href="#" class="menu-link">
-                  <i class="fa fa-bars menu-icon" style="color: white;"></i>
-                </a>
-                <div class="submenu-full">
-                  <div style="display: flex; align-items: center; justify-content: space-between;">
-                    <h2>Menu</h2>
-                    <button class="close-submenu"
-                      style="background:none; border:none; font-size:24px; cursor:pointer;">&times;</button>
-                  </div>
-                  <hr>
-                  <section id="foto-perfil-container" class="perfil-container" aria-label="Informações do usuário">
-                    <img style="margin-left: 10px; padding: 5px;" src="../../images/crown.png"
-                      alt="Foto de perfil do usuário" id="foto-perfil" />
-                    <div class="perfil-info">
-                      <strong style="margin-left: 30px; margin-right: 30px;" id="nome-usuario">Administrador</strong>
-                    </div>
-
-                    <a href="../../api/auth/logout.php" style="font-size: 20px; color: gray; margin-left: -10px;"
-                      title="Sair da Conta">
-                      <i class="fa-solid fa-right-from-bracket"></i>
-                    </a>
-
-                  </section>
-
-                  <hr style="margin-top: 20px;">
-                  <link rel="stylesheet"
-                    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
-
-                  <a href="admin.php"><i class="fa fa-cogs"></i> Gestão de Usuários</a>
-                  <a href="cursos.php"><i class="fa fa-cogs"></i> Gestão de Cursos</a>
-                </div>
-              </li>
-            </ul>
-          </nav>
-        </div>
-        <div class="col-md-4">
-          <nav class="notificacao pull-right">
-            <ul>
-              <li class="ntf-item" style="position: relative;">
-                <a href="#" class="menu-link">
-                  <i class="fa fa-bell" style="color: white;"></i>
-                  <span id="badge-count"
-                    style="position: absolute; top: -5px; right: -5px; background: red; color: white; border-radius: 50%; padding: 2px 6px; font-size: 12px; display: none;">0</span>
-                </a>
-                <div class="notificacao-barra">
-                  <div style="display: flex; align-items: center; justify-content: space-between;">
-                    <h2>Notificações</h2>
-                    <button class="close-submenu"
-                      style="background:none; border:none; font-size:24px; cursor:pointer; color: black;"
-                      onclick="this.parentNode.parentNode.parentNode.classList.remove('show');">&times;</button>
-                  </div>
-                  <hr />
-                  <ul></ul>
-                </div>
-              </li>
-            </ul>
-          </nav>
-        </div>
-      </div>
-    </div>
-  </header>
+  <?php include '../api/header.php'; ?>
 
   <section style="margin-top: 100px;" class="container section-inc-1">
     <div class="row introducao">
@@ -132,7 +53,8 @@ if (!isset($_SESSION['usuario_id'])) {
   <section class="container section-inc-2">
     <div class="texto-curso">
       <h3 class="h3-inicio">Gerenciar Cursos:</h3>
-      <a href="cursos.php" class="btn btn-primary" style="margin-left: 0px;">Cursos</a>
+      <a href="cursos.php" class="btn btn-primary"
+        style="margin-left: 0px; background-color: #1754a3; border: none;">Cursos</a>
     </div>
   </section>
 
@@ -140,6 +62,8 @@ if (!isset($_SESSION['usuario_id'])) {
 
   <section class="container cursos-section" style="margin-top: 80px; position: relative;">
     <div class="cursos-wrapper">
+      <a href="cursos.php" class="btn btn-primary pull-left btn-cursos"
+        style="margin-left: 3%; background-color: #1754a3; border: none;">Gerenciar cursos</a>
       <h3 class="titulo-cursos">Cursos Disponíveis</h3>
       <p class="subtitulo-cursos">Escolha um curso e comece a transformar seu futuro.</p>
       <div id="lista-cursos" class="row g-4 cursos-grid"></div>
@@ -443,7 +367,7 @@ if (!isset($_SESSION['usuario_id'])) {
               </div>
               <div style="margin-top: 15px; display: flex; justify-content: space-between; align-items: center;">
                 <a href="#" class="btn-acessar" data-id="${curso.id}"
-                  style="padding:8px 15px; background:#28a745; color:white; border-radius:8px; text-decoration:none; font-size:14px; font-weight:600;">
+                  style="padding:8px 25px; background:#28a745; color:white; border-radius:8px; text-decoration:none; font-size:14px; font-weight:600;">
                   Acessar
                 </a>
                 <button class="btn-matricular" data-id="${curso.id}"
