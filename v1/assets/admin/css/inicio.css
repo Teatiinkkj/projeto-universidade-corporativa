@@ -8,7 +8,6 @@ body {
   padding: 0;
   line-height: 1.6;
   scroll-behavior: smooth;
-
   background-color: #ffffff;
   position: relative;
   overflow-x: hidden;
@@ -22,10 +21,10 @@ body::before {
   left: -50%;
   width: 200%;
   height: 200%;
-  background: 
-    radial-gradient(circle at 25% 25%, rgba(23,84,163,0.1) 0%, transparent 60%),
-    radial-gradient(circle at 75% 75%, rgba(23,84,163,0.08) 0%, transparent 50%),
-    linear-gradient(45deg, rgba(23,84,163,0.04) 20%, transparent 20%, transparent 80%, rgba(23,84,163,0.04) 80%, rgba(23,84,163,0.04) 100%);
+  background:
+    radial-gradient(circle at 25% 25%, rgba(23, 84, 163, 0.1) 0%, transparent 60%),
+    radial-gradient(circle at 75% 75%, rgba(23, 84, 163, 0.08) 0%, transparent 50%),
+    linear-gradient(45deg, rgba(23, 84, 163, 0.04) 20%, transparent 20%, transparent 80%, rgba(23, 84, 163, 0.04) 80%, rgba(23, 84, 163, 0.04) 100%);
   background-size: cover;
   z-index: -1;
   pointer-events: none;
@@ -34,26 +33,33 @@ body::before {
 
 /* Movimento suave das formas */
 @keyframes moveBackground {
-  0% { transform: translate(0,0) rotate(0deg); }
-  50% { transform: translate(80px,80px) rotate(180deg); }
-  100% { transform: translate(0,0) rotate(360deg); }
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+
+  50% {
+    transform: translate(80px, 80px) rotate(180deg);
+  }
+
+  100% {
+    transform: translate(0, 0) rotate(360deg);
+  }
 }
 
 /* ==========================
-   Section de Introdução Animada - Ajuste para fundo azul claro
+   Section de Introdução Animada - full width
 ========================== */
 .section-inc-1 {
   position: relative;
-  padding: 120px 20px 80px;
+  width: 100vw;
+  padding: 50px 0 80px;
   background: linear-gradient(135deg, #d0e7ff, #c4e0ff, #b8d9ff, #d0e7ff);
-  /* azul claro suave */
   background-size: 400% 400%;
   color: #1754a3;
-  /* azul escuro para textos que combinam com a logo */
   text-align: center;
   overflow: hidden;
-  border-radius: 25px;
   animation: gradientBG 20s ease infinite;
+  box-sizing: border-box;
 }
 
 .section-inc-1::before {
@@ -64,20 +70,29 @@ body::before {
   width: 200%;
   height: 200%;
   background: radial-gradient(circle, rgba(255, 255, 255, 0.3) 0%, transparent 70%);
-  /* leve brilho para animação */
   animation: rotateBG 25s linear infinite;
   z-index: 0;
   pointer-events: none;
 }
 
+
+
+/* Conteúdo centralizado */
+.section-inc-1 .container {
+  position: relative;
+  z-index: 2;
+  padding: 0 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
 .section-inc-1 .logo-inicio {
   position: relative;
   max-width: 220px;
-  margin-bottom: 25px;
-  margin-left: 80px;
+  margin: 0 auto 0px;
+  display: block;
   z-index: 1;
   filter: drop-shadow(0 0 12px rgba(0, 0, 0, 0.25));
-  /* destaque da logo */
   animation: bounceIn 1.2s ease forwards;
 }
 
@@ -88,7 +103,6 @@ body::before {
   z-index: 1;
   font-weight: 800;
   color: #1754a3;
-  /* azul escuro */
   text-shadow: 0 3px 12px rgba(0, 0, 0, 0.2);
   animation: fadeInUp 1s ease forwards;
 }
@@ -97,9 +111,13 @@ body::before {
 .h3-inc-introducao {
   position: relative;
   color: #0d2a57;
-  /* azul escuro para contraste */
   z-index: 1;
   animation: fadeInUp 1.4s ease forwards;
+}
+
+.h3-inc-introducao {
+  max-width: 750px;
+  margin: 0 auto 25px;
 }
 
 /* Links com efeito moderno */
@@ -107,7 +125,6 @@ body::before {
   position: relative;
   display: inline-block;
   color: #fff;
-  margin-right: 240px;
   font-weight: 700;
   font-size: 1.1rem;
   text-decoration: none;
@@ -124,6 +141,317 @@ body::before {
   transform: scale(1.1) rotate(-2deg);
   box-shadow: 0 0 40px rgba(255, 255, 255, 0.4);
 }
+
+/* ==========================
+   SECTION INTRODUÇÃO UNICORP
+========================== */
+.section-inc-1 {
+  position: relative;
+  width: 100%;
+  padding: 80px 20px;
+  background: linear-gradient(135deg, #d0e7ff, #c4e0ff, #b8d9ff, #d0e7ff);
+  background-size: 400% 400%;
+  color: #1754a3;
+  overflow: hidden;
+  animation: gradientBG 20s ease infinite;
+}
+
+.section-inc-1::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.3) 0%, transparent 70%);
+  animation: rotateBG 25s linear infinite;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.section-inc-1 .container {
+  position: relative;
+  z-index: 2;
+  max-width: 1200px;
+}
+
+/* Logo */
+.logo-inicio {
+  max-width: 200px;
+  margin: 0 auto;
+  display: block;
+  filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.25));
+  animation: bounceIn 1.2s ease forwards;
+}
+
+/* Títulos */
+.h2-inicio {
+  font-size: 2.8rem;
+  font-weight: 800;
+  margin-bottom: 15px;
+  color: #1754a3;
+  text-shadow: 0 3px 12px rgba(0, 0, 0, 0.2);
+  animation: fadeInUp 1s ease forwards;
+}
+
+.h2-inc-introducao,
+.h3-inc-introducao {
+  color: #0d2a57;
+  animation: fadeInUp 1.4s ease forwards;
+}
+
+.h3-inc-introducao {
+  max-width: 700px;
+  margin: 15px auto 25px;
+}
+
+/* Botão de link */
+.section-inc-1 a {
+  display: inline-block;
+  color: #fff;
+  font-weight: 700;
+  font-size: 1.1rem;
+  text-decoration: none;
+  padding: 12px 25px;
+  border-radius: 50px;
+  background: rgba(36, 109, 177, 0.3);
+  box-shadow: 0 0 20px rgba(184, 184, 184, 0.7);
+  transition: all 0.4s ease;
+  animation: pulseLink 2s ease infinite;
+}
+
+.section-inc-1 a:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: scale(1.08);
+  box-shadow: 0 0 35px rgba(255, 255, 255, 0.5);
+}
+
+/* ==========================
+   CTA
+========================== */
+.cta {
+  background: linear-gradient(135deg, #1754a3, #65a8ff, #3268b3, #2674da);
+  background-size: 400% 400%;
+  color: white;
+  text-align: center;
+  padding: 40px 25px;
+  border-radius: 25px;
+  animation: cardGradient 10s ease infinite;
+  box-shadow: 0 10px 25px rgba(23, 84, 163, 0.3);
+}
+
+.cta h2 {
+  font-size: 2rem;
+  font-weight: 800;
+  margin-bottom: 10px;
+  text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+}
+
+.cta p {
+  font-size: 1.1rem;
+  margin-bottom: 25px;
+}
+
+/* Botão CTA */
+.btn-curso {
+  background: linear-gradient(90deg, #1754a3, #1d6bd1, #1754a3);
+  background-size: 200% 200%;
+  color: white;
+  padding: 14px 36px;
+  border-radius: 12px;
+  border: none;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.4s ease;
+  box-shadow: 0 5px 15px rgba(23, 84, 163, 0.4);
+  animation: btnGradient 3s ease infinite;
+}
+
+.btn-curso:hover {
+  background-position: 100%;
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 0 25px rgba(23, 84, 163, 0.7);
+}
+
+.btn-curso:active {
+  transform: scale(0.97);
+}
+
+/* --------------------------
+   Texto com digitação
+-------------------------- */
+.ctb-texto {
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.ctb-texto h2 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #1754a3;
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+  border-right: 4px solid #1754a3;
+  animation: typing 4s steps(60, end), blink 0.75s step-end infinite;
+}
+
+/* Efeito de digitação e cursor piscando */
+@keyframes typing {
+  from {
+    width: 0;
+  }
+
+  to {
+    width: 40%;
+  }
+}
+
+@keyframes blink {
+  50% {
+    border-color: transparent;
+  }
+}
+
+/* ==========================
+   ANIMAÇÕES
+========================== */
+@keyframes gradientBG {
+
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+@keyframes rotateBG {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes bounceIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.6) translateY(-30px);
+  }
+
+  60% {
+    opacity: 1;
+    transform: scale(1.1) translateY(10px);
+  }
+
+  100% {
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes pulseLink {
+
+  0%,
+  100% {
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.15);
+  }
+
+  50% {
+    box-shadow: 0 0 35px rgba(255, 255, 255, 0.3);
+  }
+}
+
+@keyframes btnGradient {
+
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+@keyframes cardGradient {
+
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+/* ==========================
+   RESPONSIVIDADE
+========================== */
+@media (max-width: 992px) {
+  .h2-inicio {
+    font-size: 2.4rem;
+  }
+
+  .h2-inc-introducao {
+    font-size: 1.4rem;
+  }
+
+  .h3-inc-introducao {
+    font-size: 1.1rem;
+  }
+
+  .cta {
+    margin-top: 30px;
+    padding: 30px 20px;
+  }
+
+  .cta h2 {
+    font-size: 1.8rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .logo-inicio {
+    max-width: 150px;
+  }
+
+  .h2-inicio {
+    font-size: 2rem;
+  }
+
+  .h2-inc-introducao {
+    font-size: 1.2rem;
+  }
+
+  .h3-inc-introducao {
+    font-size: 1rem;
+  }
+
+  .section-inc-1 a {
+    font-size: 1rem;
+    padding: 10px 20px;
+  }
+}
+
 
 /* ==========================
    Keyframes de animações
@@ -542,18 +870,15 @@ body::before {
 
 /* Cartão do curso */
 .curso-card {
-  background: #ffffff;
-  border-radius: 18px;
-  box-shadow: 0 8px 25px rgba(0, 60, 150, 0.1);
-  width: 280px;
-  overflow: hidden;
+  background-color: #fff;
+  border-radius: 15px;
+  box-shadow: 0 4px 10px rgba(23, 84, 163, 0.1);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  border: 1px solid rgba(0, 90, 255, 0.12);
 }
 
 .curso-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 15px 35px rgba(0, 80, 200, 0.2);
+  transform: scale(1.05);
+  box-shadow: 0 6px 20px rgba(23, 84, 163, 0.3);
 }
 
 /* Título e descrição dentro do card */

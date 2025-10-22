@@ -1,17 +1,6 @@
 <?php
 header('Content-Type: application/json');
-
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "universidade_corporativa";
-
-$conn = new mysqli($servername, $username, $password, $dbname);
-if ($conn->connect_error) {
-    http_response_code(500);
-    echo json_encode(["success" => false, "message" => "Erro de conexão: " . $conn->connect_error]);
-    exit();
-}
+include '../../db/conexao.php';
 
 $data = json_decode(file_get_contents("php://input"), true);
 
@@ -38,6 +27,13 @@ if ($senha) {
 }
 
 if ($stmt->execute()) {
+    // Criar notificação de perfil atualizado
+    $stmtNotif = $conn->prepare("INSERT INTO notificacoes (usuario_id, tipo, descricao) VALUES (?, ?, ?)");
+    $tipo = 'perfil_atualizado';
+    $descricaoNotif = "Seu perfil foi atualizado com sucesso";
+    $stmtNotif->bind_param("iss", $id, $tipo, $descricaoNotif);
+    $stmtNotif->execute();
+
     echo json_encode(["success" => true, "message" => "Usuário atualizado com sucesso."]);
 } else {
     http_response_code(500);

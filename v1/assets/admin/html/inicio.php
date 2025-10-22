@@ -31,31 +31,47 @@ if (!isset($_SESSION['usuario_id'])) {
 
   <?php include '../api/header.php'; ?>
 
-  <section style="margin-top: 100px;" class="container section-inc-1">
-    <div class="row introducao">
-      <div class="col-md-12">
-        <img class="logo-inicio pull-left" src="../../images/logo.png" alt="logo">
-        <h2 class="h2-inicio text-center">Universidade Corporativa</h2>
-        <h2 class="h2-inc-introducao text-center">Transforme seu futuro. Evolua sua carreira.</h2>
-        <h3 style="width: 750px; margin-left: 400px;" class="h3-inc-introducao text-center">Desbloqueie seu potencial e
-          alcance novos patamares de sucesso com a nossa
-          <strong>Universidade Corporativa.</strong></h2>
-          <a style="margin-left: 260px; text-decoration: none;" href="../../html/sobre.html"
-            onmouseover="this.style.textDecoration='underline';" onmouseout="this.style.textDecoration='none';">
-            Clique aqui e aproveite mais informações sobre a <strong>UNICORP</strong>
+  <section class="section-inc-1 mt-5">
+    <div class="container">
+      <div class="row align-items-center justify-content-center text-center text-lg-start">
+
+        <!-- Textos -->
+        <div class="col-12 col-lg-5 mb-5 mb-lg-0">
+          <h2 class="h2-inicio">Universidade Corporativa</h2>
+          <h2 class="h2-inc-introducao">Transforme seu futuro. Evolua sua carreira.</h2>
+          <h3 class="h3-inc-introducao">
+            Desbloqueie seu potencial e alcance novos patamares de sucesso com a nossa
+            <strong>Universidade Corporativa.</strong>
+          </h3>
+          <a href="../../html/sobre.html">
+            Saiba mais sobre a <strong>UNICORP!</strong>
           </a>
+        </div>
+
+        <!-- Logo -->
+        <div class="col-12 col-lg-3 mb-4 mb-lg-0 g-4">
+          <img class="logo-inicio" src="../../images/logo.png" alt="Logo UNICORP">
+        </div>
+
+        <!-- CTA -->
+        <div class="col-12 col-lg-4">
+          <section class="cta">
+            <h2>Pronto para dar o próximo passo?</h2>
+            <p>Invista no seu futuro e conquiste novas oportunidades com nossos cursos!</p>
+            <button class="btn-curso">Comece Agora</button>
+          </section>
+        </div>
+
       </div>
     </div>
   </section>
 
   <br><br><br><br>
 
-  <section class="container section-inc-2">
-    <div class="texto-curso">
-      <h3 class="h3-inicio">Gerenciar Cursos:</h3>
-      <a href="cursos.php" class="btn btn-primary"
-        style="margin-left: 0px; background-color: #1754a3; border: none;">Cursos</a>
-    </div>
+  <br>
+
+  <section class="ctb-texto">
+    <h2 class="animado">Invista no seu futuro! Acesse nossos cursos agora!</h2>
   </section>
 
   <br>

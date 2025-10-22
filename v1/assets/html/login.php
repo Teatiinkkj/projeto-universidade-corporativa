@@ -11,6 +11,8 @@
 </head>
 
 <body>
+  <div id="particles-js"></div>
+
   <div class="container">
     <div class="caixa-login">
       <div class="cabecalho">
@@ -55,6 +57,8 @@
     </div>
   </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+
   <script>
     function mostrarSenha() {
       var senha = document.getElementById("senha");
@@ -95,7 +99,7 @@
 
         if (data.success) {
           localStorage.setItem('usuarioLogado', JSON.stringify(data.usuario));
-          
+
           // Exibe o modal de sucesso
           modalSucesso.classList.add('ativo');
 
@@ -112,6 +116,21 @@
         console.error('Erro:', error);
         mensagemErro.textContent = 'Erro ao conectar com o servidor. Tente novamente.';
         mensagemErro.style.display = 'block';
+      }
+    });
+
+    // Fundo animado de partículas
+    particlesJS("particles-js", {
+      "particles": {
+        "number": { "value": 70 },
+        "color": { "value": "#ffffff" },
+        "shape": { "type": "circle" },
+        "opacity": { "value": 0.5 },
+        "size": { "value": 3 },
+        "move": { "enable": true, "speed": 1.5 }
+      },
+      "interactivity": {
+        "events": { "onhover": { "enable": true, "mode": "repulse" } }
       }
     });
   </script>

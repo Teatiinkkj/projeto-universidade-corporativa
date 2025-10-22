@@ -106,6 +106,11 @@ if (!isset($_SESSION['usuario_id'])) {
             } else {
                 btn.classList.add('show');
             }
+
+            // 🔥 Atualiza notificações imediatamente
+            if (typeof carregarNotificacoes === 'function') {
+                carregarNotificacoes();
+            }
         }
 
         function atualizarContador() {
@@ -127,14 +132,23 @@ if (!isset($_SESSION['usuario_id'])) {
         fetch('../../api/admin/buscar_progresso.php', { credentials: 'include' })
             .then(res => res.json())
             .then(data => {
-                document.querySelectorAll('.conteudo-item').forEach(item => {
-                    if (data.includes(parseInt(item.dataset.id))) {
-                        item.classList.add('assistido');
-                        aulasAssistidas++;
-                    }
-                });
-                atualizarContador();
-            });
+                if (data.success && Array.isArray(data.conteudos)) {
+                    const concluidos = data.conteudos
+                        .filter(c => c.concluido)
+                        .map(c => c.id);
+
+                    document.querySelectorAll('.conteudo-item').forEach(item => {
+                        if (concluidos.includes(parseInt(item.dataset.id))) {
+                            item.classList.add('assistido');
+                            aulasAssistidas++;
+                        }
+                    });
+                    atualizarContador();
+                } else {
+                    console.error('Erro ao buscar progresso:', data);
+                }
+            })
+            .catch(err => console.error(err));
 
         // Marcar ou desmarcar aula
         btnConcluido.addEventListener('click', () => {
