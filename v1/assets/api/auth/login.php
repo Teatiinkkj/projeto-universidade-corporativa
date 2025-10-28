@@ -40,30 +40,6 @@ $email = trim($input['email']);
 $senha = $input['senha'];
 
 // ----------------------
-// LOGIN FIXO ADMIN
-// ----------------------
-if ($email === "admin" && $senha === "admin") {
-    session_start();
-    $_SESSION['usuario_id'] = 0; // ID fictício
-    $_SESSION['usuario_nome'] = "Administrador";
-    $_SESSION['usuario_email'] = "admin@unicorp.com";
-    $_SESSION['usuario_cargo'] = "admin";
-
-    echo json_encode([
-        "success" => true,
-        "message" => "Login de administrador realizado com sucesso!",
-        "usuario" => [
-            "id" => 0,
-            "nome" => "Administrador",
-            "email" => "admin@unicorp.com",
-            "cargo" => "admin"
-        ],
-        "redirecionamento" => "../../assets/admin/html/inicio.php"
-    ]);
-    exit();
-}
-
-// ----------------------
 // LOGIN COM BANCO
 // ----------------------
 $stmt = $conn->prepare("SELECT id, nome, email, senha, cargo FROM usuarios WHERE email = ?");

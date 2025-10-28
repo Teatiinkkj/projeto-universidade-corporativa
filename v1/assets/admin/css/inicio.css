@@ -175,16 +175,43 @@ body::before {
   max-width: 1200px;
 }
 
-/* Logo */
 .logo-inicio {
-  max-width: 200px;
-  margin: 0 auto;
+  width: 420px !important;
+  max-width: none !important;
+  height: 420px !important;
+  padding: 40px 40px;
   display: block;
+  margin: 0 auto;
   filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.25));
   animation: bounceIn 1.2s ease forwards;
+  transform: scale(2);
+  transform-origin: center;
 }
 
 /* Títulos */
+.titulos {
+  margin-left: -550px;
+  margin-right: 350px;
+  width: 720px !important;
+  max-width: none !important;
+  text-align: center;
+}
+
+.p-inc-introducao {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin-top: 1rem;
+  color: #333;
+}
+
+.p-inc-destaque {
+  font-size: 1.15rem;
+  font-weight: 600;
+  margin-top: 1rem;
+  color: #1754a3;
+  /* Azul principal da identidade visual */
+}
+
 .h2-inicio {
   font-size: 2.8rem;
   font-weight: 800;
@@ -211,6 +238,9 @@ body::before {
   color: #fff;
   font-weight: 700;
   font-size: 1.1rem;
+  width: 500px;
+  margin-top: 20px;
+  text-align: center;
   text-decoration: none;
   padding: 12px 25px;
   border-radius: 50px;
@@ -221,18 +251,23 @@ body::before {
 }
 
 .section-inc-1 a:hover {
-  background: rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.753);
   transform: scale(1.08);
-  box-shadow: 0 0 35px rgba(255, 255, 255, 0.5);
+  color: #1754a3;
+  box-shadow: 0 0 35px rgba(48, 48, 48, 0.5);
+  text-decoration: underline;
 }
 
 /* ==========================
    CTA
 ========================== */
 .cta {
-  background: linear-gradient(135deg, #1754a3, #65a8ff, #3268b3, #2674da);
+  background: linear-gradient(135deg, #1e69ca, #65a8ff, #387ee0, #2674da);
   background-size: 400% 400%;
   color: white;
+  height: 420px;
+  margin-left: 200px;
+  margin-right: -550px;
   text-align: center;
   padding: 40px 25px;
   border-radius: 25px;
@@ -254,17 +289,22 @@ body::before {
 
 /* Botão CTA */
 .btn-curso {
-  background: linear-gradient(90deg, #1754a3, #1d6bd1, #1754a3);
+  background: linear-gradient(90deg, #1754a3, #1f6fd8, #1754a3);
   background-size: 200% 200%;
-  color: white;
-  padding: 14px 36px;
+  color: rgb(255, 255, 255);
+  padding: 0px 36px;
   border-radius: 12px;
+  margin-top: 40px;
+  height: 80px;
+  width: 70%;
   border: none;
-  font-weight: 700;
+  font-size: 45px;
+  font-weight: bold;
   cursor: pointer;
   transition: all 0.4s ease;
   box-shadow: 0 5px 15px rgba(23, 84, 163, 0.4);
   animation: btnGradient 3s ease infinite;
+  animation: pulseLink 2s ease infinite;
 }
 
 .btn-curso:hover {
@@ -562,131 +602,6 @@ body::before {
 }
 
 /* ==========================
-   Indicadores
-========================== */
-.indicadores {
-  display: flex;
-  justify-content: space-around;
-  flex-wrap: wrap;
-  margin: 80px 0;
-  padding: 40px 20px;
-  background: #e6f0ff;
-  border-radius: 25px;
-  box-shadow: 0 10px 30px rgba(0, 90, 200, 0.1);
-  text-align: center;
-  animation: fadeIn 1s ease forwards;
-}
-
-.indicador h3 {
-  font-size: 2.5rem;
-  color: #004aad;
-  margin-bottom: 5px;
-  transition: transform 0.3s;
-}
-
-.indicador h3.animate-count {
-  animation: countUp 2s ease forwards;
-}
-
-.indicador p {
-  font-size: 1.1rem;
-  color: #333;
-}
-
-/* ==========================
-   Depoimentos
-========================== */
-.depoimentos {
-  padding: 80px 20px;
-  background: #f0f4ff;
-  border-radius: 25px;
-  margin: 100px auto;
-  max-width: 1200px;
-  animation: fadeIn 1s ease forwards;
-}
-
-.depoimentos h2 {
-  font-size: 32px;
-  color: #004aad;
-  margin-bottom: 50px;
-  text-align: center;
-}
-
-.depoimento {
-  background: #ffffff;
-  padding: 25px 30px;
-  margin-bottom: 25px;
-  border-radius: 15px;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.depoimento:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
-}
-
-.depoimento blockquote {
-  margin: 0;
-  font-style: italic;
-  font-size: 1.1rem;
-  color: #555;
-  animation: fadeInLeft 1s ease forwards;
-}
-
-.depoimento footer {
-  text-align: right;
-  font-weight: 600;
-  font-size: 1rem;
-  color: #004aad;
-  margin-top: 15px;
-}
-
-/* ==========================
-   Parceiros
-========================== */
-.parceiros {
-  padding: 60px 20px;
-  background: #ffffff;
-  border-radius: 25px;
-  animation: fadeIn 1s ease forwards;
-}
-
-.parceiros h2 {
-  font-size: 28px;
-  color: #004aad;
-  margin-bottom: 50px;
-  text-align: center;
-}
-
-.parceiro {
-  margin-bottom: 30px;
-  transition: transform 0.3s, box-shadow 0.3s;
-}
-
-.parceiro:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-}
-
-.parceiro i {
-  font-size: 50px;
-  color: #4B0082;
-  margin-bottom: 10px;
-  transition: color 0.3s, transform 0.3s;
-}
-
-.parceiro:hover i {
-  color: #006bff;
-  transform: scale(1.2);
-}
-
-.parceiro p {
-  font-weight: 600;
-  color: #333;
-}
-
-/* ==========================
    Animações
 ========================== */
 @keyframes fadeIn {
@@ -846,12 +761,12 @@ body::before {
 }
 
 .titulo-cursos {
-  font-size: 32px;
+  font-size: 45px;
   font-weight: 700;
   color: #004aad;
-  /* Azul principal */
   margin-bottom: 10px;
   letter-spacing: 0.5px;
+  text-align: center;
 }
 
 .subtitulo-cursos {
@@ -898,18 +813,23 @@ body::before {
   transition: background 0.3s ease, transform 0.2s ease;
 }
 
+.curso-card .btn-acessar {
+  background: #218837 !important;
+  border: none;
+}
+
 .curso-card .btn-acessar:hover {
-  background: #218838 !important;
+  background: #33cf55 !important;
   transform: scale(1.05);
 }
 
 .curso-card .btn-matricular {
-  background: #006bff !important;
+  background: #1754a3 !important;
   border: none;
 }
 
 .curso-card .btn-matricular:hover {
-  background: #0056d6 !important;
+  background: rgb(7, 143, 255) !important;
   transform: scale(1.05);
 }
 
@@ -930,5 +850,123 @@ body::before {
   .curso-card {
     width: 100%;
     max-width: 320px;
+  }
+}
+
+/* ==========================
+       Seção de Desenvolvedores
+    ========================== */
+.parceiros {
+  padding: 80px 20px;
+  border-radius: 30px;
+  overflow: hidden;
+  position: relative;
+  margin-top: 200px;
+}
+
+@keyframes glowRotate {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.parceiros h2 {
+  font-size: 3.4rem;
+  color: #1754a3;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 60px;
+  position: relative;
+  z-index: 1;
+  letter-spacing: 1px;
+}
+
+.parceiro {
+  background: #fff;
+  border-radius: 20px;
+  padding: 25px 15px;
+  margin: 20px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+  opacity: 0;
+  transform: translateY(40px);
+  position: relative;
+  z-index: 1;
+}
+
+.parceiro:hover {
+  transform: translateY(-10px) scale(1.03);
+  box-shadow: 0 15px 30px rgba(59, 59, 59, 0.2);
+}
+
+.icon-container {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  margin: 0 auto 15px;
+  background: linear-gradient(145deg, #1754a3, #4395ff);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+  position: relative;
+}
+
+.icon-container::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.15);
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+
+.parceiro:hover .icon-container {
+  transform: rotate(10deg) scale(1.1);
+  box-shadow: 0 0 25px rgba(32, 32, 32, 0.4);
+}
+
+.parceiro:hover .icon-container::after {
+  opacity: 1;
+}
+
+.parceiro i {
+  font-size: 40px;
+  color: #fff;
+  transition: transform 0.3s ease;
+}
+
+.parceiro p {
+  font-weight: 600;
+  color: #333;
+  font-size: 1.1rem;
+  margin-top: 10px;
+}
+
+/* Animação de revelação ao rolar */
+.show-on-scroll {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+  transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .parceiro {
+    padding: 25px;
+  }
+
+  .icon-container {
+    width: 70px;
+    height: 70px;
+  }
+
+  .parceiro i {
+    font-size: 32px;
   }
 }

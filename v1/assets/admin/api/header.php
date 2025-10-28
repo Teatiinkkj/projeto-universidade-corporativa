@@ -99,105 +99,267 @@ $fotoExibida = (!empty($foto) && file_exists($caminhoImagens . $foto))
         </div>
         <ul class="submenu-links">
             <li><a href="perfil.php"><i class="fa fa-user"></i> Perfil</a></li>
-            <li><a href="../html/admin.php"><i class="fa fa-users"></i> Usuários</a></li>
-            <li><a href="cursos.php"><i class="fa fa-graduation-cap"></i> Cursos</a></li>
+            <li><a href="../html/admin.php"><i class="fa fa-users"></i>Gestão de Usuários</a></li>
+            <li><a href="cursos.php"><i class="fa fa-graduation-cap"></i>Gestão de Cursos</a></li>
             <li><a href="configuracoes.php"><i class="fa fa-cogs"></i> Configurações</a></li>
         </ul>
     </div>
 </header>
 
+<div class="modal-overlay" id="modalMatricula">
+    <div class="modal-container">
+        <span class="close-modal" id="closeModal">&times;</span>
+        <h2>Acesso negado</h2>
+        <p>Você precisa estar matriculado neste curso para acessá-lo.</p>
+        <button class="modal-btn" id="modalOkBtn">OK</button>
+    </div>
+</div>
+
 <script>
-const userMenuBtn = document.getElementById('userMenuBtn');
-const userSubmenu = document.getElementById('userSubmenu');
-const notificationsBtn = document.getElementById('notificationsBtn');
-const notificationsMenu = document.getElementById('notificationsMenu');
-const closeNotifications = document.getElementById('closeNotifications');
-const notificationCount = document.getElementById('notificationCount');
-const notificationsList = document.querySelector('.notifications-list');
+    const userMenuBtn = document.getElementById('userMenuBtn');
+    const userSubmenu = document.getElementById('userSubmenu');
+    const notificationsBtn = document.getElementById('notificationsBtn');
+    const notificationsMenu = document.getElementById('notificationsMenu');
+    const closeNotifications = document.getElementById('closeNotifications');
+    const notificationCount = document.getElementById('notificationCount');
+    const notificationsList = document.querySelector('.notifications-list');
+    const searchInput = document.getElementById('searchInput');
+    const searchBtn = document.getElementById('searchBtn');
+    const searchContainer = document.querySelector('.search-container');
 
-// Menu do usuário
-userMenuBtn.addEventListener('click', () => {
-    userSubmenu.classList.toggle('active');
-    notificationsMenu.classList.remove('active');
-});
+    let searchPreview;
+    let historicoPesquisas = JSON.parse(localStorage.getItem('historico_pesquisas')) || [];
 
-document.addEventListener('click', (e) => {
-    if (!userSubmenu.contains(e.target) && !userMenuBtn.contains(e.target)) {
-        userSubmenu.classList.remove('active');
-    }
-    if (!notificationsMenu.contains(e.target) && !notificationsBtn.contains(e.target)) {
+    // =========================
+    // MENU DO USUÁRIO
+    // =========================
+    userMenuBtn.addEventListener('click', () => {
+        userSubmenu.classList.toggle('active');
         notificationsMenu.classList.remove('active');
-    }
-});
-
-// Fechar notificações
-closeNotifications?.addEventListener('click', () => {
-    notificationsMenu.classList.remove('active');
-});
-
-// Busca
-const searchInput = document.getElementById('searchInput');
-const searchBtn = document.getElementById('searchBtn');
-searchBtn.addEventListener('click', () => {
-    const query = searchInput.value.trim();
-    if (query) {
-        window.location.href = `../../html/pesquisa.php?q=${encodeURIComponent(query)}`;
-    }
-});
-
-// Função para carregar notificações
-async function carregarNotificacoes() {
-    try {
-        const res = await fetch('../../api/admin/get_notificacoes.php');
-        const data = await res.json();
-
-        notificationsList.innerHTML = '';
-        let countNaoLidas = 0;
-
-        data.forEach(notif => {
-            if (notif.lida == 0) countNaoLidas++;
-
-            const li = document.createElement('li');
-            li.innerHTML = `<i class="fa ${icone(notif.tipo)}"></i> ${notif.descricao} <span class="notif-date">${notif.data_criacao}</span>`;
-            li.dataset.id = notif.id;
-            notificationsList.appendChild(li);
-        });
-
-        notificationCount.textContent = countNaoLidas;
-    } catch (err) {
-        console.error('Erro ao carregar notificações:', err);
-    }
-}
-
-// Função para escolher ícone
-function icone(tipo) {
-    switch(tipo) {
-        case 'novo_curso': return 'fa-book';
-        case 'perfil_atualizado': return 'fa-user';
-        case 'curso_concluido': return 'fa-check';
-        default: return 'fa-info-circle';
-    }
-}
-
-// Marcar todas como lidas ao abrir menu
-notificationsBtn.addEventListener('click', async () => {
-    notificationsMenu.classList.toggle('active');
-    userSubmenu.classList.remove('active');
-
-    const items = notificationsList.querySelectorAll('li');
-    items.forEach(async li => {
-        const id = li.dataset.id;
-        await fetch('../../api/admin/marcar_lida.php', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: `id=${id}`
-        });
     });
 
-    notificationCount.textContent = 0;
+    document.addEventListener('click', (e) => {
+        if (!userSubmenu.contains(e.target) && !userMenuBtn.contains(e.target)) {
+            userSubmenu.classList.remove('active');
+        }
+        if (!notificationsMenu.contains(e.target) && !notificationsBtn.contains(e.target)) {
+            notificationsMenu.classList.remove('active');
+        }
+    });
+
+    closeNotifications?.addEventListener('click', () => {
+        notificationsMenu.classList.remove('active');
+    });
+// =========================
+// PESQUISA
+// =========================
+function criarPreview() {
+    if (!searchPreview) {
+        searchPreview = document.createElement('div');
+        searchPreview.className = 'search-preview';
+        searchContainer.appendChild(searchPreview);
+    }
+}
+
+searchInput.addEventListener('blur', () => {
+    setTimeout(() => {
+        if (searchPreview) searchPreview.style.display = 'none';
+    }, 150);
 });
 
-// Atualiza notificações a cada 10 segundos
-setInterval(carregarNotificacoes, 10000);
-carregarNotificacoes();
+searchInput.addEventListener('input', async () => {
+    const query = searchInput.value.trim();
+    criarPreview();
+
+    try {
+        const res = await fetch(`../../api/admin/buscar_cursos.php?q=${encodeURIComponent(query)}`);
+        const cursos = await res.json();
+
+        if (cursos.length === 0) {
+            searchPreview.innerHTML = '<p class="no-results">Nenhum curso encontrado.</p>';
+            searchPreview.style.display = 'block';
+            return;
+        }
+
+        searchPreview.innerHTML = cursos.map(curso => `
+            <div class="curso-item" data-id="${curso.id}">
+                <img src="${curso.imagem}" alt="${curso.titulo}">
+                <div>
+                    <strong>${curso.titulo}</strong>
+                    <p>${curso.descricao.slice(0, 60)}...</p>
+                </div>
+            </div>
+        `).join('');
+
+        searchPreview.style.display = 'block';
+    } catch (err) {
+        console.error('Erro na busca:', err);
+    }
+});
+
+// =========================
+// EXECUTAR BUSCA
+// =========================
+async function executarBusca(query) {
+    query = query.trim();
+    if (!query) return;
+
+    try {
+        const res = await fetch(`../../api/admin/buscar_cursos.php?q=${encodeURIComponent(query)}`);
+        const cursos = await res.json();
+
+        if (cursos.length === 0) {
+            console.log("Nenhum curso encontrado.");
+            return;
+        }
+
+        // Procura um curso que contenha a query digitada (parcial)
+        const cursoEncontrado = cursos.find(curso =>
+            curso.titulo.toLowerCase().includes(query.toLowerCase())
+        );
+
+        if (cursoEncontrado) {
+            verificarMatricula(cursoEncontrado.id); // Redireciona para o curso encontrado
+        } else {
+            console.log("Nenhum curso correspondente encontrado. Nenhuma ação executada.");
+        }
+
+    } catch (err) {
+        console.error('Erro na execução da busca:', err);
+    }
+}
+
+// =========================
+// CLIQUE NO BOTÃO DE BUSCA + ENTER
+// =========================
+function handleBusca() {
+    const query = searchInput.value.trim();
+    if (query) executarBusca(query);
+}
+
+searchBtn.addEventListener('click', handleBusca);
+
+searchInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+        e.preventDefault();
+        handleBusca();
+    }
+});
+
+// =========================
+// CLIQUE EM UM CURSO
+// =========================
+searchContainer.addEventListener('click', (e) => {
+    const item = e.target.closest('.curso-item');
+    if (item) {
+        verificarMatricula(item.dataset.id);
+    }
+});
+
+
+    // =========================
+    // CLICAR EM UM CURSO
+    // =========================
+    searchContainer.addEventListener('click', async (e) => {
+        const item = e.target.closest('.curso-item');
+        if (item) {
+            verificarMatricula(item.dataset.id);
+        }
+    });
+
+    // =========================
+    // VERIFICAR MATRÍCULA
+    // =========================
+    async function verificarMatricula(cursoId) {
+        try {
+            const res = await fetch(`../../api/admin/matricula_pesquisa.php?curso_id=${cursoId}`);
+            const data = await res.json();
+
+            if (data.status === 'matriculado') {
+                window.location.href = `../../api/admin/videoaula.php?id=${cursoId}`;
+            } else {
+                abrirModalMatricula();
+            }
+        } catch (err) {
+            console.error('Erro ao verificar matrícula:', err);
+        }
+    }
+
+    // =========================
+    // FUNÇÃO PARA ABRIR MODAL
+    // =========================
+    function abrirModalMatricula() {
+        const modal = document.getElementById('modalMatricula');
+        modal.style.display = 'flex';
+
+        const fechar = document.getElementById('closeModal');
+        const okBtn = document.getElementById('modalOkBtn');
+
+        // Fecha ao clicar no X
+        fechar.onclick = () => modal.style.display = 'none';
+
+        // Fecha ao clicar no botão OK
+        okBtn.onclick = () => modal.style.display = 'none';
+
+        // Fecha ao clicar fora do modal
+        window.onclick = (e) => {
+            if (e.target === modal) modal.style.display = 'none';
+        };
+    }
+
+    // =========================
+    // NOTIFICAÇÕES
+    // =========================
+    async function carregarNotificacoes() {
+        try {
+            const res = await fetch('../../api/admin/get_notificacoes.php');
+            const data = await res.json();
+
+            notificationsList.innerHTML = '';
+            let countNaoLidas = 0;
+
+            data.forEach(notif => {
+                if (notif.lida == 0) countNaoLidas++;
+
+                const li = document.createElement('li');
+                li.innerHTML = `<i class="fa ${icone(notif.tipo)}"></i> ${notif.descricao} <span class="notif-date">${notif.data_criacao}</span>`;
+                li.dataset.id = notif.id;
+                notificationsList.appendChild(li);
+            });
+
+            notificationCount.textContent = countNaoLidas;
+        } catch (err) {
+            console.error('Erro ao carregar notificações:', err);
+        }
+    }
+
+    function icone(tipo) {
+        switch (tipo) {
+            case 'novo_curso': return 'fa-book';
+            case 'perfil_atualizado': return 'fa-user';
+            case 'curso_concluido': return 'fa-check';
+            default: return 'fa-info-circle';
+        }
+    }
+
+    notificationsBtn.addEventListener('click', async () => {
+        notificationsMenu.classList.toggle('active');
+        userSubmenu.classList.remove('active');
+
+        const items = notificationsList.querySelectorAll('li');
+        items.forEach(async li => {
+            const id = li.dataset.id;
+            await fetch('../../api/admin/marcar_lida.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: `id=${id}`
+            });
+        });
+
+        notificationCount.textContent = 0;
+    });
+
+    setInterval(carregarNotificacoes, 10000);
+    carregarNotificacoes();
+
 </script>

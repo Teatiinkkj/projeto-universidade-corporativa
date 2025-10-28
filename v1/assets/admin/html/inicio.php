@@ -35,33 +35,62 @@ if (!isset($_SESSION['usuario_id'])) {
     <div class="container">
       <div class="row align-items-center justify-content-center text-center text-lg-start">
 
-        <!-- Textos -->
-        <div class="col-12 col-lg-5 mb-5 mb-lg-0">
+        <!-- Textos (agora com área maior) -->
+        <div class="col-12 col-lg-6 mb-5 mb-lg-0 titulos">
           <h2 class="h2-inicio">Universidade Corporativa</h2>
           <h2 class="h2-inc-introducao">Transforme seu futuro. Evolua sua carreira.</h2>
           <h3 class="h3-inc-introducao">
             Desbloqueie seu potencial e alcance novos patamares de sucesso com a nossa
             <strong>Universidade Corporativa.</strong>
           </h3>
-          <a href="../../html/sobre.html">
-            Saiba mais sobre a <strong>UNICORP!</strong>
+
+          <!-- Novo parágrafo motivacional -->
+          <p class="p-inc-introducao">
+            Nossos cursos são desenhados para profissionais que buscam crescimento real e aplicável no mercado. Aqui,
+            você aprende na prática e com quem entende do assunto.
+          </p>
+
+          <!-- Frase de destaque curta -->
+          <p class="p-inc-destaque">
+            🚀 Prepare-se para decolar sua carreira com conhecimento de ponta!
+          </p>
+
+          <a href="../../html/sobre.html" class="link-sobre">
+            <i class="fa fa-info-circle"></i> Clique aqui e saiba mais sobre a <strong>UNICORP!</strong>
+            <i class="fa fa-arrow-right"></i>
           </a>
         </div>
 
-        <!-- Logo -->
-        <div class="col-12 col-lg-3 mb-4 mb-lg-0 g-4">
-          <img class="logo-inicio" src="../../images/logo.png" alt="Logo UNICORP">
+        <!-- Logo (diminuída um pouco para balancear) -->
+        <div class="col-12 col-lg-2 mb-lg-0 g-4">
+          <img class="logo-inicio" src="../../images/logo.png" alt="Logo UNICORP"
+            style="margin-left: -200px; margin-right: 200px;">
         </div>
 
-        <!-- CTA -->
+        <!-- CTA Criativa -->
         <div class="col-12 col-lg-4">
           <section class="cta">
             <h2>Pronto para dar o próximo passo?</h2>
-            <p>Invista no seu futuro e conquiste novas oportunidades com nossos cursos!</p>
-            <button class="btn-curso">Comece Agora</button>
+            <p>Invista no seu futuro e conquiste novas oportunidades com nossos cursos exclusivos da
+              <strong>UNICORP</strong>.
+            </p>
+            <div class="cta-beneficios">
+              <div class="beneficio">
+                <span>Aulas <strong>100%</strong> online e práticas</span>
+              </div>
+              <div class="beneficio">
+                <span>Certificação reconhecida no <strong>mercado</strong></span>
+              </div>
+              <div class="beneficio">
+                <span>Professores <strong>especialistas</strong> na área</span>
+              </div>
+            </div>
+            <div class="cta-selo">
+              Mais de <strong>10.000 alunos</strong> transformaram suas carreiras!
+            </div>
+            <button class="btn-curso" id="btnComeceAgora">Comece Agora</button>
           </section>
         </div>
-
       </div>
     </div>
   </section>
@@ -80,87 +109,66 @@ if (!isset($_SESSION['usuario_id'])) {
     <div class="cursos-wrapper">
       <a href="cursos.php" class="btn btn-primary pull-left btn-cursos"
         style="margin-left: 3%; background-color: #1754a3; border: none;">Gerenciar cursos</a>
-      <h3 class="titulo-cursos">Cursos Disponíveis</h3>
+      <h3 class="titulo-cursos" style="margin-right: 180px;">Cursos Disponíveis</h3>
       <p class="subtitulo-cursos">Escolha um curso e comece a transformar seu futuro.</p>
       <div id="lista-cursos" class="row g-4 cursos-grid"></div>
     </div>
   </section>
 
-  <section style="margin-top: 300px;" id="indicadores" class="indicadores container" tabindex="0"
-    aria-label="Indicadores da Universidade Corporativa">
-    <div class="row text-center">
-      <article class="col-md-3 indicador" aria-live="polite">
-        <h3 id="num-alunos">0</h3>
-        <p>Alunos</p>
-      </article>
-      <article class="col-md-3 indicador" aria-live="polite">
-        <h3 id="num-cursos">0</h3>
-        <p>Cursos</p>
-      </article>
-      <article class="col-md-3 indicador" aria-live="polite">
-        <h3 id="num-horas">0</h3>
-        <p>Horas</p>
-      </article>
-      <article class="col-md-3 indicador" aria-live="polite">
-        <h3 id="num-certificados">0</h3>
-        <p>Certificados</p>
-      </article>
-    </div>
-  </section>
 
-  <section id="depoimentos" class="depoimentos container" aria-label="Depoimentos de alunos">
-    <h2>Depoimentos</h2>
-    <article class="depoimento" tabindex="0">
-      <blockquote>
-        <p>"A UNICORP mudou minha vida! O conteúdo é excelente e a equipe muito atenciosa."</p>
-        <footer>- João Silva</footer>
-      </blockquote>
-    </article>
-    <article class="depoimento" tabindex="0">
-      <blockquote>
-        <p>"Aprendi muito e pude aplicar no meu trabalho imediatamente."</p>
-        <footer>- Maria Oliveira</footer>
-      </blockquote>
-    </article>
-  </section>
-
-  <section id="parceiros" class="parceiros container" aria-label="Parceiros da Universidade Corporativa">
-    <h2 style="margin-bottom: 50px;">Desenvolvedores</h2>
-    <div class="row text-center">
-      <div class="col-md-3 parceiro">
-        <i class="fas fa-users text-center"></i>
-        <p>Teatin</p>
-      </div>
-      <div class="col-md-3 parceiro">
-        <i class="fas fa-users text-center"></i>
-        <p>Felipe</p>
-      </div>
-      <div class="col-md-3 parceiro">
-        <i class="fas fa-users text-center"></i>
-        <p>Leonardo</p>
-      </div>
-      <div class="col-md-3 parceiro">
-        <i class="fas fa-users text-center"></i>
-        <p>Luan</p>
-      </div>
-      <div class="col-md-3 parceiro">
-        <i class="fas fa-users text-center"></i>
-        <p>Helena</p>
-      </div>
-      <div class="col-md-3 parceiro">
-        <i class="fas fa-users text-center"></i>
-        <p>Ana Vitória</p>
-      </div>
-      <div class="col-md-3 parceiro">
-        <i class="fas fa-users text-center"></i>
-        <p>Dani</p>
-      </div>
-      <div class="col-md-3 parceiro">
-        <i class="fas fa-users text-center"></i>
-        <p>Larissa</p>
-      </div>
-    </div>
-  </section>
+      <section id="parceiros" class="parceiros container" aria-label="Parceiros da Universidade Corporativa">
+        <h2>Desenvolvedores</h2>
+        <div class="row text-center" style="margin-left: 70px;">
+          <div class="col-md-3 parceiro" style="width: 250px;">
+            <div class="icon-container">
+              <i class="fa fa-user"></i>
+            </div>
+            <p>Teatin</p>
+          </div>
+          <div class="col-md-3 parceiro" style="width: 250px;">
+            <div class="icon-container">
+              <i class="fa fa-user"></i>
+            </div>
+            <p>Felipe</p>
+          </div>
+          <div class="col-md-3 parceiro" style="width: 250px;">
+            <div class="icon-container">
+              <i class="fa fa-user"></i>
+            </div>
+            <p>Leonardo</p>
+          </div>
+          <div class="col-md-3 parceiro" style="width: 250px;">
+            <div class="icon-container">
+              <i class="fa fa-user"></i>
+            </div>
+            <p>Luan</p>
+          </div>
+          <div class="col-md-3 parceiro" style="width: 250px;">
+            <div class="icon-container">
+              <i class="fa fa-user"></i>
+            </div>
+            <p>Helena</p>
+          </div>
+          <div class="col-md-3 parceiro" style="width: 250px;">
+            <div class="icon-container">
+              <i class="fa fa-user"></i>
+            </div>
+            <p>Ana Vitória</p>
+          </div>
+          <div class="col-md-3 parceiro" style="width: 250px;">
+            <div class="icon-container">
+              <i class="fa fa-user"></i>
+            </div>
+            <p>Dani</p>
+          </div>
+          <div class="col-md-3 parceiro" style="width: 250px;">
+            <div class="icon-container">
+              <i class="fa fa-user"></i>
+            </div>
+            <p>Larissa</p>
+          </div>
+        </div>
+      </section>
 
   <footer>
     <div class="footer-text">
@@ -516,6 +524,32 @@ if (!isset($_SESSION['usuario_id'])) {
         listaCursos.innerHTML = `<p class="text-center text-danger">Erro ao carregar os cursos.</p>`;
       }
     });
+
+    // Scroll suave para a seção de cursos
+    document.getElementById('btnComeceAgora').addEventListener('click', () => {
+      const cursosSection = document.querySelector('.animado');
+      if (cursosSection) {
+        cursosSection.scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+
+    // Scroll Reveal manual
+    const parceiros = document.querySelectorAll('.parceiro');
+
+    function revelarCards() {
+      const windowHeight = window.innerHeight;
+      parceiros.forEach((parceiro, i) => {
+        const top = parceiro.getBoundingClientRect().top;
+        if (top < windowHeight - 50) {
+          setTimeout(() => {
+            parceiro.classList.add('show-on-scroll');
+          }, i * 150);
+        }
+      });
+    }
+
+    window.addEventListener('scroll', revelarCards);
+    window.addEventListener('load', revelarCards);
   </script>
 
   <script src="../../lib/bootstrap/js/bootstrap.bundle.min.js"></script>

@@ -15,7 +15,9 @@ if (!isset($_SESSION['usuario_id'])) {
 }
 
 $usuario_id = intval($_SESSION['usuario_id']);
-$curso_id = intval($_POST['curso_id'] ?? 0);
+
+// Aceita tanto GET quanto POST
+$curso_id = intval($_POST['curso_id'] ?? $_GET['curso_id'] ?? 0);
 
 if ($curso_id <= 0) {
     echo json_encode(['status' => 'erro', 'mensagem' => 'Curso inválido.']);

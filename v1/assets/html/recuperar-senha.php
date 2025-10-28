@@ -12,6 +12,8 @@
 </head>
 
 <body>
+  <div id="particles-js"></div>
+
   <a onclick="history.back()" class="back-button">
     <i class="fa fa-arrow-left"></i> Voltar
   </a>
@@ -40,6 +42,26 @@
       <img class="imagem-fundo" src="../images/logo.png" alt="Imagem da frente" />
     </div>
   </div>
+
+  <!-- IMPORTANTE: Adiciona o script de partículas -->
+  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+
+  <script>
+    // Fundo animado de partículas
+    particlesJS("particles-js", {
+      "particles": {
+        "number": { "value": 70 },
+        "color": { "value": "#ffffff" },
+        "shape": { "type": "circle" },
+        "opacity": { "value": 0.5 },
+        "size": { "value": 3 },
+        "move": { "enable": true, "speed": 1.5 }
+      },
+      "interactivity": {
+        "events": { "onhover": { "enable": true, "mode": "repulse" } }
+      }
+    });
+  </script>
 </body>
 
 </html>

@@ -7,31 +7,15 @@
   <title>Confirmação | UNICORP</title>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
   <link rel="stylesheet" href="../css/confirmar-recuperacao.css" />
+  <link rel="stylesheet" href="../css/login.css">
   <link rel="stylesheet" href="../css/back-button.css">
-  <style>
-    /* Estilo para a mensagem de sucesso */
-    .mensagem-sucesso {
-      text-align: center;
-      padding: 30px 20px;
-      background-color: #e0f7fa;
-      border: 1px solid #00acc1;
-      border-radius: 10px;
-      color: #007c91;
-      font-size: 1.2rem;
-      margin-top: 20px;
-      animation: fadeIn 0.8s ease-in-out;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(-10px);}
-      to { opacity: 1; transform: translateY(0);}
-    }
-  </style>
 </head>
 
 <body>
-  <div class="container">
-    <div class="caixa-login" id="caixa-login">
+  <div id="particles-js"></div>
+
+  <div class="container-confirmacao" style="color: white;">
+    <div class="caixa-confirmacao" id="caixa-login">
       <div class="cabecalho">
         <i class="fas fa-paper-plane"></i>
         <h1>Confirmação</h1>
@@ -44,6 +28,8 @@
       <p class="footer">© 2025 UNICORP. Todos os direitos reservados.</p>
     </div>
   </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
 
   <script>
     const urlParams = new URLSearchParams(window.location.search);
@@ -95,7 +81,6 @@
         const result = await response.text();
 
         if (result.includes("sucesso")) {
-          // Substitui o conteúdo da caixa por mensagem bonita
           const caixa = document.getElementById("caixa-login");
           caixa.innerHTML = `
             <div class="mensagem-sucesso">
@@ -106,7 +91,6 @@
             </div>
           `;
 
-          // Redireciona para login após 5 segundos
           setTimeout(() => {
             window.location.href = "../html/login.php";
           }, 5000);
@@ -121,6 +105,21 @@
     }
 
     carregarUsuario();
+
+    particlesJS("particles-js", {
+      "particles": {
+        "number": { "value": 70 },
+        "color": { "value": "#ffffff" },
+        "shape": { "type": "circle" },
+        "opacity": { "value": 0.5 },
+        "size": { "value": 3 },
+        "move": { "enable": true, "speed": 1.5 }
+      },
+      "interactivity": {
+        "events": { "onhover": { "enable": true, "mode": "repulse" } }
+      }
+    });
   </script>
 </body>
+
 </html>

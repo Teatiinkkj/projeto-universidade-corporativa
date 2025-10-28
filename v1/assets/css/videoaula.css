@@ -21,7 +21,7 @@ body>section {
 
 /* ================== CABEÇALHO ================== */
 .header-inicio {
-    background: linear-gradient(90deg, #1e3c72 0%, #2a5298 100%);
+    background: linear-gradient(135deg, #1754a3, #2c78db);
     color: #fff;
     text-align: center;
     padding: 25px 0;
@@ -170,22 +170,55 @@ footer {
 }
 
 .back-button {
-    position: relative;
-    top: 20px;
-    left: 20px;
-    color: rgb(6, 93, 199);
-    padding: 10px 18px;
-    text-decoration: none;
-    border-radius: 30px;
-    font-size: 1rem;
-    display: flex;
-    align-items: center;
-    gap: 8px;
+  position: absolute;
+  top: 120px;
+  left: 20px;
+  color: rgb(6, 93, 199);
+  padding: 10px 18px;
+  text-decoration: none;
+  border-radius: 30px;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  overflow: hidden;
+  transition: all 0.4s ease;
+  background: linear-gradient(90deg, rgba(6,93,199,0.1), rgba(6,93,199,0.05));
 }
 
+/* Efeito principal ao passar o mouse */
 .back-button:hover {
-    color: rgb(4, 70, 150);
-    transition: none;
+  color: white;
+  background: linear-gradient(90deg, rgb(6,93,199), rgb(3,67,145));
+  transform: scale(1.15) rotate(-3deg);
+  box-shadow: 0 0 15px rgba(6, 93, 199, 0.6);
+}
+
+/* Efeito de brilho se movendo */
+.back-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -75%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(255, 255, 255, 0.4),
+    transparent
+  );
+  transform: skewX(-20deg);
+  transition: 0.7s;
+}
+
+.back-button:hover::before {
+  left: 125%;
+}
+
+/* Margem leve no link interno */
+.back-button a {
+  margin-bottom: 3px;
 }
 
 /* Animação para botão concluir */
@@ -209,4 +242,58 @@ footer {
 #btnCertificado.show {
     opacity: 1;
     transform: translateY(0);
+}
+
+#btnCertificado {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.4s ease;
+  background: linear-gradient(90deg, #28a745, #218838);
+  color: white;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+#btnCertificado:disabled {
+  opacity: 0.8;
+  cursor: not-allowed;
+}
+
+/* Efeito de brilho ao passar o mouse */
+#btnCertificado::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+  transform: skewX(-25deg);
+  transition: 0.6s;
+}
+
+#btnCertificado:hover::before {
+  left: 120%;
+}
+
+/* Ícone girando (loading) */
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+#btnCertificado.loading i {
+  animation: spin 1s linear infinite;
+}
+
+/* Efeito de sucesso (check) */
+#btnCertificado.sucesso {
+  background: linear-gradient(90deg, #34d058, #28a745);
+  box-shadow: 0 0 12px rgba(40, 167, 69, 0.6);
+  transform: scale(1.1);
+  transition: all 0.4s ease;
 }
