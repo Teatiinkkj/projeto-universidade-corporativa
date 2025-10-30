@@ -970,3 +970,43 @@ body::before {
     font-size: 32px;
   }
 }
+
+/* Borda verde e leve sombra */
+.curso-card {
+  border: 5px solid #1e4e9598; /* verde */
+  border-radius: 15px;
+  padding: 0;
+  overflow: hidden;
+  transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+}
+
+/* Efeito hover */
+.curso-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 25px rgba(0,0,0,0.15);
+  border-color: #1e7e34; /* verde mais escuro */
+}
+
+/* Barra de progresso */
+.progress-container {
+  margin-top: 10px;
+  background-color: #e9ecef;
+  border-radius: 8px;
+  height: 12px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 100%;
+  background-color: #28a745; /* verde */
+  width: 0%;
+  transition: width 0.5s ease-in-out;
+}
+
+.progress-text {
+  font-size: 12px;
+  text-align: right;
+  margin-top: 3px;
+  color: #333;
+  font-weight: 600;
+}

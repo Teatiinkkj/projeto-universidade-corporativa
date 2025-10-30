@@ -214,7 +214,7 @@ if (!isset($_SESSION['usuario_id'])) {
                 if (data.success && Array.isArray(data.conteudos)) {
                     const concluidos = data.conteudos
                         .filter(c => c.concluido)
-                        .map(c => c.id);
+                        .map(c => parseInt(c.id));
 
                     document.querySelectorAll('.conteudo-item').forEach(item => {
                         if (concluidos.includes(parseInt(item.dataset.id))) {
@@ -223,8 +223,6 @@ if (!isset($_SESSION['usuario_id'])) {
                         }
                     });
                     atualizarContador();
-                } else {
-                    console.error('Erro ao buscar progresso:', data);
                 }
             })
             .catch(err => console.error(err));
@@ -244,7 +242,7 @@ if (!isset($_SESSION['usuario_id'])) {
             })
                 .then(res => res.json())
                 .then(data => {
-                    if (data.sucesso) {
+                    if (data.success || data.sucesso) {  // compatível com ambos os scripts
                         if (desmarcar) {
                             aulaAtual.classList.remove('assistido');
                             aulasAssistidas--;
@@ -254,7 +252,7 @@ if (!isset($_SESSION['usuario_id'])) {
                         }
                         atualizarContador();
                     } else {
-                        alert('Erro ao atualizar aula: ' + (data.erro || ''));
+                        alert('Erro ao atualizar aula: ' + (data.erro || data.message || ''));
                     }
                 })
                 .catch(err => console.error(err));

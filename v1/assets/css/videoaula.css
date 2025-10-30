@@ -87,6 +87,7 @@ body>section {
 
 .topico {
     background: #ffffff;
+    width: 500px;
     padding: 15px;
     margin-bottom: 20px;
     border-radius: 15px;
@@ -111,7 +112,7 @@ body>section {
     display: flex;
     align-items: center;
     font-weight: 500;
-    font-size: 15px;
+    font-size: 20px;
 }
 
 .conteudo-item:hover {
@@ -123,6 +124,7 @@ body>section {
     color: #0d3c91;
     font-weight: bold;
     background: #c6dafc;
+    height: 60px;
 }
 
 /* Ícones por tipo de conteúdo */

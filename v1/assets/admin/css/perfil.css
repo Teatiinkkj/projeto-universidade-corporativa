@@ -4,14 +4,19 @@ body {
     background: #e8f0fe;
     margin: 0;
     overflow-x: hidden;
+    font-size: 25px;
+}
+
+h3 {
+    font-size: 50px;
+    color: #1754a3;
 }
 
 .perfil-container {
-    max-width: 1100px;
+    max-width: 1500px;
     margin: 40px auto;
     background: #fff;
     padding: 30px;
-    margin-top: 150px;
     border-radius: 15px;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
     transition: all 0.3s ease;
@@ -20,11 +25,13 @@ body {
 /* ===== Header ===== */
 .perfil-header {
     display: flex;
-    align-items: center;
-    gap: 30px;
+    align-items: center;         /* Alinha verticalmente */
+    justify-content: flex-start; /* Mantém a foto à esquerda e info ao lado */
+    gap: 40px;                   /* Espaçamento entre a foto e as infos */
     border-bottom: 2px solid #e0e0e0;
-    padding-bottom: 20px;
-    margin-bottom: 30px;
+    padding-bottom: 25px;
+    margin-bottom: 40px;
+    flex-wrap: wrap;             /* Evita quebra feia em telas menores */
 }
 
 .perfil-foto-wrapper {
@@ -66,6 +73,45 @@ body {
 
 .alterar-foto-btn:hover {
     background: #0f3f7a;
+}
+
+/* Informações do perfil ao lado da foto */
+.perfil-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex: 1;
+    gap: 10px;
+}
+
+.perfil-info h2 {
+    font-size: 30px;
+    color: #1754a3;
+    margin-bottom: 10px;
+    font-weight: 700;
+}
+
+.info-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px 30px;
+}
+
+.info-item {
+    font-size: 16px;
+    color: #444;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #f5f9ff;
+    padding: 8px 14px;
+    border-radius: 8px;
+    transition: all 0.3s;
+}
+
+.info-item:hover {
+    background: #e7f0ff;
+    transform: translateY(-2px);
 }
 
 /* ===== Títulos ===== */
@@ -123,43 +169,320 @@ body {
     box-shadow: 0 0 10px rgba(23, 84, 163, 0.3);
 }
 
-/* ===== Botões ===== */
+/* ===== Botões animados (Ver Curso / Baixar Certificado) ===== */
 .btn {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
     padding: 10px 16px;
-    background: #1754a3;
+    background-color: #1754a3;
+    /* cor fixa */
     color: #fff;
-    border-radius: 8px;
+    border-radius: 10px;
     text-decoration: none;
-    transition: 0.3s;
+    font-weight: 600;
     cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s, background 0.3s;
 }
 
 .btn:hover {
-    background: #0f3f7a;
+    transform: scale(1.08) translateY(-3px);
+    box-shadow: 0 8px 20px rgba(23, 84, 163, 0.5);
+    /* sombra azul */
+}
+
+.btn i {
+    transition: transform 0.3s;
+}
+
+.btn:hover i {
+    transform: rotate(20deg) scale(1.2);
+}
+
+
+/* ===== Cards Cursos ===== */
+.cards-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    /* 3 cards por linha */
+    gap: 25px;
+}
+
+/* Responsividade */
+@media (max-width: 1024px) {
+    .cards-container {
+        grid-template-columns: repeat(2, 1fr);
+        /* 2 cards por linha em tablets */
+    }
+}
+
+@media (max-width: 700px) {
+    .cards-container {
+        grid-template-columns: 1fr;
+        /* 1 card por linha em celulares */
+    }
+}
+
+/* Card individual */
+.card-curso {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 25px 20px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    cursor: pointer;
+}
+
+.card-curso:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+}
+
+/* Cabeçalho do card */
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.card-header h4 {
+    font-size: 18px;
+    color: #1754a3;
+    margin: 0;
+    flex: 1;
+}
+
+.status-badge {
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: #fff;
+}
+
+.status-badge.concluido {
+    background: #28a745;
+}
+
+.status-badge.em-andamento {
+    background: #ffc107;
+    color: #333;
+}
+
+.status-badge.pendente {
+    background: #dc3545;
+}
+
+/* Barra de progresso estilizada */
+.progress-wrapper {
+    margin-bottom: 20px;
+    height: 18px;
+    background: #e0e0e0;
+    border-radius: 12px;
+    overflow: hidden;
+    position: relative;
+}
+
+.progress-bar {
+    height: 100%;
+    width: 0%;
+    background: #1754a3;
+    border-radius: 12px 0 0 12px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 8px;
+    color: #fff;
+    font-weight: 600;
+    font-size: 12px;
+    transition: width 1s ease-in-out;
+    animation: fillProgress 1s forwards;
+}
+
+.progress-bar span {
+    position: relative;
+    z-index: 2;
+}
+
+/* Animação da barra */
+@keyframes fillProgress {
+    from {
+        width: 0%;
+    }
+
+    to {
+        width: var(--progress);
+    }
+}
+
+/* Botão do curso */
+.btn-curso {
+    margin-top: auto;
+    text-align: center;
+    padding: 12px 16px;
+    border-radius: 12px;
+    background: #1754a3;
+    color: #fff;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.btn-curso:hover {
+    background: #4e4abf;
+    transform: scale(1.05);
+    box-shadow: 0 6px 15px rgba(108, 99, 255, 0.4);
+}
+
+/* Pequenos ajustes responsivos */
+@media (max-width: 600px) {
+    .card-header h4 {
+        font-size: 16px;
+    }
+
+    .progress-wrapper {
+        height: 16px;
+    }
+
+    .btn-curso {
+        font-size: 14px;
+        padding: 10px 14px;
+    }
+}
+
+/* Wrapper da imagem no card */
+.card-img-wrapper {
+    width: 100%;
+    height: 150px;
+    overflow: hidden;
+    border-radius: 16px 16px 0 0;
+    margin-bottom: 15px;
+    background: #f0f0f0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.card-img-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.card-img-wrapper img:hover {
     transform: scale(1.05);
 }
 
-/* ===== Cards Cursos e Certificados ===== */
-.cards-container {
+/* Wrapper da imagem no card */
+.card-img-wrapper {
+    width: 100%;
+    height: 150px;
+    overflow: hidden;
+    border-radius: 16px 16px 0 0;
+    margin-bottom: 15px;
+    background: #f0f0f0;
     display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
+    align-items: center;
+    justify-content: center;
 }
 
-.card {
-    flex: 1 1 250px;
-    background: #f8faff;
-    border-radius: 12px;
-    padding: 20px;
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+.card-img-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.card-img-wrapper img:hover {
+    transform: scale(1.05);
+}
+
+/* Cards de Certificados */
+.card-certificado {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 25px 20px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     cursor: pointer;
-    transition: transform 0.3s, box-shadow 0.3s;
 }
 
-.card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+.card-certificado:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+}
+
+.card-certificado .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.card-certificado .card-header h4 {
+    font-size: 18px;
+    color: #1754a3;
+    margin: 0;
+    flex: 1;
+}
+
+.card-certificado .status-badge {
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: #fff;
+    background: #28a745;
+    /* verde para certificados emitidos */
+}
+
+.certificado-data {
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 15px;
+}
+
+/* Botão do certificado */
+.btn-certificado {
+    margin-top: auto;
+    text-align: center;
+    padding: 12px 16px;
+    border-radius: 12px;
+    background: #1754a3;
+    color: #fff;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.btn-certificado:hover {
+    background: #4e4abf;
+    transform: scale(1.05);
+    box-shadow: 0 6px 15px rgba(108, 99, 255, 0.4);
+}
+
+/* Responsividade */
+@media (max-width: 1024px) {
+    .cards-container {
+        grid-template-columns: repeat(2, 1fr);
+        /* 2 por linha */
+    }
+}
+
+@media (max-width: 700px) {
+    .cards-container {
+        grid-template-columns: 1fr;
+        /* 1 por linha */
+    }
 }
 
 /* ===== Modal ===== */
@@ -232,51 +555,77 @@ body {
     background: #d6e4ff;
 }
 
-/* =========================
-   MODAL DE CONFIRMAÇÃO
-   ========================= */
-#confirmModalBg {
+/* Modal genérico */
+#modalBg {
+    display: none;
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0,0,0,0.4);
-    display: flex;
-    align-items: center;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
     justify-content: center;
-    z-index: 9999;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.3s ease;
+    align-items: center;
+    z-index: 999;
 }
 
-#confirmModalBg.show {
-    opacity: 1;
-    pointer-events: all;
-}
-
-#confirmModalContent {
-    background-color: #fff;
-    padding: 20px 30px;
+#modal {
+    background: white;
     border-radius: 12px;
-    max-width: 350px;
-    width: 90%;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    padding: 30px;
+    width: 350px;
     text-align: center;
-    font-size: 16px;
+    position: relative;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+#modal h3 {
+    margin-bottom: 15px;
     color: #333;
 }
 
-/* Animação simples */
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: scale(0.9);
-    }
+#modalClose {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 20px;
+    color: #666;
+    cursor: pointer;
+}
 
-    to {
-        opacity: 1;
-        transform: scale(1);
-    }
+/* Modal feedback (sucesso/erro) */
+.modal-feedback {
+    position: fixed;
+    top: -80px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #fff;
+    padding: 15px 25px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    opacity: 0;
+    transition: all 0.3s ease;
+    z-index: 9999;
+}
+
+.modal-feedback i {
+    font-size: 20px;
+}
+
+.modal-feedback.sucesso {
+    border-left: 5px solid #28a745;
+    color: #28a745;
+}
+
+.modal-feedback.erro {
+    border-left: 5px solid #dc3545;
+    color: #dc3545;
+}
+
+.modal-feedback.ativo {
+    top: 20px;
+    opacity: 1;
 }

@@ -116,59 +116,59 @@ if (!isset($_SESSION['usuario_id'])) {
   </section>
 
 
-      <section id="parceiros" class="parceiros container" aria-label="Parceiros da Universidade Corporativa">
-        <h2>Desenvolvedores</h2>
-        <div class="row text-center" style="margin-left: 70px;">
-          <div class="col-md-3 parceiro" style="width: 250px;">
-            <div class="icon-container">
-              <i class="fa fa-user"></i>
-            </div>
-            <p>Teatin</p>
-          </div>
-          <div class="col-md-3 parceiro" style="width: 250px;">
-            <div class="icon-container">
-              <i class="fa fa-user"></i>
-            </div>
-            <p>Felipe</p>
-          </div>
-          <div class="col-md-3 parceiro" style="width: 250px;">
-            <div class="icon-container">
-              <i class="fa fa-user"></i>
-            </div>
-            <p>Leonardo</p>
-          </div>
-          <div class="col-md-3 parceiro" style="width: 250px;">
-            <div class="icon-container">
-              <i class="fa fa-user"></i>
-            </div>
-            <p>Luan</p>
-          </div>
-          <div class="col-md-3 parceiro" style="width: 250px;">
-            <div class="icon-container">
-              <i class="fa fa-user"></i>
-            </div>
-            <p>Helena</p>
-          </div>
-          <div class="col-md-3 parceiro" style="width: 250px;">
-            <div class="icon-container">
-              <i class="fa fa-user"></i>
-            </div>
-            <p>Ana Vitória</p>
-          </div>
-          <div class="col-md-3 parceiro" style="width: 250px;">
-            <div class="icon-container">
-              <i class="fa fa-user"></i>
-            </div>
-            <p>Dani</p>
-          </div>
-          <div class="col-md-3 parceiro" style="width: 250px;">
-            <div class="icon-container">
-              <i class="fa fa-user"></i>
-            </div>
-            <p>Larissa</p>
-          </div>
+  <section id="parceiros" class="parceiros container" aria-label="Parceiros da Universidade Corporativa">
+    <h2>Desenvolvedores</h2>
+    <div class="row text-center" style="margin-left: 70px;">
+      <div class="col-md-3 parceiro" style="width: 250px;">
+        <div class="icon-container">
+          <i class="fa fa-user"></i>
         </div>
-      </section>
+        <p>Teatin</p>
+      </div>
+      <div class="col-md-3 parceiro" style="width: 250px;">
+        <div class="icon-container">
+          <i class="fa fa-user"></i>
+        </div>
+        <p>Felipe</p>
+      </div>
+      <div class="col-md-3 parceiro" style="width: 250px;">
+        <div class="icon-container">
+          <i class="fa fa-user"></i>
+        </div>
+        <p>Leonardo</p>
+      </div>
+      <div class="col-md-3 parceiro" style="width: 250px;">
+        <div class="icon-container">
+          <i class="fa fa-user"></i>
+        </div>
+        <p>Luan</p>
+      </div>
+      <div class="col-md-3 parceiro" style="width: 250px;">
+        <div class="icon-container">
+          <i class="fa fa-user"></i>
+        </div>
+        <p>Helena</p>
+      </div>
+      <div class="col-md-3 parceiro" style="width: 250px;">
+        <div class="icon-container">
+          <i class="fa fa-user"></i>
+        </div>
+        <p>Ana Vitória</p>
+      </div>
+      <div class="col-md-3 parceiro" style="width: 250px;">
+        <div class="icon-container">
+          <i class="fa fa-user"></i>
+        </div>
+        <p>Dani</p>
+      </div>
+      <div class="col-md-3 parceiro" style="width: 250px;">
+        <div class="icon-container">
+          <i class="fa fa-user"></i>
+        </div>
+        <p>Larissa</p>
+      </div>
+    </div>
+  </section>
 
   <footer>
     <div class="footer-text">
@@ -354,8 +354,10 @@ if (!isset($_SESSION['usuario_id'])) {
     });
 
     // ---------------- CARREGAR CURSOS ----------------
+
     document.addEventListener('DOMContentLoaded', async () => {
       const listaCursos = document.getElementById('lista-cursos');
+
 
       try {
         const response = await fetch('../../api/admin/get_cursos.php');
@@ -367,53 +369,80 @@ if (!isset($_SESSION['usuario_id'])) {
           result.data.forEach(curso => {
             const card = document.createElement('div');
             card.classList.add('curso-card');
-            card.style.cssText = `
-            background: linear-gradient(145deg, #ffffff, #f0f0f5);
-            border-radius: 15px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.08);
-            overflow: hidden;
-            width: 280px;
-            transition: transform 0.3s, box-shadow 0.3s;
-            display: flex;
-            flex-direction: column;
-          `;
 
-            // Verifica se o usuário já está matriculado
-            const matriculado = curso.matriculado; // API deve retornar true/false
+            // Verifica matrícula e progresso
+            const matriculado = curso.matriculado == 1 || curso.matriculado === true;
+            const progresso = parseInt(curso.progresso) || 0;
+
+            // Define a borda condicional
+            const borderStyle = matriculado
+              ? '4px solid rgba(30, 81, 149, 0.6)'
+              : 'none';
+
+            card.style.cssText = `
+                background: linear-gradient(145deg, #ffffff, #f0f0f5);
+                border: ${borderStyle};
+                border-radius: 15px;
+                box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+                overflow: hidden;
+                width: 280px;
+                transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+                display: flex;
+                flex-direction: column;
+              `;
 
             card.innerHTML = `
-            <div style="height:180px; background-image:url('${curso.imagem || '../../images/imgsemfundo2.png'}'); 
-                              background-size: cover; background-position: center;"></div>
-            <div style="padding: 20px; flex: 1; display: flex; flex-direction: column; justify-content: space-between;">
-              <div>
-                <h4 style="margin-bottom: 10px;">${curso.titulo}</h4>
-                <p style="font-size: 14px; color: #555;">${curso.descricao}</p>
-              </div>
-              <div style="margin-top: 15px; display: flex; justify-content: space-between; align-items: center;">
-                <a href="#" class="btn-acessar" data-id="${curso.id}"
-                  style="padding:8px 25px; background:#28a745; color:white; border-radius:8px; text-decoration:none; font-size:14px; font-weight:600;">
-                  Acessar
-                </a>
-                <button class="btn-matricular" data-id="${curso.id}"
-                  style="padding:8px 15px; background:#007bff; color:white; border:none; border-radius:8px; font-size:14px; font-weight:600;"
-                  ${matriculado ? 'disabled style="background:#ccc; cursor:not-allowed;"' : ''}>
-                  Matricular
-                </button>
-              </div>
-            </div>
-          `;
+              <div style="height:180px; background-image:url('${curso.imagem || '../../images/imgsemfundo2.png'}'); 
+                            background-size: cover; background-position: center;"></div>
+              <div style="padding: 20px; flex: 1; display: flex; flex-direction: column; justify-content: space-between;">
+                <div>
+                  <h4 style="margin-bottom: 10px;">${curso.titulo}</h4>
+                  <p style="font-size: 14px; color: #555;">${curso.descricao}</p>
 
+                  ${matriculado ? `
+                    <div class="progress-container" style="background:#eee; border-radius:8px; height:12px; overflow:hidden;">
+                      <div class="progress-bar" id="progress-${curso.id}" 
+                          style="
+                            width: ${progresso}%;
+                            height:100%;
+                            background:#1754a3;
+                            border-radius: 8px;
+                            transition: width 0.5s;
+                          ">
+                      </div>
+                    </div>
+                    <div class="progress-text" id="progress-text-${curso.id}">${progresso}% concluído</div>
+                  ` : ''}
+                </div>
+                <div style="margin-top: 15px; display: flex; justify-content: space-between; align-items: center;">
+                  <a href="#" class="btn-acessar" data-id="${curso.id}"
+                    style="padding:8px 25px; background:#28a745; color:white; border-radius:8px; text-decoration:none; font-size:14px; font-weight:600;">
+                    Acessar
+                  </a>
+                  <button class="btn-matricular" data-id="${curso.id}"
+                    style="padding:8px 15px; background:#007bff; color:white; border:none; border-radius:8px; font-size:14px; font-weight:600;"
+                    ${matriculado ? 'disabled style="background:#ccc; cursor:not-allowed;"' : ''}>
+                    Matricular
+                  </button>
+                </div>
+              </div>
+            `;
+
+            // Efeito hover apenas se matriculado
             card.addEventListener('mouseenter', () => {
               card.style.transform = 'translateY(-5px)';
               card.style.boxShadow = '0 15px 25px rgba(0,0,0,0.15)';
+              if (matriculado) card.style.borderColor = '#1754a3';
             });
             card.addEventListener('mouseleave', () => {
               card.style.transform = 'translateY(0)';
               card.style.boxShadow = '0 10px 20px rgba(0,0,0,0.08)';
+              if (matriculado) card.style.borderColor = 'rgb(29, 113, 222)';
             });
 
             listaCursos.appendChild(card);
           });
+
 
           // ---------------- BOTÕES DE CURSO ----------------
           listaCursos.addEventListener('click', async (e) => {
@@ -462,6 +491,10 @@ if (!isset($_SESSION['usuario_id'])) {
                           target.disabled = true;
                           target.style.background = '#ccc';
                           target.style.cursor = 'not-allowed';
+
+                          // Atualizar barra de progresso para verde
+                          const progressBar = document.getElementById(`progress-${cursoId}`);
+                          if (progressBar) progressBar.style.background = '#28a745';
                         } else {
                           mostrarModal('Erro', 'Erro ao matricular: ' + (matriculaData.mensagem || 'Tente novamente.'), [
                             { texto: 'OK', class: 'btn btn-danger' }

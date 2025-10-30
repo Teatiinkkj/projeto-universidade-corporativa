@@ -64,18 +64,21 @@ $fotoExibida = (!empty($foto) && file_exists($caminhoImagens . $foto))
                 <ul class="notifications-list">
                     <!-- Notificações serão carregadas via JS -->
                 </ul>
-                <div class="notifications-footer">
-                    <a href="todas_notificacoes.php">Ver todas</a>
+                <div class="notifications-footer" style="padding-bottom: 10px; padding-top: 10px;">
+                    <button id="expandNotifications" class="expand-btn" style="margin-left: 10px;">Ver todas</button>
+                    <button id="deleteNotifications" class="delete-btn" style="margin-right: 10px;">Excluir todas</button>
                 </div>
             </div>
+
         </div>
 
         <div class="user-info" id="userProfileBtn">
+            <a href="../html/perfil.php">
+                <img src="<?= htmlspecialchars($fotoExibida) ?>" alt="Foto de perfil" class="user-photo">
+            </a>
             <div class="user-name-email">
-                <span class="user-name"><?= htmlspecialchars($nomeUsuario) ?></span>
-                <span class="user-email"><?= htmlspecialchars($emailUsuario) ?></span>
+                <span class="user-name">Olá! <?= htmlspecialchars($nomeUsuario) ?></span>
             </div>
-            <img src="<?= htmlspecialchars($fotoExibida) ?>" alt="Foto de perfil" class="user-photo">
         </div>
 
         <a href="../../api/auth/logout.php" class="logout-btn" title="Sair">
@@ -87,7 +90,9 @@ $fotoExibida = (!empty($foto) && file_exists($caminhoImagens . $foto))
     <div class="submenu" id="userSubmenu">
         <div class="submenu-header">
             <div class="submenu-user-info">
-                <img src="<?= htmlspecialchars($fotoExibida) ?>" alt="Foto de perfil" class="user-photo">
+                <a href="../html/perfil.php">
+                    <img src="<?= htmlspecialchars($fotoExibida) ?>" alt="Foto de perfil" class="user-photo">
+                </a>
                 <div class="submenu-name-email">
                     <span class="user-name"><?= htmlspecialchars($nomeUsuario) ?></span>
                     <span class="user-email"><?= htmlspecialchars($emailUsuario) ?></span>
@@ -101,7 +106,6 @@ $fotoExibida = (!empty($foto) && file_exists($caminhoImagens . $foto))
             <li><a href="perfil.php"><i class="fa fa-user"></i> Perfil</a></li>
             <li><a href="../html/admin.php"><i class="fa fa-users"></i>Gestão de Usuários</a></li>
             <li><a href="cursos.php"><i class="fa fa-graduation-cap"></i>Gestão de Cursos</a></li>
-            <li><a href="configuracoes.php"><i class="fa fa-cogs"></i> Configurações</a></li>
         </ul>
     </div>
 </header>
@@ -150,38 +154,38 @@ $fotoExibida = (!empty($foto) && file_exists($caminhoImagens . $foto))
     closeNotifications?.addEventListener('click', () => {
         notificationsMenu.classList.remove('active');
     });
-// =========================
-// PESQUISA
-// =========================
-function criarPreview() {
-    if (!searchPreview) {
-        searchPreview = document.createElement('div');
-        searchPreview.className = 'search-preview';
-        searchContainer.appendChild(searchPreview);
-    }
-}
-
-searchInput.addEventListener('blur', () => {
-    setTimeout(() => {
-        if (searchPreview) searchPreview.style.display = 'none';
-    }, 150);
-});
-
-searchInput.addEventListener('input', async () => {
-    const query = searchInput.value.trim();
-    criarPreview();
-
-    try {
-        const res = await fetch(`../../api/admin/buscar_cursos.php?q=${encodeURIComponent(query)}`);
-        const cursos = await res.json();
-
-        if (cursos.length === 0) {
-            searchPreview.innerHTML = '<p class="no-results">Nenhum curso encontrado.</p>';
-            searchPreview.style.display = 'block';
-            return;
+    // =========================
+    // PESQUISA
+    // =========================
+    function criarPreview() {
+        if (!searchPreview) {
+            searchPreview = document.createElement('div');
+            searchPreview.className = 'search-preview';
+            searchContainer.appendChild(searchPreview);
         }
+    }
 
-        searchPreview.innerHTML = cursos.map(curso => `
+    searchInput.addEventListener('blur', () => {
+        setTimeout(() => {
+            if (searchPreview) searchPreview.style.display = 'none';
+        }, 150);
+    });
+
+    searchInput.addEventListener('input', async () => {
+        const query = searchInput.value.trim();
+        criarPreview();
+
+        try {
+            const res = await fetch(`../../api/admin/buscar_cursos.php?q=${encodeURIComponent(query)}`);
+            const cursos = await res.json();
+
+            if (cursos.length === 0) {
+                searchPreview.innerHTML = '<p class="no-results">Nenhum curso encontrado.</p>';
+                searchPreview.style.display = 'block';
+                return;
+            }
+
+            searchPreview.innerHTML = cursos.map(curso => `
             <div class="curso-item" data-id="${curso.id}">
                 <img src="${curso.imagem}" alt="${curso.titulo}">
                 <div>
@@ -191,70 +195,70 @@ searchInput.addEventListener('input', async () => {
             </div>
         `).join('');
 
-        searchPreview.style.display = 'block';
-    } catch (err) {
-        console.error('Erro na busca:', err);
-    }
-});
-
-// =========================
-// EXECUTAR BUSCA
-// =========================
-async function executarBusca(query) {
-    query = query.trim();
-    if (!query) return;
-
-    try {
-        const res = await fetch(`../../api/admin/buscar_cursos.php?q=${encodeURIComponent(query)}`);
-        const cursos = await res.json();
-
-        if (cursos.length === 0) {
-            console.log("Nenhum curso encontrado.");
-            return;
+            searchPreview.style.display = 'block';
+        } catch (err) {
+            console.error('Erro na busca:', err);
         }
+    });
 
-        // Procura um curso que contenha a query digitada (parcial)
-        const cursoEncontrado = cursos.find(curso =>
-            curso.titulo.toLowerCase().includes(query.toLowerCase())
-        );
+    // =========================
+    // EXECUTAR BUSCA
+    // =========================
+    async function executarBusca(query) {
+        query = query.trim();
+        if (!query) return;
 
-        if (cursoEncontrado) {
-            verificarMatricula(cursoEncontrado.id); // Redireciona para o curso encontrado
-        } else {
-            console.log("Nenhum curso correspondente encontrado. Nenhuma ação executada.");
+        try {
+            const res = await fetch(`../../api/admin/buscar_cursos.php?q=${encodeURIComponent(query)}`);
+            const cursos = await res.json();
+
+            if (cursos.length === 0) {
+                console.log("Nenhum curso encontrado.");
+                return;
+            }
+
+            // Procura um curso que contenha a query digitada (parcial)
+            const cursoEncontrado = cursos.find(curso =>
+                curso.titulo.toLowerCase().includes(query.toLowerCase())
+            );
+
+            if (cursoEncontrado) {
+                verificarMatricula(cursoEncontrado.id); // Redireciona para o curso encontrado
+            } else {
+                console.log("Nenhum curso correspondente encontrado. Nenhuma ação executada.");
+            }
+
+        } catch (err) {
+            console.error('Erro na execução da busca:', err);
         }
-
-    } catch (err) {
-        console.error('Erro na execução da busca:', err);
     }
-}
 
-// =========================
-// CLIQUE NO BOTÃO DE BUSCA + ENTER
-// =========================
-function handleBusca() {
-    const query = searchInput.value.trim();
-    if (query) executarBusca(query);
-}
-
-searchBtn.addEventListener('click', handleBusca);
-
-searchInput.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') {
-        e.preventDefault();
-        handleBusca();
+    // =========================
+    // CLIQUE NO BOTÃO DE BUSCA + ENTER
+    // =========================
+    function handleBusca() {
+        const query = searchInput.value.trim();
+        if (query) executarBusca(query);
     }
-});
 
-// =========================
-// CLIQUE EM UM CURSO
-// =========================
-searchContainer.addEventListener('click', (e) => {
-    const item = e.target.closest('.curso-item');
-    if (item) {
-        verificarMatricula(item.dataset.id);
-    }
-});
+    searchBtn.addEventListener('click', handleBusca);
+
+    searchInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            handleBusca();
+        }
+    });
+
+    // =========================
+    // CLIQUE EM UM CURSO
+    // =========================
+    searchContainer.addEventListener('click', (e) => {
+        const item = e.target.closest('.curso-item');
+        if (item) {
+            verificarMatricula(item.dataset.id);
+        }
+    });
 
 
     // =========================
@@ -322,7 +326,11 @@ searchContainer.addEventListener('click', (e) => {
                 if (notif.lida == 0) countNaoLidas++;
 
                 const li = document.createElement('li');
-                li.innerHTML = `<i class="fa ${icone(notif.tipo)}"></i> ${notif.descricao} <span class="notif-date">${notif.data_criacao}</span>`;
+                li.innerHTML = `
+                <i class="fa ${icone(notif.tipo)}"></i> 
+                ${notif.descricao} 
+                <span class="notif-date">${notif.data_criacao}</span>
+            `;
                 li.dataset.id = notif.id;
                 notificationsList.appendChild(li);
             });
@@ -342,10 +350,12 @@ searchContainer.addEventListener('click', (e) => {
         }
     }
 
+    // Abrir/fechar submenu de notificações
     notificationsBtn.addEventListener('click', async () => {
         notificationsMenu.classList.toggle('active');
         userSubmenu.classList.remove('active');
 
+        // Marca todas como lidas ao abrir
         const items = notificationsList.querySelectorAll('li');
         items.forEach(async li => {
             const id = li.dataset.id;
@@ -359,6 +369,45 @@ searchContainer.addEventListener('click', (e) => {
         notificationCount.textContent = 0;
     });
 
+    // =========================
+    // EXPANDIR NOTIFICAÇÕES
+    // =========================
+    const expandBtn = document.getElementById('expandNotifications');
+    expandBtn.addEventListener('click', () => {
+        notificationsMenu.classList.toggle('expanded');
+
+        if (notificationsMenu.classList.contains('expanded')) {
+            expandBtn.textContent = 'Recolher';
+            notificationsMenu.scrollTop = 0; // volta ao topo ao expandir
+        } else {
+            expandBtn.textContent = 'Ver todas';
+        }
+    });
+
+
+    // =========================
+    // EXCLUIR TODAS NOTIFICAÇÕES
+    // =========================
+    const deleteBtn = document.getElementById('deleteNotifications');
+    deleteBtn.addEventListener('click', async () => {
+        if (!confirm('Tem certeza que deseja excluir todas as notificações?')) return;
+
+        try {
+            const res = await fetch('../../api/admin/deletar_notificacoes.php', { method: 'POST' });
+            const data = await res.json();
+
+            if (data.success) {
+                notificationsList.innerHTML = '<p class="no-results">Nenhuma notificação.</p>';
+                notificationCount.textContent = 0;
+            } else {
+                alert('Erro ao excluir notificações.');
+            }
+        } catch (err) {
+            console.error('Erro ao excluir notificações:', err);
+        }
+    });
+
+    // Atualiza automaticamente a cada 10 segundos
     setInterval(carregarNotificacoes, 10000);
     carregarNotificacoes();
 
