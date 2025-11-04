@@ -107,9 +107,7 @@ if (!isset($_SESSION['usuario_id'])) {
 
   <section class="container cursos-section" style="margin-top: 80px; position: relative;">
     <div class="cursos-wrapper">
-      <a href="cursos.php" class="btn btn-primary pull-left btn-cursos"
-        style="margin-left: 3%; background-color: #1754a3; border: none;">Gerenciar cursos</a>
-      <h3 class="titulo-cursos" style="margin-right: 180px;">Cursos Disponíveis</h3>
+      <h3 class="titulo-cursos">Cursos Disponíveis</h3>
       <p class="subtitulo-cursos">Escolha um curso e comece a transformar seu futuro.</p>
       <div id="lista-cursos" class="row g-4 cursos-grid"></div>
     </div>
