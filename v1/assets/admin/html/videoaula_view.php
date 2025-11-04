@@ -24,64 +24,6 @@ if (!isset($_SESSION['usuario_id'])) {
     <link rel="stylesheet" href="../../lib/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 
-    <style>
-        /* ==========================
-           BOTÃO CERTIFICADO ANIMADO
-        =========================== */
-        #btnCertificado {
-            position: relative;
-            overflow: hidden;
-            transition: all 0.4s ease;
-            background: linear-gradient(90deg, #28a745, #218838);
-            color: white;
-            font-weight: 600;
-            border: none;
-            border-radius: 8px;
-            padding: 10px 20px;
-            cursor: pointer;
-        }
-
-        #btnCertificado:disabled {
-            opacity: 0.8;
-            cursor: not-allowed;
-        }
-
-        /* Brilho no hover */
-        #btnCertificado::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 50%;
-            height: 100%;
-            background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.4), transparent);
-            transform: skewX(-25deg);
-            transition: 0.6s;
-        }
-
-        #btnCertificado:hover::before {
-            left: 120%;
-        }
-
-        /* Ícone girando (loading) */
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
-        }
-
-        #btnCertificado.loading i {
-            animation: spin 1s linear infinite;
-        }
-
-        /* Efeito de sucesso */
-        #btnCertificado.sucesso {
-            background: linear-gradient(90deg, #34d058, #28a745);
-            box-shadow: 0 0 12px rgba(40, 167, 69, 0.6);
-            transform: scale(1.1);
-            transition: all 0.4s ease;
-        }
-    </style>
 </head>
 
 <body>
@@ -105,12 +47,14 @@ if (!isset($_SESSION['usuario_id'])) {
                     <div id="conteudoExtra"></div>
                 </div>
                 <button id="btnConcluido" class="btn mt-3">Marcar como assistido</button>
-                <div id="contadorAulas">
-                    Aulas assistidas: 0 /
-                    <?php $total = 0;
-                    foreach ($topicos as $t)
-                        $total += count($t['conteudos']);
-                    echo $total; ?>
+                <div class="btn-direita">
+                    <div id="contadorAulas">
+                        Aulas assistidas: 0 /
+                        <?php $total = 0;
+                        foreach ($topicos as $t)
+                            $total += count($t['conteudos']);
+                        echo $total; ?>
+                    </div>
                 </div>
             </div>
 
@@ -157,23 +101,19 @@ if (!isset($_SESSION['usuario_id'])) {
                 btn.className = 'btn btn-success mt-3';
                 btn.innerText = "Baixar Certificado";
 
-                // 🌟 Animação ao clicar
                 btn.addEventListener('click', () => {
                     btn.disabled = true;
                     btn.innerHTML = '<i class="fa fa-spinner"></i> Baixando...';
                     btn.classList.add('loading');
 
-                    // Abre o certificado em nova aba
                     window.open(`../../api/admin/gerar_certificado.php?curso_id=<?php echo $curso_id; ?>`, '_blank');
 
-                    // Após 2s mostra sucesso
                     setTimeout(() => {
                         btn.classList.remove('loading');
                         btn.classList.add('sucesso');
                         btn.innerHTML = '<i class="fa fa-check-circle"></i> Certificado Baixado!';
                     }, 2000);
 
-                    // Volta ao normal depois de 5s
                     setTimeout(() => {
                         btn.classList.remove('sucesso');
                         btn.innerHTML = 'Baixar Certificado';
@@ -187,7 +127,6 @@ if (!isset($_SESSION['usuario_id'])) {
                 btn.classList.add('show');
             }
 
-            // Atualiza notificações se existir
             if (typeof carregarNotificacoes === 'function') {
                 carregarNotificacoes();
             }
@@ -203,7 +142,22 @@ if (!isset($_SESSION['usuario_id'])) {
             }
 
             if (aulaAtual) {
-                btnConcluido.innerText = aulaAtual.classList.contains('assistido') ? "Desmarcar aula" : "Marcar como assistido";
+                const textoMarcado = document.getElementById('textoMarcado');
+                if (aulaAtual.classList.contains('assistido')) {
+                    btnConcluido.style.display = 'none';
+                    if (!textoMarcado) {
+                        const texto = document.createElement('p');
+                        texto.id = 'textoMarcado';
+                        texto.textContent = 'Aula concluída!';
+                        texto.style.color = 'green';
+                        texto.style.fontWeight = '600';
+                        texto.style.marginTop = '10px';
+                        btnConcluido.parentNode.insertBefore(texto, btnConcluido.nextSibling);
+                    }
+                } else {
+                    btnConcluido.style.display = 'inline-block';
+                    if (textoMarcado) textoMarcado.remove();
+                }
             }
         }
 
@@ -242,7 +196,7 @@ if (!isset($_SESSION['usuario_id'])) {
             })
                 .then(res => res.json())
                 .then(data => {
-                    if (data.success || data.sucesso) {  // compatível com ambos os scripts
+                    if (data.success || data.sucesso) {
                         if (desmarcar) {
                             aulaAtual.classList.remove('assistido');
                             aulasAssistidas--;
@@ -263,7 +217,6 @@ if (!isset($_SESSION['usuario_id'])) {
             item.addEventListener('click', () => {
                 aulaAtual = item;
                 tituloAula.innerText = item.innerText;
-                atualizarContador();
 
                 const tipo = item.dataset.tipo;
                 const arquivo = item.dataset.arquivo;
@@ -281,6 +234,8 @@ if (!isset($_SESSION['usuario_id'])) {
                     player.style.display = 'none';
                     conteudoExtra.innerHTML = `<iframe src="${arquivo}" width="100%" height="500px"></iframe>`;
                 }
+
+                atualizarContador(); // garante que o texto/btn esteja certo
             });
         });
 

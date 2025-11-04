@@ -1,9 +1,24 @@
+<?php
+session_start();
+
+// Evita cache da página
+header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+header("Cache-Control: post-check=0, pre-check=0", false);
+header("Pragma: no-cache");
+
+// Verifica se o usuário está logado
+if (!isset($_SESSION['usuario_id'])) {
+    header("Location: ../../html/login.php");
+    exit();
+}
+?>
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin - Gestão de Cursos</title>
+  <title>coordenador - Gestão de Cursos</title>
   <link rel="stylesheet" href="../../css/cursos.css">
   <link rel="stylesheet" href="../../css/back-button.css">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -25,6 +40,12 @@
       <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#cursoModal">
         <i class="bi bi-plus-circle"></i> Criar novo curso
       </button>
+    </div>
+
+    <!-- Barra de Filtro -->
+    <div class="input-group mb-4 shadow-sm">
+      <span class="input-group-text bg-dark text-white"><i class="bi bi-search"></i></span>
+      <input type="text" id="filtroCurso" class="form-control" placeholder="Pesquisar curso por título ou descrição...">
     </div>
 
     <div id="mensagem"></div>
@@ -86,41 +107,14 @@
 
 <script>
   const baseURL = "/2IDS/projeto-universidade-corporativa/";
-  const apiBase = baseURL + "v1/assets/api/admin/";
+  const apiBase = baseURL + "v1/assets/api/coordenador/";
+
+  let cursosCache = [];
 
   function carregarCursos() {
     $.get(apiBase + "cursos_listar.php", function(lista){
-      const tbody = $('#tabelaCursos tbody');
-      tbody.empty();
-      lista.forEach(curso => {
-        const badge = curso.status == 1
-  ? '<span class="badge bg-success badge-status">Ativo</span>'
-  : '<span class="badge bg-secondary badge-status">Inativo</span>';
-        
-        tbody.append(`
-          <tr>
-            <td>${curso.id}</td>
-            <td>${curso.titulo}</td>
-            <td>${curso.descricao}</td>
-            <td>${badge}</td>
-            <td class="text-center">
-              <button class="btn btn-sm btn-outline-primary btn-editar" 
-                      data-id="${curso.id}" 
-                      data-titulo="${curso.titulo}" 
-                      data-descricao="${curso.descricao}" 
-                      data-status="${curso.status}">
-                <i class="bi bi-pencil-square"></i>
-              </button>
-              <button class="btn btn-sm btn-outline-danger btn-excluir" data-id="${curso.id}">
-                <i class="bi bi-trash"></i>
-              </button>
-              <a href="topicos.php?id=${curso.id}" class="btn btn-sm btn-outline-secondary">
-                <i class="bi bi-list-ul"></i>
-              </a>
-            </td>
-          </tr>
-        `);
-      });
+      cursosCache = lista;
+      renderizarTabela(lista);
     }, 'json')
     .fail(function(jqXHR){
       console.error('Erro ao carregar cursos:', jqXHR.responseText);
@@ -128,10 +122,54 @@
     });
   }
 
+  function renderizarTabela(lista) {
+    const tbody = $('#tabelaCursos tbody');
+    tbody.empty();
+    lista.forEach(curso => {
+      const badge = curso.status == 1
+        ? '<span class="badge bg-success badge-status">Ativo</span>'
+        : '<span class="badge bg-secondary badge-status">Inativo</span>';
+
+      tbody.append(`
+        <tr>
+          <td>${curso.id}</td>
+          <td>${curso.titulo}</td>
+          <td>${curso.descricao}</td>
+          <td>${badge}</td>
+          <td class="text-center">
+            <button class="btn btn-sm btn-outline-primary btn-editar" 
+                    data-id="${curso.id}" 
+                    data-titulo="${curso.titulo}" 
+                    data-descricao="${curso.descricao}" 
+                    data-status="${curso.status}">
+              <i class="bi bi-pencil-square"></i>
+            </button>
+            <button class="btn btn-sm btn-outline-danger btn-excluir" data-id="${curso.id}">
+              <i class="bi bi-trash"></i>
+            </button>
+            <a href="topicos.php?id=${curso.id}" class="btn btn-sm btn-outline-secondary">
+              <i class="bi bi-list-ul"></i>
+            </a>
+          </td>
+        </tr>
+      `);
+    });
+  }
+
   function mostrarMensagem(texto, tipo){
     $('#mensagem').html(`<div class="alert alert-${tipo}">${texto}</div>`);
     setTimeout(() => { $('#mensagem').fadeOut(400, () => $(this).empty().show()); }, 3000);
   }
+
+  // 🔍 Filtro em tempo real
+  $('#filtroCurso').on('input', function() {
+    const termo = $(this).val().toLowerCase();
+    const filtrados = cursosCache.filter(curso =>
+      curso.titulo.toLowerCase().includes(termo) ||
+      curso.descricao.toLowerCase().includes(termo)
+    );
+    renderizarTabela(filtrados);
+  });
 
   $(document).on("click", ".btn-editar", function () {
     $('#cursoModalLabel').text("Editar curso");

@@ -4,12 +4,28 @@ if (!isset($_GET['id'])) {
 }
 $curso_id = intval($_GET['id']);
 ?>
+
+<?php
+session_start();
+
+// Evita cache da página
+header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+header("Cache-Control: post-check=0, pre-check=0", false);
+header("Pragma: no-cache");
+
+// Verifica se o usuário está logado
+if (!isset($_SESSION['usuario_id'])) {
+    header("Location: ../../html/login.php");
+    exit();
+}
+?>
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Admin - Tópicos</title>
+  <title>coordenador - Tópicos</title>
   <link rel="stylesheet" href="../../css/topicos.css" />
   <link rel="stylesheet" href="../../css/back-button.css">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
@@ -86,7 +102,7 @@ $curso_id = intval($_GET['id']);
 
 <script>
   const baseURL = "/2IDS/projeto-universidade-corporativa/";
-  const apiBase = baseURL + "v1/assets/api/admin/";
+  const apiBase = baseURL + "v1/assets/api/coordenador/";
 
   function carregarTopicos() {
     const cursoId = $('#curso_id_modal').val();

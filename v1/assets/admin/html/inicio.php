@@ -115,7 +115,6 @@ if (!isset($_SESSION['usuario_id'])) {
     </div>
   </section>
 
-
   <section id="parceiros" class="parceiros container" aria-label="Parceiros da Universidade Corporativa">
     <h2>Desenvolvedores</h2>
     <div class="row text-center" style="margin-left: 70px;">
@@ -419,11 +418,14 @@ if (!isset($_SESSION['usuario_id'])) {
                     style="padding:8px 25px; background:#28a745; color:white; border-radius:8px; text-decoration:none; font-size:14px; font-weight:600;">
                     Acessar
                   </a>
-                  <button class="btn-matricular" data-id="${curso.id}"
-                    style="padding:8px 15px; background:#007bff; color:white; border:none; border-radius:8px; font-size:14px; font-weight:600;"
-                    ${matriculado ? 'disabled style="background:#ccc; cursor:not-allowed;"' : ''}>
-                    Matricular
-                  </button>
+                    ${matriculado ? `
+                      <span style="color:#28a745; font-weight:600; font-size:14px;">Matriculado</span>
+                    ` : `
+                      <button class="btn-matricular" data-id="${curso.id}"
+                        style="padding:8px 15px; background:#007bff; color:white; border:none; border-radius:8px; font-size:14px; font-weight:600;">
+                        Matricular
+                      </button>
+                    `}
                 </div>
               </div>
             `;
@@ -484,21 +486,38 @@ if (!isset($_SESSION['usuario_id'])) {
                         if (matriculaData.status === 'sucesso') {
                           mostrarModal('Sucesso', 'Matrícula realizada com sucesso! Agora você pode acessar o curso.', [
                             {
-                              texto: 'Acessar curso', class: 'btn btn-success', onClick: () => window.location.href =
-                                `../../api/admin/videoaula.php?id=${cursoId}`
+                              texto: 'Acessar curso',
+                              class: 'btn btn-success',
+                              onClick: () => window.location.href = `../../api/admin/videoaula.php?id=${cursoId}`
                             }
                           ]);
-                          target.disabled = true;
-                          target.style.background = '#ccc';
-                          target.style.cursor = 'not-allowed';
 
-                          // Atualizar barra de progresso para verde
+                          // Substitui o botão "Matricular" pelo texto informativo
+                          const cardFooter = target.parentElement;
+                          target.remove(); // remove o botão "Matricular"
+
+                          const textoMatriculado = document.createElement('span');
+                          textoMatriculado.textContent = 'Matriculado';
+                          textoMatriculado.style.cssText = `
+                            color: #28a745;
+                            font-weight: 600;
+                            font-size: 14px;
+                          `;
+
+                          cardFooter.appendChild(textoMatriculado);
+
+                          // Atualiza a barra de progresso
                           const progressBar = document.getElementById(`progress-${cursoId}`);
-                          if (progressBar) progressBar.style.background = '#28a745';
-                        } else {
-                          mostrarModal('Erro', 'Erro ao matricular: ' + (matriculaData.mensagem || 'Tente novamente.'), [
-                            { texto: 'OK', class: 'btn btn-danger' }
-                          ]);
+                          if (progressBar) {
+                            progressBar.style.background = '#28a745';
+                            progressBar.style.width = '0%';
+                          }
+
+                          // Se quiser mostrar também um texto de progresso inicial
+                          const progressText = document.getElementById(`progress-text-${cursoId}`);
+                          if (progressText) {
+                            progressText.textContent = '0% concluído';
+                          }
                         }
                       }
                     },

@@ -1,22 +1,16 @@
 <?php
 session_start();
-require_once '../../db/conexao.php'; // seu arquivo de conexão com o banco
+
+// Evita cache da página
+header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+header("Cache-Control: post-check=0, pre-check=0", false);
+header("Pragma: no-cache");
 
 // Verifica se o usuário está logado
 if (!isset($_SESSION['usuario_id'])) {
   header("Location: ../../html/login.php");
-  exit;
+  exit();
 }
-
-$usuarioId = $_SESSION['usuario_id'];
-
-// Consulta para pegar nome e email
-$stmt = $conn->prepare("SELECT nome, email FROM usuarios WHERE id = ?");
-$stmt->bind_param("i", $usuarioId);
-$stmt->execute();
-$result = $stmt->get_result();
-$usuario = $result->fetch_assoc();
-$stmt->close();
 ?>
 
 <!DOCTYPE html>
@@ -26,212 +20,150 @@ $stmt->close();
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Início | U.C</title>
-  <link rel="stylesheet" href="../../css/website.css">
   <link rel="stylesheet" href="../../css/perfil-container.css">
   <link rel="stylesheet" href="../css/inicio.css">
+  <link rel="stylesheet" href="../css/header.css">
   <link rel="stylesheet" href="../../lib/bootstrap/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 </head>
 
 <body>
 
-  <header class="header-inicio">
+  <?php include '../api/header.php'; ?>
+
+  <section class="section-inc-1 mt-5">
     <div class="container">
-      <div class="row">
-        <div class="col-md-4">
-          <nav id="menu" class="menu">
-            <ul>
-              <div class="input-group search">
-                <input id="input-search" type="search" class="form-control" placeholder="Buscar...">
-                <span class="input-group-btn">
-                  <button class="" type="button"><i class="fa fa-search"></i></button>
-                </span>
-              </div>
-            </ul>
-          </nav>
-        </div>
-        <div class="col-md-4">
-          <nav class="submenu">
-            <ul>
-              <li class="menu-item">
-                <a href="#" class="menu-link">
-                  <i class="fa fa-bars menu-icon" style="color: white;"></i>
-                </a>
-                <div class="submenu-full">
-                  <div style="display: flex; align-items: center; justify-content: space-between;">
-                    <h2>Menu</h2>
-                    <button class="close-submenu"
-                      style="background:none; border:none; font-size:24px; cursor:pointer;">&times;</button>
-                  </div>
-                  <hr>
-                  <section id="foto-perfil-container" class="perfil-container" aria-label="Informações do usuário">
-                    <div
-                      style="display: flex; align-items: center; padding: 15px; background: #f8f9fa; border-radius: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
-                      <img src="<?= htmlspecialchars($usuario['foto'] ?? '../../images/crown.png') ?>"
-                        alt="Foto de perfil do usuário" id="foto-perfil"
-                        style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 3px solid #6f42c1; box-shadow: 0 4px 10px rgba(0,0,0,0.2);" />
-                      <div style="margin-left: 20px; display: flex; flex-direction: column;">
-                        <strong id="nome-usuario"
-                          style="font-size: 18px; color: #333;"><?= htmlspecialchars($usuario['nome']) ?></strong>
-                        <p id="email-usuario" style="font-size: 14px; color: #555; margin-top: 4px;">
-                          <?= htmlspecialchars($usuario['email']) ?></p>
-                        <a href="../../html/login.php" title="Sair da Conta"
-                          style="margin-top: 8px; font-size: 16px; color: #6f42c1; text-decoration: none;">
-                          <i class="fa-solid fa-right-from-bracket"></i> Sair
-                        </a>
-                      </div>
-                    </div>
-                    <a href="../../html/login.php" style="font-size: 20px; color: gray; margin-left: -10px;"
-                      title="Sair da Conta">
-                      <i class="fa-solid fa-right-from-bracket"></i>
-                    </a>
-                  </section>
+      <div class="row align-items-center justify-content-center text-center text-lg-start">
 
-                  <hr style="margin-top: 20px;">
-                  <link rel="stylesheet"
-                    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+        <!-- Textos (agora com área maior) -->
+        <div class="col-12 col-lg-6 mb-5 mb-lg-0 titulos">
+          <h2 class="h2-inicio">Universidade Corporativa</h2>
+          <h2 class="h2-inc-introducao">Transforme seu futuro. Evolua sua carreira.</h2>
+          <h3 class="h3-inc-introducao">
+            Desbloqueie seu potencial e alcance novos patamares de sucesso com a nossa
+            <strong>Universidade Corporativa.</strong>
+          </h3>
 
-                  <a href="admin.php"><i class="fa fa-cogs"></i> Gestão de Usuários</a>
-                  <a href="cursos.php"><i class="fa fa-cogs"></i> Gestão de Cursos</a>
-                </div>
-              </li>
-            </ul>
-          </nav>
-        </div>
-        <div class="col-md-4">
-          <nav class="notificacao pull-right">
-            <ul>
-              <li class="ntf-item" style="position: relative;">
-                <a href="#" class="menu-link">
-                  <i class="fa fa-bell" style="color: white;"></i>
-                  <span id="badge-count"
-                    style="position: absolute; top: -5px; right: -5px; background: red; color: white; border-radius: 50%; padding: 2px 6px; font-size: 12px; display: none;">0</span>
-                </a>
-                <div class="notificacao-barra">
-                  <div style="display: flex; align-items: center; justify-content: space-between;">
-                    <h2>Notificações</h2>
-                    <button class="close-submenu"
-                      style="background:none; border:none; font-size:24px; cursor:pointer; color: black;"
-                      onclick="this.parentNode.parentNode.parentNode.classList.remove('show');">&times;</button>
-                  </div>
-                  <hr />
-                  <ul></ul>
-                </div>
-              </li>
-            </ul>
-          </nav>
-        </div>
-      </div>
-    </div>
-  </header>
+          <!-- Novo parágrafo motivacional -->
+          <p class="p-inc-introducao">
+            Nossos cursos são desenhados para profissionais que buscam crescimento real e aplicável no mercado. Aqui,
+            você aprende na prática e com quem entende do assunto.
+          </p>
 
-  <section style="margin-top: 100px;" class="container section-inc-1">
-    <div class="row introducao">
-      <div class="col-md-12">
-        <img class="logo-inicio pull-left" src="../../images/logo.png" alt="logo">
-        <h2 class="h2-inicio text-center">Universidade Corporativa</h2>
-        <h2 class="h2-inc-introducao text-center">Transforme seu futuro. Evolua sua carreira.</h2>
-        <h3 style="width: 750px; margin-left: 400px;" class="h3-inc-introducao text-center">Desbloqueie seu potencial e
-          alcance novos patamares de sucesso com a nossa
-          <strong>Universidade Corporativa.</strong></h2>
-          <a style="margin-left: 260px; text-decoration: none;" href="../../html/sobre.html"
-            onmouseover="this.style.textDecoration='underline';" onmouseout="this.style.textDecoration='none';">
-            Clique aqui e aproveite mais informações sobre a <strong>UNICORP</strong>
+          <!-- Frase de destaque curta -->
+          <p class="p-inc-destaque">
+            🚀 Prepare-se para decolar sua carreira com conhecimento de ponta!
+          </p>
+
+          <a href="../../html/sobre.html" class="link-sobre">
+            <i class="fa fa-info-circle"></i> Clique aqui e saiba mais sobre a <strong>UNICORP!</strong>
+            <i class="fa fa-arrow-right"></i>
           </a>
+        </div>
+
+        <!-- Logo (diminuída um pouco para balancear) -->
+        <div class="col-12 col-lg-2 mb-lg-0 g-4">
+          <img class="logo-inicio" src="../../images/logo.png" alt="Logo UNICORP"
+            style="margin-left: -200px; margin-right: 200px;">
+        </div>
+
+        <!-- CTA Criativa -->
+        <div class="col-12 col-lg-4">
+          <section class="cta">
+            <h2>Pronto para dar o próximo passo?</h2>
+            <p>Invista no seu futuro e conquiste novas oportunidades com nossos cursos exclusivos da
+              <strong>UNICORP</strong>.
+            </p>
+            <div class="cta-beneficios">
+              <div class="beneficio">
+                <span>Aulas <strong>100%</strong> online e práticas</span>
+              </div>
+              <div class="beneficio">
+                <span>Certificação reconhecida no <strong>mercado</strong></span>
+              </div>
+              <div class="beneficio">
+                <span>Professores <strong>especialistas</strong> na área</span>
+              </div>
+            </div>
+            <div class="cta-selo">
+              Mais de <strong>10.000 alunos</strong> transformaram suas carreiras!
+            </div>
+            <button class="btn-curso" id="btnComeceAgora">Comece Agora</button>
+          </section>
+        </div>
       </div>
     </div>
   </section>
 
   <br><br><br><br>
 
-  <section class="container section-inc-2">
-    <div class="texto-curso">
-      <h3 class="h3-inicio">Gerenciar Cursos:</h3>
-      <a href="cursos.php" class="btn btn-primary" style="margin-left: 0px;">Cursos</a>
-    </div>
+  <br>
+
+  <section class="ctb-texto">
+    <h2 class="animado">Invista no seu futuro! Acesse nossos cursos agora!</h2>
   </section>
 
   <br>
 
   <section class="container cursos-section" style="margin-top: 80px; position: relative;">
     <div class="cursos-wrapper">
-      <h3 class="titulo-cursos">Cursos Disponíveis</h3>
+      <a href="cursos.php" class="btn btn-primary pull-left btn-cursos"
+        style="margin-left: 3%; background-color: #1754a3; border: none;">Gerenciar cursos</a>
+      <h3 class="titulo-cursos" style="margin-right: 180px;">Cursos Disponíveis</h3>
       <p class="subtitulo-cursos">Escolha um curso e comece a transformar seu futuro.</p>
       <div id="lista-cursos" class="row g-4 cursos-grid"></div>
     </div>
   </section>
 
-  <section style="margin-top: 300px;" id="indicadores" class="indicadores container" tabindex="0"
-    aria-label="Indicadores da Universidade Corporativa">
-    <div class="row text-center">
-      <article class="col-md-3 indicador" aria-live="polite">
-        <h3 id="num-alunos">0</h3>
-        <p>Alunos</p>
-      </article>
-      <article class="col-md-3 indicador" aria-live="polite">
-        <h3 id="num-cursos">0</h3>
-        <p>Cursos</p>
-      </article>
-      <article class="col-md-3 indicador" aria-live="polite">
-        <h3 id="num-horas">0</h3>
-        <p>Horas</p>
-      </article>
-      <article class="col-md-3 indicador" aria-live="polite">
-        <h3 id="num-certificados">0</h3>
-        <p>Certificados</p>
-      </article>
-    </div>
-  </section>
-
-  <section id="depoimentos" class="depoimentos container" aria-label="Depoimentos de alunos">
-    <h2>Depoimentos</h2>
-    <article class="depoimento" tabindex="0">
-      <blockquote>
-        <p>"A UNICORP mudou minha vida! O conteúdo é excelente e a equipe muito atenciosa."</p>
-        <footer>- João Silva</footer>
-      </blockquote>
-    </article>
-    <article class="depoimento" tabindex="0">
-      <blockquote>
-        <p>"Aprendi muito e pude aplicar no meu trabalho imediatamente."</p>
-        <footer>- Maria Oliveira</footer>
-      </blockquote>
-    </article>
-  </section>
-
   <section id="parceiros" class="parceiros container" aria-label="Parceiros da Universidade Corporativa">
-    <h2 style="margin-bottom: 50px;">Desenvolvedores</h2>
-    <div class="row text-center">
-      <div class="col-md-3 parceiro">
-        <i class="fas fa-users text-center"></i>
+    <h2>Desenvolvedores</h2>
+    <div class="row text-center" style="margin-left: 70px;">
+      <div class="col-md-3 parceiro" style="width: 250px;">
+        <div class="icon-container">
+          <i class="fa fa-user"></i>
+        </div>
         <p>Teatin</p>
       </div>
-      <div class="col-md-3 parceiro">
-        <i class="fas fa-users text-center"></i>
+      <div class="col-md-3 parceiro" style="width: 250px;">
+        <div class="icon-container">
+          <i class="fa fa-user"></i>
+        </div>
         <p>Felipe</p>
       </div>
-      <div class="col-md-3 parceiro">
-        <i class="fas fa-users text-center"></i>
+      <div class="col-md-3 parceiro" style="width: 250px;">
+        <div class="icon-container">
+          <i class="fa fa-user"></i>
+        </div>
         <p>Leonardo</p>
       </div>
-      <div class="col-md-3 parceiro">
-        <i class="fas fa-users text-center"></i>
+      <div class="col-md-3 parceiro" style="width: 250px;">
+        <div class="icon-container">
+          <i class="fa fa-user"></i>
+        </div>
         <p>Luan</p>
       </div>
-      <div class="col-md-3 parceiro">
-        <i class="fas fa-users text-center"></i>
+      <div class="col-md-3 parceiro" style="width: 250px;">
+        <div class="icon-container">
+          <i class="fa fa-user"></i>
+        </div>
         <p>Helena</p>
       </div>
-      <div class="col-md-3 parceiro">
-        <i class="fas fa-users text-center"></i>
+      <div class="col-md-3 parceiro" style="width: 250px;">
+        <div class="icon-container">
+          <i class="fa fa-user"></i>
+        </div>
         <p>Ana Vitória</p>
       </div>
-      <div class="col-md-3 parceiro">
-        <i class="fas fa-users text-center"></i>
+      <div class="col-md-3 parceiro" style="width: 250px;">
+        <div class="icon-container">
+          <i class="fa fa-user"></i>
+        </div>
         <p>Dani</p>
       </div>
-      <div class="col-md-3 parceiro">
-        <i class="fas fa-users text-center"></i>
+      <div class="col-md-3 parceiro" style="width: 250px;">
+        <div class="icon-container">
+          <i class="fa fa-user"></i>
+        </div>
         <p>Larissa</p>
       </div>
     </div>
@@ -421,11 +353,13 @@ $stmt->close();
     });
 
     // ---------------- CARREGAR CURSOS ----------------
+
     document.addEventListener('DOMContentLoaded', async () => {
       const listaCursos = document.getElementById('lista-cursos');
 
+
       try {
-        const response = await fetch('../../api/admin/get_cursos.php');
+        const response = await fetch('../../api/coordenador/get_cursos.php');
         if (!response.ok) throw new Error('Erro na requisição: ' + response.status);
 
         const result = await response.json();
@@ -434,53 +368,83 @@ $stmt->close();
           result.data.forEach(curso => {
             const card = document.createElement('div');
             card.classList.add('curso-card');
-            card.style.cssText = `
-            background: linear-gradient(145deg, #ffffff, #f0f0f5);
-            border-radius: 15px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.08);
-            overflow: hidden;
-            width: 280px;
-            transition: transform 0.3s, box-shadow 0.3s;
-            display: flex;
-            flex-direction: column;
-          `;
 
-            // Verifica se o usuário já está matriculado
-            const matriculado = curso.matriculado; // API deve retornar true/false
+            // Verifica matrícula e progresso
+            const matriculado = curso.matriculado == 1 || curso.matriculado === true;
+            const progresso = parseInt(curso.progresso) || 0;
+
+            // Define a borda condicional
+            const borderStyle = matriculado
+              ? '4px solid rgba(30, 81, 149, 0.6)'
+              : 'none';
+
+            card.style.cssText = `
+                background: linear-gradient(145deg, #ffffff, #f0f0f5);
+                border: ${borderStyle};
+                border-radius: 15px;
+                box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+                overflow: hidden;
+                width: 280px;
+                transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+                display: flex;
+                flex-direction: column;
+              `;
 
             card.innerHTML = `
-            <div style="height:180px; background-image:url('${curso.imagem || '../../images/imgsemfundo2.png'}'); 
-                              background-size: cover; background-position: center;"></div>
-            <div style="padding: 20px; flex: 1; display: flex; flex-direction: column; justify-content: space-between;">
-              <div>
-                <h4 style="margin-bottom: 10px;">${curso.titulo}</h4>
-                <p style="font-size: 14px; color: #555;">${curso.descricao}</p>
-              </div>
-              <div style="margin-top: 15px; display: flex; justify-content: space-between; align-items: center;">
-                <a href="#" class="btn-acessar" data-id="${curso.id}"
-                  style="padding:8px 15px; background:#28a745; color:white; border-radius:8px; text-decoration:none; font-size:14px; font-weight:600;">
-                  Acessar
-                </a>
-                <button class="btn-matricular" data-id="${curso.id}"
-                  style="padding:8px 15px; background:#007bff; color:white; border:none; border-radius:8px; font-size:14px; font-weight:600;"
-                  ${matriculado ? 'disabled style="background:#ccc; cursor:not-allowed;"' : ''}>
-                  Matricular
-                </button>
-              </div>
-            </div>
-          `;
+              <div style="height:180px; background-image:url('${curso.imagem || '../../images/imgsemfundo2.png'}'); 
+                            background-size: cover; background-position: center;"></div>
+              <div style="padding: 20px; flex: 1; display: flex; flex-direction: column; justify-content: space-between;">
+                <div>
+                  <h4 style="margin-bottom: 10px;">${curso.titulo}</h4>
+                  <p style="font-size: 14px; color: #555;">${curso.descricao}</p>
 
+                  ${matriculado ? `
+                    <div class="progress-container" style="background:#eee; border-radius:8px; height:12px; overflow:hidden;">
+                      <div class="progress-bar" id="progress-${curso.id}" 
+                          style="
+                            width: ${progresso}%;
+                            height:100%;
+                            background:#1754a3;
+                            border-radius: 8px;
+                            transition: width 0.5s;
+                          ">
+                      </div>
+                    </div>
+                    <div class="progress-text" id="progress-text-${curso.id}">${progresso}% concluído</div>
+                  ` : ''}
+                </div>
+                <div style="margin-top: 15px; display: flex; justify-content: space-between; align-items: center;">
+                  <a href="#" class="btn-acessar" data-id="${curso.id}"
+                    style="padding:8px 25px; background:#28a745; color:white; border-radius:8px; text-decoration:none; font-size:14px; font-weight:600;">
+                    Acessar
+                  </a>
+                    ${matriculado ? `
+                      <span style="color:#28a745; font-weight:600; font-size:14px;">Matriculado</span>
+                    ` : `
+                      <button class="btn-matricular" data-id="${curso.id}"
+                        style="padding:8px 15px; background:#007bff; color:white; border:none; border-radius:8px; font-size:14px; font-weight:600;">
+                        Matricular
+                      </button>
+                    `}
+                </div>
+              </div>
+            `;
+
+            // Efeito hover apenas se matriculado
             card.addEventListener('mouseenter', () => {
               card.style.transform = 'translateY(-5px)';
               card.style.boxShadow = '0 15px 25px rgba(0,0,0,0.15)';
+              if (matriculado) card.style.borderColor = '#1754a3';
             });
             card.addEventListener('mouseleave', () => {
               card.style.transform = 'translateY(0)';
               card.style.boxShadow = '0 10px 20px rgba(0,0,0,0.08)';
+              if (matriculado) card.style.borderColor = 'rgb(29, 113, 222)';
             });
 
             listaCursos.appendChild(card);
           });
+
 
           // ---------------- BOTÕES DE CURSO ----------------
           listaCursos.addEventListener('click', async (e) => {
@@ -491,7 +455,7 @@ $stmt->close();
               const cursoId = target.dataset.id;
 
               try {
-                const resposta = await fetch('../../api/admin/verificar_matricula.php', {
+                const resposta = await fetch('../../api/coordenador/verificar_matricula.php', {
                   method: 'POST',
                   headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                   body: `curso_id=${cursoId}`,
@@ -511,7 +475,7 @@ $stmt->close();
                   mostrarModal('Confirmar matrícula', 'Você ainda não está matriculado neste curso. Deseja se matricular agora?', [
                     {
                       texto: 'Sim', class: 'btn btn-success', onClick: async () => {
-                        const matriculaRes = await fetch('../../api/admin/matricular.php', {
+                        const matriculaRes = await fetch('../../api/coordenador/matricular.php', {
                           method: 'POST',
                           headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                           body: `curso_id=${cursoId}`,
@@ -522,17 +486,38 @@ $stmt->close();
                         if (matriculaData.status === 'sucesso') {
                           mostrarModal('Sucesso', 'Matrícula realizada com sucesso! Agora você pode acessar o curso.', [
                             {
-                              texto: 'Acessar curso', class: 'btn btn-success', onClick: () => window.location.href =
-                                `../../api/admin/videoaula.php?id=${cursoId}`
+                              texto: 'Acessar curso',
+                              class: 'btn btn-success',
+                              onClick: () => window.location.href = `../../api/coordenador/videoaula.php?id=${cursoId}`
                             }
                           ]);
-                          target.disabled = true;
-                          target.style.background = '#ccc';
-                          target.style.cursor = 'not-allowed';
-                        } else {
-                          mostrarModal('Erro', 'Erro ao matricular: ' + (matriculaData.mensagem || 'Tente novamente.'), [
-                            { texto: 'OK', class: 'btn btn-danger' }
-                          ]);
+
+                          // Substitui o botão "Matricular" pelo texto informativo
+                          const cardFooter = target.parentElement;
+                          target.remove(); // remove o botão "Matricular"
+
+                          const textoMatriculado = document.createElement('span');
+                          textoMatriculado.textContent = 'Matriculado';
+                          textoMatriculado.style.cssText = `
+                            color: #28a745;
+                            font-weight: 600;
+                            font-size: 14px;
+                          `;
+
+                          cardFooter.appendChild(textoMatriculado);
+
+                          // Atualiza a barra de progresso
+                          const progressBar = document.getElementById(`progress-${cursoId}`);
+                          if (progressBar) {
+                            progressBar.style.background = '#28a745';
+                            progressBar.style.width = '0%';
+                          }
+
+                          // Se quiser mostrar também um texto de progresso inicial
+                          const progressText = document.getElementById(`progress-text-${cursoId}`);
+                          if (progressText) {
+                            progressText.textContent = '0% concluído';
+                          }
                         }
                       }
                     },
@@ -553,7 +538,7 @@ $stmt->close();
               const cursoId = target.dataset.id;
 
               try {
-                const resposta = await fetch('../../api/admin/verificar_matricula.php', {
+                const resposta = await fetch('../../api/coordenador/verificar_matricula.php', {
                   method: 'POST',
                   headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                   body: `curso_id=${cursoId}`,
@@ -572,7 +557,7 @@ $stmt->close();
                     { texto: 'Fechar', class: 'btn btn-secondary' }
                   ]);
                 } else if (data.status === 'matriculado') {
-                  window.location.href = `../../api/admin/videoaula.php?id=${cursoId}`;
+                  window.location.href = `../../api/coordenador/videoaula.php?id=${cursoId}`;
                 }
               } catch (err) {
                 console.error('Erro:', err);
@@ -591,6 +576,32 @@ $stmt->close();
         listaCursos.innerHTML = `<p class="text-center text-danger">Erro ao carregar os cursos.</p>`;
       }
     });
+
+    // Scroll suave para a seção de cursos
+    document.getElementById('btnComeceAgora').addEventListener('click', () => {
+      const cursosSection = document.querySelector('.animado');
+      if (cursosSection) {
+        cursosSection.scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+
+    // Scroll Reveal manual
+    const parceiros = document.querySelectorAll('.parceiro');
+
+    function revelarCards() {
+      const windowHeight = window.innerHeight;
+      parceiros.forEach((parceiro, i) => {
+        const top = parceiro.getBoundingClientRect().top;
+        if (top < windowHeight - 50) {
+          setTimeout(() => {
+            parceiro.classList.add('show-on-scroll');
+          }, i * 150);
+        }
+      });
+    }
+
+    window.addEventListener('scroll', revelarCards);
+    window.addEventListener('load', revelarCards);
   </script>
 
   <script src="../../lib/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -598,3 +609,4 @@ $stmt->close();
 </body>
 
 </html>
+

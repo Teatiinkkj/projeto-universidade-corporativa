@@ -21,12 +21,28 @@ if (!$topico) {
 $curso_id = $topico['curso_id'];
 $topico_titulo = $topico['titulo'];
 ?>
+
+<?php
+session_start();
+
+// Evita cache da página
+header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+header("Cache-Control: post-check=0, pre-check=0", false);
+header("Pragma: no-cache");
+
+// Verifica se o usuário está logado
+if (!isset($_SESSION['usuario_id'])) {
+    header("Location: ../../html/login.php");
+    exit();
+}
+?>
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin - Conteúdos</title>
+  <title>coordenador - Conteúdos</title>
   <link rel="stylesheet" href="../../css/conteudo.css">
   <link rel="stylesheet" href="../../css/back-button.css">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -157,7 +173,7 @@ function iconeTipo(tipo) {
 }
 
 function carregarConteudos() {
-  $.get(baseURL + "v1/assets/api/admin/conteudos_listar.php", { topico_id: $('#topico_id_modal').val() }, function(lista) {
+  $.get(baseURL + "v1/assets/api/coordenador/conteudos_listar.php", { topico_id: $('#topico_id_modal').val() }, function(lista) {
     const tbody = $('#tabelaConteudos tbody');
     tbody.empty();
     lista.forEach(c => {
@@ -215,7 +231,7 @@ $(document).on('click', '.btn-excluir', function(){
   const id = $(this).data('id');
   if (!confirm("Deseja excluir este conteúdo?")) return;
 
-  $.post(baseURL + "v1/assets/api/admin/conteudos_excluir.php", { id }, function(res){
+  $.post(baseURL + "v1/assets/api/coordenador/conteudos_excluir.php", { id }, function(res){
     mostrarMensagem(res.mensagem, res.status === 'sucesso' ? 'success' : 'danger');
     carregarConteudos();
   }, 'json');
@@ -235,7 +251,7 @@ $('#formConteudos').on('submit', function(e){
   if($('#arquivo_path')[0].files[0]) formData.append('arquivo', $('#arquivo_path')[0].files[0]);
 
   $.ajax({
-    url: baseURL + "v1/assets/api/admin/" + url,
+    url: baseURL + "v1/assets/api/coordenador/" + url,
     type: 'POST',
     data: formData,
     processData: false,

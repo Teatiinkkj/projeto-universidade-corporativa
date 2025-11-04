@@ -66,7 +66,8 @@ $fotoExibida = (!empty($foto) && file_exists($caminhoImagens . $foto))
                 </ul>
                 <div class="notifications-footer" style="padding-bottom: 10px; padding-top: 10px;">
                     <button id="expandNotifications" class="expand-btn" style="margin-left: 10px;">Ver todas</button>
-                    <button id="deleteNotifications" class="delete-btn" style="margin-right: 10px;">Excluir todas</button>
+                    <button id="deleteNotifications" class="delete-btn" style="margin-right: 10px;">Excluir
+                        todas</button>
                 </div>
             </div>
 
@@ -103,9 +104,11 @@ $fotoExibida = (!empty($foto) && file_exists($caminhoImagens . $foto))
             </div>
         </div>
         <ul class="submenu-links">
+            <li><a href="../html/inicio.php"><i class="fa fa-home"></i> Início</a></li>
             <li><a href="perfil.php"><i class="fa fa-user"></i> Perfil</a></li>
             <li><a href="../html/admin.php"><i class="fa fa-users"></i>Gestão de Usuários</a></li>
             <li><a href="cursos.php"><i class="fa fa-graduation-cap"></i>Gestão de Cursos</a></li>
+            <li><a href="../../api/auth/logout.php"><i class="fa fa-sign-out"></i> Sair</a></li>
         </ul>
     </div>
 </header>
@@ -116,6 +119,21 @@ $fotoExibida = (!empty($foto) && file_exists($caminhoImagens . $foto))
         <h2>Acesso negado</h2>
         <p>Você precisa estar matriculado neste curso para acessá-lo.</p>
         <button class="modal-btn" id="modalOkBtn">OK</button>
+    </div>
+</div>
+
+<!-- MODAL DE CONFIRMAÇÃO DE EXCLUSÃO -->
+<div class="modal-overlay" id="modalExcluirNotificacoes">
+    <div class="modal-container">
+        <div class="modal-icon">
+            <i class="fa fa-exclamation-circle"></i>
+        </div>
+        <h2>Excluir todas as notificações?</h2>
+        <p>Essa ação é irreversível. Deseja realmente apagar todas as notificações da sua conta?</p>
+        <div class="modal-buttons">
+            <button id="btnConfirmarExclusao" class="btn-primario">Sim, excluir</button>
+            <button id="btnCancelarExclusao" class="btn-secundario">Cancelar</button>
+        </div>
     </div>
 </div>
 
@@ -389,22 +407,43 @@ $fotoExibida = (!empty($foto) && file_exists($caminhoImagens . $foto))
     // EXCLUIR TODAS NOTIFICAÇÕES
     // =========================
     const deleteBtn = document.getElementById('deleteNotifications');
-    deleteBtn.addEventListener('click', async () => {
-        if (!confirm('Tem certeza que deseja excluir todas as notificações?')) return;
+    const modalExcluir = document.getElementById('modalExcluirNotificacoes');
+    const btnConfirmarExclusao = document.getElementById('btnConfirmarExclusao');
+    const btnCancelarExclusao = document.getElementById('btnCancelarExclusao');
 
+    // Abre o modal de confirmação
+    deleteBtn.addEventListener('click', () => {
+        modalExcluir.style.display = 'flex';
+    });
+
+    // Cancela e fecha o modal
+    btnCancelarExclusao.addEventListener('click', () => {
+        modalExcluir.style.display = 'none';
+    });
+
+    // Confirma exclusão
+    btnConfirmarExclusao.addEventListener('click', async () => {
         try {
-            const res = await fetch('../../api/admin/deletar_notificacoes.php', { method: 'POST' });
+            const res = await fetch('../../api/admin/excluir_notificacoes.php', { method: 'POST' });
             const data = await res.json();
 
             if (data.success) {
                 notificationsList.innerHTML = '<p class="no-results">Nenhuma notificação.</p>';
                 notificationCount.textContent = 0;
             } else {
-                alert('Erro ao excluir notificações.');
+                alert(data.message || 'Erro ao excluir notificações.');
             }
         } catch (err) {
             console.error('Erro ao excluir notificações:', err);
+            alert('Erro na resposta do servidor.');
+        } finally {
+            modalExcluir.style.display = 'none';
         }
+    });
+
+    // Fecha ao clicar fora do modal
+    window.addEventListener('click', (e) => {
+        if (e.target === modalExcluir) modalExcluir.style.display = 'none';
     });
 
     // Atualiza automaticamente a cada 10 segundos
