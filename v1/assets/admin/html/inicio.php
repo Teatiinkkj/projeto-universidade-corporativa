@@ -8,7 +8,7 @@ header("Pragma: no-cache");
 
 // Verifica se o usuário está logado
 if (!isset($_SESSION['usuario_id'])) {
-  header("Location: ../../html/login.php");
+  header("Location: ../../../../index.php");
   exit();
 }
 ?>
@@ -20,6 +20,7 @@ if (!isset($_SESSION['usuario_id'])) {
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Início | U.C</title>
+  <link rel="icon" href="../../images/logo_universidade.png" type="image/png" class="logo-dominio">
   <link rel="stylesheet" href="../../css/perfil-container.css">
   <link rel="stylesheet" href="../css/inicio.css">
   <link rel="stylesheet" href="../css/header.css">
@@ -43,12 +44,6 @@ if (!isset($_SESSION['usuario_id'])) {
             Desbloqueie seu potencial e alcance novos patamares de sucesso com a nossa
             <strong>Universidade Corporativa.</strong>
           </h3>
-
-          <!-- Novo parágrafo motivacional -->
-          <p class="p-inc-introducao">
-            Nossos cursos são desenhados para profissionais que buscam crescimento real e aplicável no mercado. Aqui,
-            você aprende na prática e com quem entende do assunto.
-          </p>
 
           <!-- Frase de destaque curta -->
           <p class="p-inc-destaque">
@@ -465,7 +460,7 @@ if (!isset($_SESSION['usuario_id'])) {
 
                 if (data.status === 'nao_logado') {
                   mostrarModal('Acesso negado', 'Você precisa estar logado para acessar este curso.', [
-                    { texto: 'Fazer login', class: 'btn btn-primary', onClick: () => window.location.href = '../../html/login.php' }
+                    { texto: 'Fazer login', class: 'btn btn-primary', onClick: () => window.location.href = '../../../../index.php' }
                   ]);
                 } else if (data.status === 'matriculado') {
                   mostrarModal('Aviso', 'Você já está matriculado neste curso!', [
@@ -549,7 +544,7 @@ if (!isset($_SESSION['usuario_id'])) {
 
                 if (data.status === 'nao_logado') {
                   mostrarModal('Acesso negado', 'Você precisa estar logado para acessar este curso.', [
-                    { texto: 'Fazer login', class: 'btn btn-primary', onClick: () => window.location.href = '../../html/login.php' }
+                    { texto: 'Fazer login', class: 'btn btn-primary', onClick: () => window.location.href = '../../../../index.php' }
                   ]);
                 } else if (data.status === 'nao_matriculado') {
                   mostrarModal('Acesso restrito', 'Você precisa se matricular neste curso antes de acessá-lo.', [

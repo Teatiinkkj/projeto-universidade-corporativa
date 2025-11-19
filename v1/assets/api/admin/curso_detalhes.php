@@ -4,14 +4,14 @@ include __DIR__ . '/../../db/conexao.php';
 
 // Verifica login
 if (!isset($_SESSION['usuario_id'])) {
-    header("Location: ../../html/login.php");
+    header("Location: ../../../../index.php");
     exit;
 }
 
 $usuario_id = $_SESSION['usuario_id'];
 $curso_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 if ($curso_id <= 0) {
-    header("Location: ../../admin/html/inicio.php");
+    header("Location: ../../../../index.php");
     exit;
 }
 

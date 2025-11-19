@@ -15,7 +15,7 @@ header("Pragma: no-cache");
 
 // Verifica se o usuário está logado
 if (!isset($_SESSION['usuario_id'])) {
-    header("Location: ../../html/login.php");
+    header("Location: ../../../../index.php");
     exit();
 }
 ?>

@@ -1,4 +1,6 @@
 <?php
+include "../../db/conexao.php";
+
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Authorization");
@@ -6,22 +8,6 @@ header("Content-Type: application/json; charset=UTF-8");
 
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     http_response_code(200);
-    exit();
-}
-
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "universidade_corporativa";
-
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-if ($conn->connect_error) {
-    http_response_code(500);
-    echo json_encode([
-        "success" => false,
-        "message" => "Erro na conexão com o banco de dados: " . $conn->connect_error
-    ]);
     exit();
 }
 
@@ -43,9 +29,32 @@ $senha = $input['senha'];
 // LOGIN COM BANCO
 // ----------------------
 $stmt = $conn->prepare("SELECT id, nome, email, senha, cargo FROM usuarios WHERE email = ?");
+if (!$stmt) {
+    http_response_code(500);
+    echo json_encode([
+        "success" => false,
+        "message" => "Erro ao preparar consulta: " . $conn->error
+    ]);
+    exit();
+}
 $stmt->bind_param("s", $email);
-$stmt->execute();
+if (!$stmt->execute()) {
+    http_response_code(500);
+    echo json_encode([
+        "success" => false,
+        "message" => "Erro ao executar consulta: " . $stmt->error
+    ]);
+    exit();
+}
 $result = $stmt->get_result();
+if (!$result) {
+    http_response_code(500);
+    echo json_encode([
+        "success" => false,
+        "message" => "Erro ao obter resultado: " . $stmt->error
+    ]);
+    exit();
+}
 
 if ($result->num_rows === 0) {
     http_response_code(401);
@@ -82,20 +91,20 @@ $paginaRedirecionamento = "";
 
 switch ($cargo) {
     case 'aluno':
-        $paginaRedirecionamento = "../../assets/aluno/html/inicio.php";
+        $paginaRedirecionamento = "v1/assets/aluno/html/inicio.php";
         break;
     case 'professor':
-        $paginaRedirecionamento = "../../assets/professor/html/inicio.php";
+        $paginaRedirecionamento = "v1/assets/professor/html/inicio.php";
         break;
     case 'coordenador':
-        $paginaRedirecionamento = "../../assets/coordenador/html/inicio.php";
+        $paginaRedirecionamento = "v1/assets/coordenador/html/inicio.php";
         break;
     case 'admin':
     case 'administrador':
-        $paginaRedirecionamento = "../../assets/admin/html/inicio.php";
+        $paginaRedirecionamento = "v1/assets/admin/html/inicio.php";
         break;
     default:
-        $paginaRedirecionamento = "../../assets/aluno/html/inicio.php";
+        $paginaRedirecionamento = "v1/assets/aluno/html/inicio.php";
         break;
 }
 

@@ -24,7 +24,7 @@ try {
 
     // Consulta principal com progresso e matrícula
     $sql = "
-        SELECT 
+        SELECT
             c.id,
             c.titulo,
             c.descricao,
@@ -33,10 +33,25 @@ try {
             CASE WHEN m.id IS NOT NULL THEN 1 ELSE 0 END AS matriculado,
             COALESCE(v.progresso, 0) AS progresso
         FROM cursos c
-        LEFT JOIN matriculas m 
+        LEFT JOIN matriculas m
             ON m.curso_id = c.id AND m.usuario_id = :usuario_id
-        LEFT JOIN view_progresso_curso v 
-            ON v.curso_id = c.id AND v.usuario_id = :usuario_id
+        LEFT JOIN (
+            SELECT
+                m.usuario_id,
+                m.curso_id,
+                ROUND(
+                    (COUNT(DISTINCT CASE WHEN p.concluido = 1 THEN p.conteudo_id END) /
+                     COUNT(DISTINCT c.id)) * 100, 0
+                ) AS progresso
+            FROM matriculas m
+            JOIN cursos cu ON cu.id = m.curso_id
+            JOIN topicos t ON t.curso_id = cu.id
+            JOIN conteudo c ON c.topico_id = t.id
+            LEFT JOIN progresso p
+                ON p.conteudo_id = c.id AND p.usuario_id = m.usuario_id
+            WHERE m.usuario_id = :usuario_id
+            GROUP BY m.usuario_id, m.curso_id
+        ) v ON v.curso_id = c.id AND v.usuario_id = :usuario_id
         ORDER BY c.titulo
     ";
 

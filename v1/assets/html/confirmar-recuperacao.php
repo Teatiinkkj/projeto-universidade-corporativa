@@ -92,7 +92,7 @@
           `;
 
           setTimeout(() => {
-            window.location.href = "../html/login.php";
+            window.location.href = "../../../index.php";
           }, 5000);
 
         } else {

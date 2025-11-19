@@ -7,7 +7,9 @@
   <title>Login | UNICORP</title>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="../css/login.css" />
+  <link rel="stylesheet" href="v1/assets/css/login.css" />
+  <link rel="stylesheet" href="v1/assets/css/logo.css" />
+  <link rel="icon" href="v1/assets/images/logo-dominio.png" type="image/png" class="logo-dominio">
 </head>
 
 <body>
@@ -35,7 +37,7 @@
           </span>
         </div>
         <p class="cadastro">
-          <a class="link-cadastro" href="recuperar-senha.php">Esqueceu a senha?</a>
+          <a class="link-cadastro" href="v1/assets/html/recuperar-senha.php">Esqueceu a senha?</a>
         </p>
         <button class="botao-enviar" type="submit">Login</button>
       </form>
@@ -43,8 +45,8 @@
       <p class="footer">© 2025 UNICORP. Todos os direitos reservados.</p>
     </div>
     <div class="imagem-wrapper">
-      <img class="imagem-fundo-bg" src="../images/feixe-azul.png" alt="Imagem de fundo" />
-      <img class="imagem-fundo" src="../images/logo.png" alt="Imagem da frente" />
+      <img class="imagem-fundo-bg" src="v1/assets/images/feixe-azul.png" alt="Imagem de fundo" />
+      <img class="imagem-fundo" src="v1/assets/images/logo.png" alt="Imagem da frente" />
     </div>
   </div>
 
@@ -89,7 +91,7 @@
       }
 
       try {
-        const response = await fetch('../api/auth/login.php', {
+        const response = await fetch('v1/assets/api/auth/login.php', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email, senha })
@@ -105,7 +107,7 @@
 
           // Redireciona após 2 segundos
           setTimeout(() => {
-            window.location.href = data.redirecionamento || '../pages/inicio.html';
+            window.location.href = data.redirecionamento || 'v1/assets/pages/inicio.html';
           }, 2000);
 
         } else {

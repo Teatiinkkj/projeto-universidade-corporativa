@@ -4,7 +4,7 @@ include __DIR__ . '/../../db/conexao.php';
 
 // Verifica login
 if (!isset($_SESSION['usuario_id'])) {
-    header("Location: ../../html/login.php");
+    header("Location: ../../../../index.php");
     exit;
 }
 
