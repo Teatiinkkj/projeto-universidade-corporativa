@@ -15,7 +15,7 @@ $usuario_id = $_SESSION['usuario_id'];
 
 $servername = "localhost";
 $username = "root";
-$password = "";
+$password = "1234";
 $dbname = "universidade_corporativa";
 
 try {

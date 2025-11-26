@@ -1,6 +1,7 @@
-# TODO List for Implementing PROCEDURE and VIEW via PHP API
-
-- [x] Edit db.sql to remove the PROCEDURE "popular_cursos_reais" and VIEW "view_progresso_curso" sections.
-- [x] Create v1/assets/api/admin/popular_cursos.php to populate courses with topics and contents.
-- [x] Create v1/assets/api/admin/progresso_curso.php to calculate and return progress percentage per course for the logged user.
-- [x] Update TODO.md as tasks are completed.
+- [x] Update .section-inc-1: Change width to 100%, adjust padding for better fit.
+- [x] Update .titulos: Remove negative margins, set max-width and center alignment for responsiveness.
+- [x] Update .logo-inicio: Reduce transform scale, use responsive width/height.
+- [x] Update .section-inc-1 a: Change to max-width with responsive sizing.
+- [x] Update .cta: Remove negative margins, make width and margins responsive.
+- [x] Add media queries for better zoom responsiveness.
+- [x] Test the layout at different zoom levels (e.g., 75%, 100%, 125%) to ensure no overflow.

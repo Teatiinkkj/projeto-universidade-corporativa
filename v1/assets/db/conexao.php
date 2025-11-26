@@ -1,7 +1,7 @@
 <?php
 $servername = "localhost";
 $username = "root";
-$password = "";
+$password = "1234";
 $dbname = "universidade_corporativa";
 
 // Desativa warnings que podem quebrar o JSON

@@ -26,16 +26,19 @@ $fotoExibida = (!empty($foto) && file_exists($caminhoImagens . $foto)) ? $caminh
 
 // Cursos matriculados + progresso
 $matriculasStmt = $conn->prepare("
-    SELECT 
+    SELECT
         c.id AS curso_id,
         c.titulo,
         c.imagem,
         m.status,
-        IFNULL(p.progresso, 0) AS progresso
+        COALESCE(
+            (SELECT ROUND((COUNT(pr.conteudo_id) / NULLIF((SELECT COUNT(*) FROM conteudo WHERE topico_id IN (SELECT id FROM topicos WHERE curso_id = c.id)), 0)) * 100)
+             FROM progresso pr
+             WHERE pr.usuario_id = m.usuario_id AND pr.conteudo_id IN (SELECT id FROM conteudo WHERE topico_id IN (SELECT id FROM topicos WHERE curso_id = c.id)) AND pr.concluido = 1
+            ), 0
+        ) AS progresso
     FROM matriculas m
     JOIN cursos c ON c.id = m.curso_id
-    LEFT JOIN view_progresso_curso p 
-        ON p.usuario_id = m.usuario_id AND p.curso_id = m.curso_id
     WHERE m.usuario_id = ?
 ");
 $matriculasStmt->bind_param("i", $_SESSION['usuario_id']);

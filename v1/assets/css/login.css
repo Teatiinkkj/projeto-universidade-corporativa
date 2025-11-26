@@ -19,12 +19,16 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+    padding: 50px 10px;
+    box-sizing: border-box;
 }
 
 .container {
     display: flex;
-    width: 100vw;
-    height: 100vh;
+    width: 100%;
+    max-width: 1200px;
+    min-height: 80vh;
+    margin: 0 auto;
 }
 
 .caixa-login {
@@ -37,8 +41,9 @@ body {
     box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
     padding: 36px 32px 32px 36px;
     width: 100%;
-    max-width: 400px;
+    max-width: 350px;
     margin: auto;
+    box-sizing: border-box;
 }
 
 .caixa-login .footer {
@@ -170,28 +175,28 @@ body {
     background-color: #2097f857;
 }
 
-/* Mostrar imagem em telas maiores */
-@media (min-width: 900px) {
+/* Mostrar imagem apenas em telas maiores que não sejam Android */
+@media (min-width: 900px) and (pointer: fine) {
     .container {
-        max-width: 1100px;
+        max-width: 900px;
         margin: auto;
-        height: 600px;
+        height: 400px;
         box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.199);
         border-radius: 24px;
         overflow: hidden;
     }
 
     .caixa-login {
-        max-width: 420px;
+        max-width: 300px;
         border-radius: 24px 0 0 24px;
         height: 100%;
     }
 
-    .container-imagem {
+    .imagem-wrapper {
         display: flex;
         flex: 1;
         position: relative;
-        /* importante para posicionar o background corretamente */
+        height: 100%;
     }
 
     .imagem-fundo-bg {
@@ -207,14 +212,166 @@ body {
 
     .imagem-fundo {
         width: auto;
-        /* ou 100% */
-        max-width: 350px;
-        /* para remover o limite */
-        max-height: 350px;
+        max-width: 200px;
+        max-height: 200px;
         height: auto;
-        /* ou uma altura fixa maior */
+    }
+}
+
+/* Responsividade para tablets */
+@media (max-width: 768px) {
+    .container {
+        height: auto;
+        min-height: 100vh;
+        justify-content: center;
+        align-items: center;
     }
 
+    .caixa-login {
+        max-width: 500px;
+        padding: 24px 24px;
+        margin: 20px auto;
+        width: 90%;
+    }
+
+    .cabecalho h1 {
+        font-size: 1.2rem;
+    }
+
+    .cabecalho i {
+        font-size: 2.2rem;
+    }
+
+    .campo-input {
+        padding: 10px 12px 10px 40px;
+        font-size: 0.9rem;
+    }
+
+    .botao-enviar {
+        padding: 11px 0;
+        font-size: 0.9rem;
+    }
+
+    .cadastro {
+        font-size: 0.85rem;
+        text-align: center;
+        margin-left: 0;
+    }
+}
+
+/* Responsividade para mobile - incluindo Android */
+@media (max-width: 576px) {
+    body {
+        padding: 0;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+    }
+
+    .container {
+        width: 100%;
+        padding: 0;
+        position: relative;
+        min-height: 100vh;
+    }
+
+    .caixa-login {
+        max-width: 250px;
+        width: 80%;
+        padding: 16px 16px;
+        border-radius: 12px;
+        box-sizing: border-box;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    .cabecalho {
+        margin-bottom: 16px;
+        text-align: center;
+    }
+
+    .cabecalho h1 {
+        font-size: 1rem;
+    }
+
+    .cabecalho i {
+        font-size: 1.8rem;
+    }
+
+    .formulario-login {
+        gap: 12px;
+        width: 100%;
+        align-items: center;
+    }
+
+    .campo-input {
+        padding: 8px 10px 8px 36px;
+        font-size: 0.85rem;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .grupo-input {
+        width: 100%;
+        max-width: 280px;
+    }
+
+    .grupo-input i {
+        left: 10px;
+        font-size: 0.9rem;
+    }
+
+    .icone-senha {
+        right: 38px;
+    }
+
+    .botao-enviar {
+        padding: 10px 0;
+        font-size: 0.9rem;
+        margin-top: 16px;
+        width: 100%;
+        max-width: 280px;
+    }
+
+    .cadastro {
+        font-size: 0.75rem;
+        margin-top: -2px;
+        text-align: center;
+        margin-left: 0;
+    }
+
+    .footer {
+        margin-top: 40px;
+        font-size: 10px;
+        text-align: center;
+    }
+
+    .conteudo-modal {
+        max-width: 90%;
+        padding: 16px 12px;
+    }
+
+    .conteudo-modal i {
+        font-size: 36px;
+    }
+
+    .conteudo-modal h2 {
+        font-size: 1.2em;
+    }
+}
+
+/* Especificamente para Android - ocultar imagens */
+@media (max-width: 768px) and (-webkit-min-device-pixel-ratio: 1.5) {
+    .container-imagem {
+        display: none !important;
+    }
+
+    .imagem-fundo,
+    .imagem-fundo-bg {
+        display: none !important;
+    }
 }
 
 .icone-senha {

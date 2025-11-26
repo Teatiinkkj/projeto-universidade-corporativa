@@ -709,6 +709,10 @@ body::before {
   .parceiro i {
     font-size: 40px;
   }
+
+  .parceiros {
+    display: none;
+  }
 }
 
 /* ==========================

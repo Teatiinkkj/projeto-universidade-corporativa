@@ -443,6 +443,22 @@ body::before {
    RESPONSIVIDADE
 ========================== */
 @media (max-width: 992px) {
+  .section-inc-1 {
+    padding: 60px 20px;
+  }
+
+  .logo-inicio {
+    width: 350px !important;
+    height: 350px !important;
+    transform: scale(1.5);
+  }
+
+  .titulos {
+    margin-left: -400px;
+    margin-right: 200px;
+    width: 600px !important;
+  }
+
   .h2-inicio {
     font-size: 2.4rem;
   }
@@ -455,27 +471,58 @@ body::before {
     font-size: 1.1rem;
   }
 
+  .section-inc-1 a {
+    width: 600px;
+    font-size: 1.3rem;
+  }
+
   .cta {
-    margin-top: 30px;
+    margin-left: 150px;
+    margin-right: -400px;
+    height: 350px;
     padding: 30px 20px;
   }
 
   .cta h2 {
     font-size: 1.8rem;
   }
+
+  .btn-curso {
+    height: 70px;
+    width: 60%;
+    font-size: 35px;
+  }
 }
 
-@media (max-width: 576px) {
+@media (max-width: 768px) {
+  .section-inc-1 {
+    padding: 50px 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
   .logo-inicio {
-    max-width: 150px;
+    width: 280px !important;
+    height: 280px !important;
+    transform: scale(1.2);
+    margin: 0 auto;
+  }
+
+  .titulos {
+    margin-left: 0;
+    margin-right: 0;
+    width: 100% !important;
+    text-align: center;
   }
 
   .h2-inicio {
-    font-size: 2rem;
+    font-size: 2.2rem;
   }
 
   .h2-inc-introducao {
-    font-size: 1.2rem;
+    font-size: 1.3rem;
   }
 
   .h3-inc-introducao {
@@ -483,8 +530,166 @@ body::before {
   }
 
   .section-inc-1 a {
+    width: 100%;
+    max-width: 500px;
+    font-size: 1.2rem;
+    margin: 0 auto;
+  }
+
+  .cta {
+    margin-left: 0;
+    margin-right: 0;
+    height: 300px;
+    padding: 25px 15px;
+    width: 100%;
+    max-width: 600px;
+    margin: 20px auto;
+  }
+
+  .cta h2 {
+    font-size: 1.6rem;
+  }
+
+  .cta p {
     font-size: 1rem;
-    padding: 10px 20px;
+  }
+
+  .btn-curso {
+    height: 60px;
+    width: 80%;
+    font-size: 28px;
+  }
+
+  .cursos-section {
+    padding: 50px 30px;
+  }
+
+  .titulo-cursos {
+    font-size: 35px;
+  }
+
+  .parceiros {
+    margin-top: 150px;
+  }
+
+  .parceiros h2 {
+    font-size: 2.8rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .section-inc-1 {
+    padding: 40px 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .logo-inicio {
+    width: 200px !important;
+    height: 200px !important;
+    transform: scale(1);
+    padding: 30px 30px;
+    margin: 0 auto;
+  }
+
+  .titulos {
+    margin-left: 0;
+    margin-right: 0;
+    width: 100% !important;
+    text-align: center;
+  }
+
+  .h2-inicio {
+    font-size: 1.8rem;
+    width: 100%;
+  }
+
+  .h2-inc-introducao {
+    font-size: 1.1rem;
+  }
+
+  .h3-inc-introducao {
+    font-size: 0.95rem;
+  }
+
+  .section-inc-1 a {
+    width: 100%;
+    max-width: 400px;
+    font-size: 1rem;
+    padding: 12px 20px;
+    margin: 0 auto;
+  }
+
+  .cta {
+    margin-left: 0;
+    margin-right: 0;
+    height: auto;
+    padding: 30px 20px;
+    border-radius: 20px;
+    text-align: center;
+    width: 100%;
+    max-width: 500px;
+    margin: 20px auto;
+  }
+
+  .cta h2 {
+    font-size: 1.5rem;
+  }
+
+  .cta p {
+    font-size: 0.95rem;
+  }
+
+  .btn-curso {
+    height: 50px;
+    width: 90%;
+    font-size: 20px;
+    padding: 0 20px;
+    margin: 0 auto;
+  }
+
+  .cursos-section {
+    padding: 40px 20px;
+  }
+
+  .titulo-cursos {
+    font-size: 28px;
+  }
+
+  .subtitulo-cursos {
+    font-size: 14px;
+  }
+
+  .cursos-grid {
+    gap: 20px;
+  }
+
+  .parceiros {
+    margin-top: 100px;
+    padding: 60px 15px;
+  }
+
+  .parceiros h2 {
+    font-size: 2.2rem;
+  }
+
+  .parceiro {
+    padding: 20px 10px;
+  }
+
+  .icon-container {
+    width: 70px;
+    height: 70px;
+  }
+
+  .parceiro i {
+    font-size: 32px;
+  }
+
+  .parceiro p {
+    font-size: 1rem;
   }
 }
 
@@ -708,6 +913,10 @@ body::before {
 
   .parceiro i {
     font-size: 40px;
+  }
+
+  .parceiros {
+    display: none;
   }
 }
 

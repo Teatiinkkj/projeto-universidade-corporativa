@@ -37,7 +37,7 @@ if ($result && $result->num_rows > 0) {
 $stmt->close();
 
 // Insere matrícula
-$stmt = $conn->prepare("INSERT INTO matriculas (usuario_id, curso_id, data_matricula) VALUES (?, ?, NOW())");
+$stmt = $conn->prepare("INSERT INTO matriculas (usuario_id, curso_id, status, data_matricula) VALUES (?, ?, 'ativo', NOW())");
 $stmt->bind_param("ii", $usuario_id, $curso_id);
 
 if ($stmt->execute()) {
