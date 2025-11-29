@@ -1,5 +1,5 @@
 .back-button {
-  position: absolute;
+  position: fixed;
   top: 20px;
   left: 20px;
   color: rgb(6, 93, 199);
@@ -13,6 +13,7 @@
   overflow: hidden;
   transition: all 0.4s ease;
   background: linear-gradient(90deg, rgba(6,93,199,0.1), rgba(6,93,199,0.05));
+  z-index: 9999;
 }
 
 /* Efeito principal ao passar o mouse */

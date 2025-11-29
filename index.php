@@ -8,7 +8,6 @@
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="v1/assets/css/login.css" />
-  <link rel="stylesheet" href="v1/assets/css/logo.css" />
   <link rel="icon" href="v1/assets/images/logo-dominio.png" type="image/png" class="logo-dominio">
 </head>
 

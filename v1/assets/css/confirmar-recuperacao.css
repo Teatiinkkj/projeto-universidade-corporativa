@@ -1,3 +1,7 @@
+    body {
+        overflow: hidden;
+    }
+
     /* Container isolado da página de confirmação */
     .container-confirmacao {
         display: flex;

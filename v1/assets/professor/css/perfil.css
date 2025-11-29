@@ -4,19 +4,19 @@ body {
     background: #e8f0fe;
     margin: 0;
     overflow-x: hidden;
-    font-size: 25px;
+    font-size: 16px;
 }
 
 h3 {
-    font-size: 50px;
+    font-size: 24px;
     color: #1754a3;
 }
 
 .perfil-container {
-    max-width: 1500px;
-    margin: 40px auto;
+    max-width: 1200px;
+    margin: 20px auto;
     background: #fff;
-    padding: 30px;
+    padding: 20px;
     border-radius: 15px;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
     transition: all 0.3s ease;
@@ -118,6 +118,76 @@ h3 {
     transform: translateY(-2px);
 }
 
+/* Responsividade para mobile */
+@media (max-width: 768px) {
+    .perfil-header {
+        flex-direction: column;
+        text-align: center;
+        gap: 20px;
+        padding-bottom: 20px;
+        margin-bottom: 30px;
+    }
+
+    .perfil-foto-wrapper {
+        width: 100px;
+        height: 100px;
+    }
+
+    .perfil-info h2 {
+        font-size: 24px;
+    }
+
+    .info-grid {
+        justify-content: center;
+        gap: 10px 15px;
+    }
+
+    .info-item {
+        font-size: 14px;
+        padding: 6px 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .perfil-container {
+        padding: 15px;
+        margin: 10px auto;
+    }
+
+    .perfil-header {
+        gap: 15px;
+        padding-bottom: 15px;
+        margin-bottom: 20px;
+    }
+
+    .perfil-foto-wrapper {
+        width: 80px;
+        height: 80px;
+    }
+
+    .alterar-foto-btn {
+        width: 30px;
+        height: 30px;
+        font-size: 14px;
+    }
+
+    .perfil-info h2 {
+        font-size: 20px;
+    }
+
+    .info-grid {
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .info-item {
+        font-size: 13px;
+        padding: 5px 8px;
+        justify-content: center;
+    }
+}
+
 /* ===== Títulos ===== */
 .perfil-header h2 {
     margin: 0;
@@ -148,7 +218,7 @@ h3 {
 }
 
 .curso-secao h3 {
-    margin-top: -100px;
+    margin-top: 0;
     color: #1754a3;
     margin-bottom: 15px;
     border-bottom: 2px solid #1754a3;
@@ -366,30 +436,6 @@ h3 {
         font-size: 14px;
         padding: 10px 14px;
     }
-}
-
-/* Wrapper da imagem no card */
-.card-img-wrapper {
-    width: 100%;
-    height: 150px;
-    overflow: hidden;
-    border-radius: 16px 16px 0 0;
-    margin-bottom: 15px;
-    background: #f0f0f0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.card-img-wrapper img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.3s ease;
-}
-
-.card-img-wrapper img:hover {
-    transform: scale(1.05);
 }
 
 /* Wrapper da imagem no card */

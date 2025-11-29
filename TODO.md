@@ -1,7 +1,16 @@
-- [x] Update .section-inc-1: Change width to 100%, adjust padding for better fit.
-- [x] Update .titulos: Remove negative margins, set max-width and center alignment for responsiveness.
-- [x] Update .logo-inicio: Reduce transform scale, use responsive width/height.
-- [x] Update .section-inc-1 a: Change to max-width with responsive sizing.
-- [x] Update .cta: Remove negative margins, make width and margins responsive.
-- [x] Add media queries for better zoom responsiveness.
-- [x] Test the layout at different zoom levels (e.g., 75%, 100%, 125%) to ensure no overflow.
+# TODO: Implement Admin-Only "Administrador" Role Assignment
+
+## Tasks
+- [x] Modify v1/assets/admin/html/admin.php to check current user's cargo and conditionally display "Administrador" option in edit form
+- [x] Update v1/assets/api/admin/editar_usuario.php to validate that only admins can set cargo to "Administrador"
+- [x] Test the implementation with admin and non-admin users
+- [x] Fix gender field mapping from database values ("M"/"F") to select options ("masculino"/"feminino")
+- [x] Restrict "Administrador" role assignment to admins only when creating new users
+- [x] Implement dynamic role selection in new user creation form based on current user's permissions
+
+## Progress
+- [x] Analyze existing code and database schema
+- [x] Create implementation plan
+- [x] Get user approval for plan
+- [x] Implement frontend changes
+- [x] Implement backend validation

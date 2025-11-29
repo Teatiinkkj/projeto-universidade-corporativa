@@ -1,4 +1,4 @@
-        /* Animação para botão concluir */
+/* Animação para botão concluir */
         #btnConcluido {
             transition: transform 0.2s, background-color 0.3s;
         }
@@ -19,4 +19,21 @@
         #btnCertificado.show {
             opacity: 1;
             transform: translateY(0);
+        }
+
+        /* Ajuste de altura do vídeo para mobile */
+        @media (max-width: 480px) {
+            #playerVideo {
+                height: 200px !important;
+            }
+            #conteudoExtra iframe {
+                height: 200px !important;
+            }
+        }
+
+        /* Ocultar botão de voltar em mobile */
+        @media (max-width: 1024px) {
+            .back-button {
+                display: none;
+            }
         }

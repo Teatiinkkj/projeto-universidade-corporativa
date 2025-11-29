@@ -23,7 +23,7 @@ if (!isset($_SESSION['usuario_id'])) {
     <link rel="stylesheet" href="../../css/videoaula.css">
     <link rel="stylesheet" href="../../lib/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-
+    <link rel="icon" href="../../images/logo-dominio.png" type="image/png" class="logo-dominio">
 </head>
 
 <body>
@@ -106,7 +106,7 @@ if (!isset($_SESSION['usuario_id'])) {
                     btn.innerHTML = '<i class="fa fa-spinner"></i> Baixando...';
                     btn.classList.add('loading');
 
-                    window.open(`../../api/aluno/gerar_certificado.php?curso_id=<?php echo $curso_id; ?>`, '_blank');
+                    window.open(`../../api/admin/gerar_certificado.php?curso_id=<?php echo $curso_id; ?>`, '_blank');
 
                     setTimeout(() => {
                         btn.classList.remove('loading');
@@ -162,7 +162,7 @@ if (!isset($_SESSION['usuario_id'])) {
         }
 
         // Buscar progresso salvo
-        fetch('../../api/aluno/buscar_progresso.php', { credentials: 'include' })
+        fetch('../../api/admin/buscar_progresso.php', { credentials: 'include' })
             .then(res => res.json())
             .then(data => {
                 if (data.success && Array.isArray(data.conteudos)) {
@@ -188,7 +188,7 @@ if (!isset($_SESSION['usuario_id'])) {
             const conteudoId = aulaAtual.dataset.id;
             const desmarcar = aulaAtual.classList.contains('assistido') ? 1 : 0;
 
-            fetch('../../api/aluno/marcar_assistido.php', {
+            fetch('../../api/admin/marcar_assistido.php', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: 'conteudo_id=' + encodeURIComponent(conteudoId) + '&desmarcar=' + desmarcar,

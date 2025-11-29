@@ -13,14 +13,9 @@ if (!isset($_SESSION['usuario_id'])) {
 
 $usuario_id = $_SESSION['usuario_id'];
 
-$servername = "localhost";
-$username = "root";
-$password = "1234";
-$dbname = "universidade_corporativa";
+include '../../db/conexao.php';
 
 try {
-    $pdo = new PDO("mysql:host=$servername;dbname=$dbname;charset=utf8mb4", $username, $password);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     // Consulta principal com progresso e matrícula
     $sql = "

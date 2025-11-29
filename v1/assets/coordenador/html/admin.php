@@ -20,6 +20,7 @@ if (!isset($_SESSION['usuario_id'])) {
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../../css/admin.css" />
   <link rel="stylesheet" href="../../css/back-button.css" />
+  <link rel="icon" href="../../images/logo-dominio.png" type="image/png" class="logo-dominio">
 </head>
 
 <body>
@@ -194,7 +195,7 @@ if (!isset($_SESSION['usuario_id'])) {
 
       async function carregarUsuarios(filtro = "") {
         try {
-          const response = await fetch("../../api/coordenador/usuarios.php");
+          const response = await fetch("../../api/admin/usuarios.php");
           const result = await response.json();
           if (!result.success) return abrirModalErro("Erro ao carregar usuários do banco de dados.");
 
@@ -235,7 +236,7 @@ if (!isset($_SESSION['usuario_id'])) {
 
       async function editarUsuario(id) {
         try {
-          const response = await fetch(`../../api/coordenador/usuario.php?id=${id}`);
+          const response = await fetch(`../../api/admin/usuario.php?id=${id}`);
           const result = await response.json();
           if (!response.ok || !result.success) throw new Error(result.message || "Erro ao buscar usuário.");
 
@@ -266,7 +267,7 @@ if (!isset($_SESSION['usuario_id'])) {
         if (!nome || !email || !cargo || !sexo || !cpf) return abrirModalErro("Preencha todos os campos obrigatórios.");
 
         try {
-          const response = await fetch("../../api/coordenador/editar_usuario.php", {
+          const response = await fetch("../../api/admin/editar_usuario.php", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ id, nome, email, cargo, sexo, cpf, senha })
@@ -307,7 +308,7 @@ if (!isset($_SESSION['usuario_id'])) {
         if (!nome || !cargo || !sexo || !cpf || !email || !senha) return abrirModalErro("Preencha todos os campos.");
 
         try {
-          const response = await fetch("../../api/coordenador/cadastrar_usuario.php", {
+          const response = await fetch("../../api/admin/cadastrar_usuario.php", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ nome, email, senha, cargo, sexo, cpf })
@@ -350,7 +351,7 @@ if (!isset($_SESSION['usuario_id'])) {
 
       async function excluirUsuario(id) {
         try {
-          const response = await fetch("../../api/coordenador/excluir_usuario.php", {
+          const response = await fetch("../../api/admin/excluir_usuario.php", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ id })

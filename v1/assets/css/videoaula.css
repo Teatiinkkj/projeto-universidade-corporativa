@@ -160,6 +160,8 @@ footer {
 
     .topico {
         padding: 12px;
+        width: 100% !important;
+        max-width: 100%;
     }
 
     .conteudo-item {
@@ -168,6 +170,16 @@ footer {
 
     #tituloAula {
         font-size: 20px;
+    }
+
+    .video .row {
+        flex-direction: column;
+    }
+
+    .video .col-md-8,
+    .video .col-md-4 {
+        flex: 0 0 100%;
+        max-width: 100%;
     }
 }
 

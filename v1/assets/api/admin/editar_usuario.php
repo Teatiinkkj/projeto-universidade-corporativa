@@ -1,4 +1,5 @@
 <?php
+session_start();
 header('Content-Type: application/json');
 include '../../db/conexao.php';
 
@@ -15,6 +16,27 @@ $cpf = trim($data["cpf"] ?? "");
 if (!$id || !$nome || !$email || !$cargo || !$sexo || !$cpf) {
     http_response_code(400);
     echo json_encode(["success" => false, "message" => "Dados incompletos."]);
+    exit();
+}
+
+// Verificar se o usuário logado é administrador
+if (!isset($_SESSION['usuario_id'])) {
+    http_response_code(401);
+    echo json_encode(["success" => false, "message" => "Usuário não autenticado."]);
+    exit();
+}
+
+$stmt = $conn->prepare("SELECT cargo FROM usuarios WHERE id = ?");
+$stmt->bind_param("i", $_SESSION['usuario_id']);
+$stmt->execute();
+$result = $stmt->get_result();
+$current_user = $result->fetch_assoc();
+$current_user_cargo = $current_user['cargo'] ?? '';
+$stmt->close();
+
+if ($cargo === "Administrador" && $current_user_cargo !== "Administrador") {
+    http_response_code(403);
+    echo json_encode(["success" => false, "message" => "Apenas administradores podem atribuir o cargo de Administrador."]);
     exit();
 }
 

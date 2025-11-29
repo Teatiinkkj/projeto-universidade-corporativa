@@ -62,10 +62,12 @@ $certificados = $certificadosStmt->get_result();
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Perfil - Universidade Corporativa</title>
     <link rel="stylesheet" href="../css/perfil.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="../../css/back-button.css">
+    <link rel="icon" href="../../images/logo-dominio.png" type="image/png" class="logo-dominio">
 </head>
 
 <body>
@@ -127,7 +129,7 @@ $certificados = $certificadosStmt->get_result();
                             </div>
                         </div>
 
-                        <a href="../../api/coordenador/videoaula.php?id=<?= htmlspecialchars($mat['curso_id']) ?>"
+                        <a href="../../api/admin/videoaula.php?id=<?= htmlspecialchars($mat['curso_id']) ?>"
                             class="btn btn-curso">
                             <i class="fa fa-play"></i> Acessar Curso
                         </a>
@@ -158,7 +160,7 @@ $certificados = $certificadosStmt->get_result();
 
                             <p class="certificado-data">Emitido em: <?= htmlspecialchars($cert['data_emissao']) ?></p>
 
-                            <a href="../../api/coordenador/gerar_certificado.php?curso_id=<?= htmlspecialchars($cert['curso_id']) ?>"
+                            <a href="../../api/admin/gerar_certificado.php?curso_id=<?= htmlspecialchars($cert['curso_id']) ?>"
                                 class="btn btn-certificado">
                                 <i class="fa fa-download"></i> Baixar Certificado
                             </a>
@@ -208,7 +210,7 @@ $certificados = $certificadosStmt->get_result();
                 const formData = new FormData();
                 formData.append('foto', this.files[0]);
                 try {
-                    const res = await fetch('../../api/coordenador/alterar_foto.php', { method: 'POST', body: formData });
+                    const res = await fetch('../../api/admin/alterar_foto.php', { method: 'POST', body: formData });
                     const data = await res.json();
                     if (data.success) {
                         fotoPerfil.src = data.foto;
@@ -247,13 +249,13 @@ $certificados = $certificadosStmt->get_result();
                         const id = this.dataset.id;
                         modalBody.innerHTML = `<h3>Curso: ${this.querySelector('h4').innerText}</h3>
                             <p>Deseja acessar o curso?</p>
-                            <a href="../../api/coordenador/videoaula.php?curso_id=${id}" class="btn" style="display:inline-block;margin-top:10px;">Acessar Curso</a>`;
+                            <a href="../../api/admin/videoaula.php?curso_id=${id}" class="btn" style="display:inline-block;margin-top:10px;">Acessar Curso</a>`;
                         modalBg.style.display = 'flex';
                     } else if (tipo === 'certificado') {
                         const curso = this.dataset.curso;
                         modalBody.innerHTML = `<h3>Certificado: ${this.querySelector('h4').innerText}</h3>
                             <p>Deseja baixar o certificado?</p>
-                            <a href="../../api/coordenador/gerar_certificado.php?curso_id=${curso}" class="btn" style="display:inline-block;margin-top:10px;"><i class="fa fa-download"></i> Baixar Certificado</a>`;
+                            <a href="../../api/admin/gerar_certificado.php?curso_id=${curso}" class="btn" style="display:inline-block;margin-top:10px;"><i class="fa fa-download"></i> Baixar Certificado</a>`;
                         modalBg.style.display = 'flex';
                     }
                 });
@@ -261,4 +263,5 @@ $certificados = $certificadosStmt->get_result();
         </script>
 
 </body>
+
 </html>

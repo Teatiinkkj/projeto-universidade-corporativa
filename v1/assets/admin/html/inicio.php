@@ -26,6 +26,7 @@ if (!isset($_SESSION['usuario_id'])) {
   <link rel="stylesheet" href="../css/header.css">
   <link rel="stylesheet" href="../../lib/bootstrap/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+  <link rel="icon" href="../../images/logo-dominio.png" type="image/png" class="logo-dominio">
 </head>
 
 <body>
@@ -33,21 +34,20 @@ if (!isset($_SESSION['usuario_id'])) {
   <?php include '../api/header.php'; ?>
 
   <section class="section-inc-1 mt-5">
-    <div class="container">
-      <div class="row align-items-center justify-content-center text-center text-lg-start">
+    <div class="container-fluid">
+      <div class="row align-items-center justify-content-start text-center text-lg-start">
 
         <!-- Textos (agora com área maior) -->
-        <div class="col-12 col-lg-6 mb-5 mb-lg-0 titulos">
-          <h2 class="h2-inicio">Universidade Corporativa</h2>
-          <h2 class="h2-inc-introducao">Transforme seu futuro. Evolua sua carreira.</h2>
-          <h3 class="h3-inc-introducao">
-            Desbloqueie seu potencial e alcance novos patamares de sucesso com a nossa
-            <strong>Universidade Corporativa.</strong>
-          </h3>
+        <div class="col-12 col-lg-4 mb-5 mb-lg-0 titulos">
+          <h2 class="h2-inicio">UNICORP</h2>
+          <h2 class="h2-inc-introducao">Transforme seu futuro.</h2>
+          <h2 class="h2-inc-introducao">Evolua sua carreira.</h2>
+
+          <br>
 
           <!-- Frase de destaque curta -->
           <p class="p-inc-destaque">
-            🚀 Prepare-se para decolar sua carreira com conhecimento de ponta!
+            🚀 Prepare-se para decolar com conhecimento de ponta!
           </p>
 
           <a href="../../html/sobre.html" class="link-sobre">
@@ -57,9 +57,8 @@ if (!isset($_SESSION['usuario_id'])) {
         </div>
 
         <!-- Logo (diminuída um pouco para balancear) -->
-        <div class="col-12 col-lg-2 mb-lg-0 g-4">
-          <img class="logo-inicio" src="../../images/logo.png" alt="Logo UNICORP"
-            style="margin-left: -200px; margin-right: 200px;">
+        <div class="col-12 col-lg-4 mb-lg-0 g-4">
+          <img class="logo-inicio" src="../../images/logo.png" alt="Logo UNICORP">
         </div>
 
         <!-- CTA Criativa -->
@@ -81,7 +80,7 @@ if (!isset($_SESSION['usuario_id'])) {
               </div>
             </div>
             <div class="cta-selo">
-              Mais de <strong>10.000 alunos</strong> transformaram suas carreiras!
+              <span>Mais de <strong>10.000 alunos</strong> transformaram suas carreiras!</span>
             </div>
             <button class="btn-curso" id="btnComeceAgora">Comece Agora</button>
           </section>

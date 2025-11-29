@@ -1,4 +1,6 @@
 <?php
+error_reporting(0);
+ini_set('display_errors', 0);
 session_start();
 
 // Evita cache da página
@@ -36,6 +38,31 @@ $fotoExibida = (!empty($foto) && file_exists($caminhoImagens . $foto))
 <header class="header-container">
     <div class="header-left">
         <button id="userMenuBtn"><i class="fa fa-bars"></i></button>
+
+        <!-- Submenu do usuário -->
+        <div class="submenu" id="userSubmenu">
+            <div class="submenu-header">
+                <div class="submenu-user-info">
+                    <a href="../html/perfil.php">
+                        <img src="<?= htmlspecialchars($fotoExibida) ?>" alt="Foto de perfil" class="user-photo">
+                    </a>
+                    <div class="submenu-name-email">
+                        <span class="user-name"><?= htmlspecialchars($nomeUsuario) ?></span>
+                        <span class="user-email"><?= htmlspecialchars($emailUsuario) ?></span>
+                    </div>
+                    <a href="../../api/auth/logout.php" class="logout-btn-2" title="Sair">
+                        <i class="fa fa-sign-out"></i>
+                    </a>
+                </div>
+            </div>
+            <ul class="submenu-links">
+                <li><a href="../html/inicio.php"><i class="fa fa-home"></i> Início</a></li>
+                <li><a href="perfil.php"><i class="fa fa-user"></i> Perfil</a></li>
+                <li><a href="../html/admin.php"><i class="fa fa-users"></i>Gestão de Usuários</a></li>
+                <li><a href="cursos.php"><i class="fa fa-graduation-cap"></i>Gestão de Cursos</a></li>
+                <li><a href="../../api/auth/logout.php"><i class="fa fa-sign-out"></i> Sair</a></li>
+            </ul>
+        </div>
     </div>
 
     <div class="header-center">
@@ -85,31 +112,6 @@ $fotoExibida = (!empty($foto) && file_exists($caminhoImagens . $foto))
         <a href="../../api/auth/logout.php" class="logout-btn" title="Sair">
             <i class="fa fa-sign-out"></i>
         </a>
-    </div>
-
-    <!-- Submenu do usuário -->
-    <div class="submenu" id="userSubmenu">
-        <div class="submenu-header">
-            <div class="submenu-user-info">
-                <a href="../html/perfil.php">
-                    <img src="<?= htmlspecialchars($fotoExibida) ?>" alt="Foto de perfil" class="user-photo">
-                </a>
-                <div class="submenu-name-email">
-                    <span class="user-name"><?= htmlspecialchars($nomeUsuario) ?></span>
-                    <span class="user-email"><?= htmlspecialchars($emailUsuario) ?></span>
-                </div>
-                <a href="../../api/auth/logout.php" class="logout-btn-2" title="Sair">
-                    <i class="fa fa-sign-out"></i>
-                </a>
-            </div>
-        </div>
-        <ul class="submenu-links">
-            <li><a href="../html/inicio.php"><i class="fa fa-home"></i> Início</a></li>
-            <li><a href="perfil.php"><i class="fa fa-user"></i> Perfil</a></li>
-            <li><a href="../html/admin.php"><i class="fa fa-users"></i>Gestão de Usuários</a></li>
-            <li><a href="cursos.php"><i class="fa fa-graduation-cap"></i>Gestão de Cursos</a></li>
-            <li><a href="../../api/auth/logout.php"><i class="fa fa-sign-out"></i> Sair</a></li>
-        </ul>
     </div>
 </header>
 
@@ -176,6 +178,9 @@ $fotoExibida = (!empty($foto) && file_exists($caminhoImagens . $foto))
     // PESQUISA
     // =========================
     function criarPreview() {
+        // Prevent creating search preview on mobile devices
+        if (window.innerWidth <= 768) return;
+
         if (!searchPreview) {
             searchPreview = document.createElement('div');
             searchPreview.className = 'search-preview';
@@ -190,6 +195,9 @@ $fotoExibida = (!empty($foto) && file_exists($caminhoImagens . $foto))
     });
 
     searchInput.addEventListener('input', async () => {
+        // Prevent search preview on mobile devices
+        if (window.innerWidth <= 768) return;
+
         const query = searchInput.value.trim();
         criarPreview();
 
@@ -375,15 +383,17 @@ $fotoExibida = (!empty($foto) && file_exists($caminhoImagens . $foto))
 
         // Marca todas como lidas ao abrir
         const items = notificationsList.querySelectorAll('li');
-        items.forEach(async li => {
+        const promises = items.map(li => {
             const id = li.dataset.id;
-            await fetch('../../api/admin/marcar_lida.php', {
+            return fetch('../../api/admin/marcar_lida.php', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: `id=${id}`
             });
         });
 
+        // Aguarda todas as requisições serem concluídas antes de resetar o contador
+        await Promise.all(promises);
         notificationCount.textContent = 0;
     });
 

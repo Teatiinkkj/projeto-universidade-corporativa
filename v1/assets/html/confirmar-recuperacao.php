@@ -9,10 +9,15 @@
   <link rel="stylesheet" href="../css/confirmar-recuperacao.css" />
   <link rel="stylesheet" href="../css/login.css">
   <link rel="stylesheet" href="../css/back-button.css">
+  <link rel="icon" href="../images/logo-dominio.png" type="image/png" class="logo-dominio">
 </head>
 
 <body>
   <div id="particles-js"></div>
+
+  <a onclick="history.back()" class="back-button">
+    <i class="fa fa-arrow-left"></i> Voltar
+  </a>
 
   <div class="container-confirmacao" style="color: white;">
     <div class="caixa-confirmacao" id="caixa-login">

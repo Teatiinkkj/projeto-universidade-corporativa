@@ -3,10 +3,21 @@ session_start();
 
 // Verifica se o usuário está logado
 if (!isset($_SESSION['usuario_id'])) {
-    // Usuário não logado, redireciona para login
-    header("Location: ../../../../index.php");
-    exit();
+  // Usuário não logado, redireciona para login
+  header("Location: ../../../../index.php");
+  exit();
 }
+
+// Verifica o cargo do usuário logado
+include '../../db/conexao.php';
+$stmt = $conn->prepare("SELECT cargo FROM usuarios WHERE id = ?");
+$stmt->bind_param("i", $_SESSION['usuario_id']);
+$stmt->execute();
+$result = $stmt->get_result();
+$user = $result->fetch_assoc();
+$current_user_cargo = $user['cargo'] ?? '';
+$stmt->close();
+$conn->close();
 ?>
 
 <!DOCTYPE html>
@@ -20,6 +31,7 @@ if (!isset($_SESSION['usuario_id'])) {
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../../css/admin.css" />
   <link rel="stylesheet" href="../../css/back-button.css" />
+  <link rel="icon" href="../../images/logo-dominio.png" type="image/png" class="logo-dominio">
 </head>
 
 <body>
@@ -114,9 +126,6 @@ if (!isset($_SESSION['usuario_id'])) {
         <div class="campo-form">
           <select id="cadCargo" required>
             <option value="" disabled selected></option>
-            <option value="aluno">Aluno</option>
-            <option value="professor">Professor</option>
-            <option value="coordenador">Coordenador</option>
           </select>
           <label for="cadCargo">Cargo</label>
         </div>
@@ -178,6 +187,7 @@ if (!isset($_SESSION['usuario_id'])) {
   </div>
 
   <script>
+    const currentUserCargo = "<?php echo $current_user_cargo; ?>";
     document.addEventListener("DOMContentLoaded", () => {
       const tabelaBody = document.querySelector("#tabelaUsuarios tbody");
       const filtroInput = document.getElementById("filtroUsuarios");
@@ -240,10 +250,37 @@ if (!isset($_SESSION['usuario_id'])) {
           if (!response.ok || !result.success) throw new Error(result.message || "Erro ao buscar usuário.");
 
           const u = result.data;
+
+          // Populate cargo select based on current user role
+          const editCargoSelect = document.getElementById("editCargo");
+          editCargoSelect.innerHTML = '<option value="" disabled selected>Selecione o cargo</option>';
+          editCargoSelect.innerHTML += '<option value="aluno">Aluno</option>';
+          editCargoSelect.innerHTML += '<option value="professor">Professor</option>';
+          editCargoSelect.innerHTML += '<option value="coordenador">Coordenador</option>';
+          if (currentUserCargo === "Administrador") {
+            editCargoSelect.innerHTML += '<option value="Administrador">Administrador</option>';
+          }
+          // If the current user's cargo is not in the options (e.g., non-admin viewing admin), add it disabled
+          if (u.cargo && !editCargoSelect.querySelector(`option[value="${u.cargo}"]`)) {
+            const disabled = currentUserCargo !== "Administrador" && u.cargo === "Administrador" ? 'disabled' : '';
+            editCargoSelect.innerHTML += `<option value="${u.cargo}" ${disabled}>${u.cargo.charAt(0).toUpperCase() + u.cargo.slice(1)}</option>`;
+          }
+
+          // Reset form values
+          document.getElementById("editNome").value = "";
+          document.getElementById("editEmail").value = "";
+          document.getElementById("editCargo").value = "";
+          document.getElementById("editSexo").value = "";
+          document.getElementById("editCpf").value = "";
+          document.getElementById("editSenha").value = "";
+
+          // Set form values
           document.getElementById("editNome").value = u.nome;
           document.getElementById("editEmail").value = u.email;
           document.getElementById("editCargo").value = u.cargo;
-          document.getElementById("editSexo").value = u.sexo;
+          // Map database gender values to select options
+          const sexoValue = u.sexo === "M" ? "masculino" : u.sexo === "F" ? "feminino" : "";
+          document.getElementById("editSexo").value = sexoValue;
           document.getElementById("editCpf").value = u.cpf;
           document.getElementById("editSenha").value = "";
 
@@ -293,7 +330,18 @@ if (!isset($_SESSION['usuario_id'])) {
       document.getElementById("fecharModalSucesso").addEventListener("click", () => fecharModal("modalSucesso"));
       document.getElementById("fecharModalErro").addEventListener("click", () => fecharModal("modalErro"));
 
-      document.getElementById("btnNovoUsuario").addEventListener("click", () => abrirModal("modalCadastro"));
+      document.getElementById("btnNovoUsuario").addEventListener("click", () => {
+        // Populate cargo select based on current user role
+        const cadCargoSelect = document.getElementById("cadCargo");
+        cadCargoSelect.innerHTML = '<option value="" disabled selected></option>';
+        cadCargoSelect.innerHTML += '<option value="aluno">Aluno</option>';
+        cadCargoSelect.innerHTML += '<option value="professor">Professor</option>';
+        cadCargoSelect.innerHTML += '<option value="coordenador">Coordenador</option>';
+        if (currentUserCargo === "Administrador") {
+          cadCargoSelect.innerHTML += '<option value="Administrador">Administrador</option>';
+        }
+        abrirModal("modalCadastro");
+      });
       document.getElementById("btnCancelarCadastro").addEventListener("click", () => fecharModal("modalCadastro"));
 
       document.getElementById("btnConfirmarCadastro").addEventListener("click", async () => {

@@ -8,8 +8,8 @@ header("Pragma: no-cache");
 
 // Verifica se o usuário está logado
 if (!isset($_SESSION['usuario_id'])) {
-    header("Location: ../../../../index.php");
-    exit();
+  header("Location: ../../../../index.php");
+  exit();
 }
 ?>
 
@@ -26,6 +26,7 @@ if (!isset($_SESSION['usuario_id'])) {
   <link rel="stylesheet" href="../css/header.css">
   <link rel="stylesheet" href="../../lib/bootstrap/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+  <link rel="icon" href="../../images/logo-dominio.png" type="image/png" class="logo-dominio">
 </head>
 
 <body>
@@ -33,21 +34,20 @@ if (!isset($_SESSION['usuario_id'])) {
   <?php include '../api/header.php'; ?>
 
   <section class="section-inc-1 mt-5">
-    <div class="container">
-      <div class="row align-items-center justify-content-center text-center text-lg-start">
+    <div class="container-fluid">
+      <div class="row align-items-center justify-content-start text-center text-lg-start">
 
         <!-- Textos (agora com área maior) -->
-        <div class="col-12 col-lg-6 mb-5 mb-lg-0 titulos">
-          <h2 class="h2-inicio">Universidade Corporativa</h2>
-          <h2 class="h2-inc-introducao">Transforme seu futuro. Evolua sua carreira.</h2>
-          <h3 class="h3-inc-introducao">
-            Desbloqueie seu potencial e alcance novos patamares de sucesso com a nossa
-            <strong>Universidade Corporativa.</strong>
-          </h3>
-          
+        <div class="col-12 col-lg-4 mb-5 mb-lg-0 titulos">
+          <h2 class="h2-inicio">UNICORP</h2>
+          <h2 class="h2-inc-introducao">Transforme seu futuro.</h2>
+          <h2 class="h2-inc-introducao">Evolua sua carreira.</h2>
+
+          <br>
+
           <!-- Frase de destaque curta -->
           <p class="p-inc-destaque">
-            🚀 Prepare-se para decolar sua carreira com conhecimento de ponta!
+            🚀 Prepare-se para decolar com conhecimento de ponta!
           </p>
 
           <a href="../../html/sobre.html" class="link-sobre">
@@ -57,9 +57,8 @@ if (!isset($_SESSION['usuario_id'])) {
         </div>
 
         <!-- Logo (diminuída um pouco para balancear) -->
-        <div class="col-12 col-lg-2 mb-lg-0 g-4">
-          <img class="logo-inicio" src="../../images/logo.png" alt="Logo UNICORP"
-            style="margin-left: -200px; margin-right: 200px;">
+        <div class="col-12 col-lg-4 mb-lg-0 g-4">
+          <img class="logo-inicio" src="../../images/logo.png" alt="Logo UNICORP">
         </div>
 
         <!-- CTA Criativa -->
@@ -81,7 +80,7 @@ if (!isset($_SESSION['usuario_id'])) {
               </div>
             </div>
             <div class="cta-selo">
-              Mais de <strong>10.000 alunos</strong> transformaram suas carreiras!
+              <span>Mais de <strong>10.000 alunos</strong> transformaram suas carreiras!</span>
             </div>
             <button class="btn-curso" id="btnComeceAgora">Comece Agora</button>
           </section>
@@ -354,7 +353,7 @@ if (!isset($_SESSION['usuario_id'])) {
 
 
       try {
-        const response = await fetch('../../api/professor/get_cursos.php');
+        const response = await fetch('../../api/admin/get_cursos.php');
         if (!response.ok) throw new Error('Erro na requisição: ' + response.status);
 
         const result = await response.json();
@@ -450,7 +449,7 @@ if (!isset($_SESSION['usuario_id'])) {
               const cursoId = target.dataset.id;
 
               try {
-                const resposta = await fetch('../../api/professor/verificar_matricula.php', {
+                const resposta = await fetch('../../api/admin/verificar_matricula.php', {
                   method: 'POST',
                   headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                   body: `curso_id=${cursoId}`,
@@ -460,7 +459,7 @@ if (!isset($_SESSION['usuario_id'])) {
 
                 if (data.status === 'nao_logado') {
                   mostrarModal('Acesso negado', 'Você precisa estar logado para acessar este curso.', [
-                    { texto: 'Fazer login', class: 'btn btn-primary', onClick: () => window.location.href = '../../index.php' }
+                    { texto: 'Fazer login', class: 'btn btn-primary', onClick: () => window.location.href = '../../../../index.php' }
                   ]);
                 } else if (data.status === 'matriculado') {
                   mostrarModal('Aviso', 'Você já está matriculado neste curso!', [
@@ -470,7 +469,7 @@ if (!isset($_SESSION['usuario_id'])) {
                   mostrarModal('Confirmar matrícula', 'Você ainda não está matriculado neste curso. Deseja se matricular agora?', [
                     {
                       texto: 'Sim', class: 'btn btn-success', onClick: async () => {
-                        const matriculaRes = await fetch('../../api/professor/matricular.php', {
+                        const matriculaRes = await fetch('../../api/admin/matricular.php', {
                           method: 'POST',
                           headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                           body: `curso_id=${cursoId}`,
@@ -483,7 +482,7 @@ if (!isset($_SESSION['usuario_id'])) {
                             {
                               texto: 'Acessar curso',
                               class: 'btn btn-success',
-                              onClick: () => window.location.href = `../../api/professor/videoaula.php?id=${cursoId}`
+                              onClick: () => window.location.href = `../../api/admin/videoaula.php?id=${cursoId}`
                             }
                           ]);
 
@@ -533,7 +532,7 @@ if (!isset($_SESSION['usuario_id'])) {
               const cursoId = target.dataset.id;
 
               try {
-                const resposta = await fetch('../../api/professor/verificar_matricula.php', {
+                const resposta = await fetch('../../api/admin/verificar_matricula.php', {
                   method: 'POST',
                   headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                   body: `curso_id=${cursoId}`,
@@ -544,7 +543,7 @@ if (!isset($_SESSION['usuario_id'])) {
 
                 if (data.status === 'nao_logado') {
                   mostrarModal('Acesso negado', 'Você precisa estar logado para acessar este curso.', [
-                    { texto: 'Fazer login', class: 'btn btn-primary', onClick: () => window.location.href = '../../index.php' }
+                    { texto: 'Fazer login', class: 'btn btn-primary', onClick: () => window.location.href = '../../../../index.php' }
                   ]);
                 } else if (data.status === 'nao_matriculado') {
                   mostrarModal('Acesso restrito', 'Você precisa se matricular neste curso antes de acessá-lo.', [
@@ -552,7 +551,7 @@ if (!isset($_SESSION['usuario_id'])) {
                     { texto: 'Fechar', class: 'btn btn-secondary' }
                   ]);
                 } else if (data.status === 'matriculado') {
-                  window.location.href = `../../api/professor/videoaula.php?id=${cursoId}`;
+                  window.location.href = `../../api/admin/videoaula.php?id=${cursoId}`;
                 }
               } catch (err) {
                 console.error('Erro:', err);
